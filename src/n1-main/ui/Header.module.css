@@ -1,0 +1,41 @@
+.link {
+    text-decoration: none;
+    margin: 10px;
+}
+
+.link:hover {
+    color: rgb(78, 0, 85);
+    background-color:rgb(118, 182, 255) ;
+    border-radius: 5px;
+}
+.active {
+    font-weight: 800;
+    color: rgb(78, 0, 85);
+    background-color:rgb(81, 250, 123);
+    border-radius: 5px;
+}
+
+.block {
+    border-radius: 5px;
+    font-size: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    width: 100px;
+    height: 25px;
+    margin: 10px;
+}
+.logo {
+    width: 30px;
+    height: 30px;
+}
+
+.header {
+    display: flex;
+    width: 280px;
+    transition-duration: 2000ms;
+    transform: translate(-250px);
+}
+
+.header:hover {
+    transition-duration: 1000ms;
+    transform: translate(0);
+}
