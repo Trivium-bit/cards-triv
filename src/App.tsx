@@ -1,14 +1,14 @@
 import { HashRouter } from 'react-router-dom';
 import './App.css';
 import Header from './n1-main/components/Header';
-import Routes from './n3-common/Routes';
+import Routings from './n3-common/Routings';
 
 function App() {
   return (
     <div className="App">
       <HashRouter>
         <Header />
-        <Routes />
+        <Routings />
       </HashRouter>
 
     </div>

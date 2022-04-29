@@ -14,12 +14,12 @@ export const PATH = {
   PASS_RECOVERY: "/pass-recovery"
 }
 
-function Routes() {
+function Routings() {
   return (
     <BrowserRouter>
       <div>
         <Routes>
-          <Route path="/" element={<Profile />} />
+          <Route path="/" element={<Login />} />
           <Route path={PATH.LOGIN} element={<Login />} />
           <Route path={PATH.REGISTER} element={<Register />} />
           <Route path={PATH.PROFILE} element={<Profile />} />
@@ -32,4 +32,4 @@ function Routes() {
   );
 }
 
-export default Routes;
+export default Routings;

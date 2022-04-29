@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import s from "../ui/Header.module.css";
-import { PATH } from '../../n3-common/Routes'
+import { PATH } from '../../n3-common/Routings'
 import menu_icon from '../../images/menu_icon.png'
 
 function Header() {
