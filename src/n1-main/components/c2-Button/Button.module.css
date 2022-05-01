@@ -1,28 +1,18 @@
-.default {
-    background-color: rgb(152, 255, 50);
+.btn {
+    margin-top: 30px;
+    height: 40px;
+    width: 100px;
+    border-radius: 10px;
+    background: rgb(96, 9, 240);
+    background: linear-gradient(0deg, rgba(96, 9, 240, 1) 0%, rgb(173, 5, 240) 100%);
+    border: none;
+    color: aliceblue;
+    font-weight: 800;
 }
 
-.red {
-      background-color: #FFFFFF;
-      border: 1px solid #CCCCCC;
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
-      transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
-      border-radius: 4px;
-      color: #56008f;
-      width:120px;
-      height: 30px;
-      font-size: 15px;
-      line-height: 20px;
-      margin-bottom: 10px;
-      margin-left: 5px;
-      padding: 4px 6px;
-      text-decoration:none;
-      font-family:monospace;
-  }
-  
-  .red:hover, s.red:focus {
-     background-color: rgb(210, 225, 252);
-     border-color: rgba(82, 168, 236, 0.8);
-     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(82, 168, 236, 0.6);
-     outline: 0 none;
-  }
+.btn:hover {
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .5),
+        -4px -4px 6px 0 rgba(116, 125, 136, .5),
+        inset -4px -4px 6px 0 rgba(255, 255, 255, .2),
+        inset 4px 4px 6px 0 rgba(0, 0, 0, .4);
+}

@@ -1,15 +1,16 @@
 .input:focus {
   outline: none;
-  border:rgb(40, 143, 228) solid 2px;
+  border:rgb(213, 3, 255) solid 2px;
 }
 
 .superInput {
+  margin-top: 20px;
   font-size: 12px;
   font-family: inherit;
-  background-color: rgb(126, 176, 185);
+  background-color: rgb(178, 136, 226);
   border-radius: 5px;
-  width: 300px
-
+  width: 300px;
+  color:aliceblue;
 }
 
 .errorInput {
