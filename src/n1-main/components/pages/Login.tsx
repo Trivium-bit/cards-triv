@@ -5,9 +5,9 @@ import Checkbox from "../c3-Checkbox/Checkbox";
 function Login() {
     return (
         <div>
-        <Input/>
-        <Button/>
-        <Checkbox/>
+            <Input />
+            <Button />
+            <Checkbox />
         </div>
     );
 }
