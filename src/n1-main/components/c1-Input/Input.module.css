@@ -1,13 +1,14 @@
 .input:focus {
   outline: none;
-  border:rgb(213, 3, 255) solid 2px;
+  border:rgb(214, 214, 214) solid 2px;
 }
 
 .superInput {
+  height: 30px;
   margin-top: 20px;
-  font-size: 12px;
+  font-size: 16px;
   font-family: inherit;
-  background-color: rgb(178, 136, 226);
+  background: #00aaf9;
   border-radius: 5px;
   width: 300px;
   color:aliceblue;

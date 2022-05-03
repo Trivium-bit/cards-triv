@@ -14,7 +14,7 @@ const SuperButton: React.FC<SuperButtonPropsType> = (
     }
 ) => {
     return (
-        <button className={s.btn}{...restProps}> Login </button >
+        <button className={s.button}{...restProps}> Login </button >
     );
 }
 
