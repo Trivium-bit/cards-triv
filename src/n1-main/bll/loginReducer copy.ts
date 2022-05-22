@@ -2,7 +2,7 @@ const initState = {
 
 }
 
-export const loginReducer = (state = initState, action: ActionsType): typeof initState => { // fix any
+export const loginReducer = (state = initState, action: ActionsType): typeof initState => { 
     switch (action.type) {
         case 'LOGIN': {
             return state
@@ -20,4 +20,4 @@ type isLoadingActionType = {
 }
 
 
-export const loginAC = (isLoading: boolean): isLoadingActionType => ({ type: 'LOGIN'} as const)// fix any
+export const loginAC = (isLoading: boolean): isLoadingActionType => ({ type: 'LOGIN'} as const)

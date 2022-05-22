@@ -1,27 +1,18 @@
-.button {
-    margin: 20px;
-    border: 2px solid #00021a;
-    background: #cda1eb;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 200;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 10px 15px;
+.menu {
+    display: flex;
 }
 
-.button:hover {
-    border: 2px solid #ffffff;
-    background: #00aaf9;
-    color: #ffffff;
-    font-weight: 500;
+.link {
+    font-family: 'Poppins', sans-serif;
+    color: rgb(87, 14, 75);
+    font-size: 16px;
+    font-weight: 400;
+    margin: 10px;
+    text-decoration: none;
+    line-height: 1.71429;
+    text-align: left
 }
 
-.button:active {
-    border: 2px solid #000000;
-    background: #00aaf9;
-    color: #fff;
-    font-weight: 500;
+a:hover {
+    color: rgb(255, 50, 245);
 }
