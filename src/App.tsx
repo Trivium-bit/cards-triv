@@ -1,4 +1,3 @@
-import { HashRouter } from 'react-router-dom';
 import './App.css';
 import Header from './n1-main/components/Header';
 import Routings from './n1-main/components/Routings';
