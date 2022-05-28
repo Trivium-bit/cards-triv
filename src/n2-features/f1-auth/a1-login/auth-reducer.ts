@@ -48,6 +48,7 @@ export const loginTC = (email: string, password: string, rememberMe: boolean) =>
             const error = e.response
             ? e.response.data.error
             : (e.message + ', more details in the console');
+            console.log('Error: ', {...e})
         }
       )
 }

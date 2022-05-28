@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { PATH } from "../Routings";
 import s from "../../ui/Login.module.css";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Input from "../Input/Input";
 import { ThunkDispatch } from "redux-thunk";
 import { AppStateType } from "../../bll/store";
@@ -10,13 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
 
-    const dispatch: ThunkDispatch<AppStateType, { email: string, password: string, rememberMe: boolean }, IsLoggedInActionsType> = useDispatch()
-    
     const isLoggedIn = useSelector<AppStateType, boolean>(state => state.authReducer.isLoggedIn)
 
-    if (isLoggedIn) {
-        return <NavLink to={PATH.PROFILE}></NavLink>
-    }
+    const dispatch: ThunkDispatch<AppStateType, { email: string, password: string, rememberMe: boolean }, IsLoggedInActionsType> = useDispatch()
+
     let [email, setEmail] = useState<string>('')
     let [password, setPassword] = useState<string>('')
     let [rememberMe, setRememberMe] = useState<boolean>(false)
@@ -25,6 +22,9 @@ function Login() {
         dispatch(loginTC(email, password, rememberMe))
     }
 
+    if (isLoggedIn) {
+        return <NavLink to={PATH.PROFILE}></NavLink>
+    }
     return (
         <div>
             <form className={s.loginForm} onSubmit={onSubmit}>
