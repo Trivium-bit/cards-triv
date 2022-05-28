@@ -6,14 +6,14 @@ import {setAppErrorAC, SetAppErrorType} from "./app-reducer";
 import { AxiosError } from "axios";
 
 const initialState = {
-    isRegister:false,
+    isRegistered:false,
 }
 type InitialStateType = typeof initialState
 
 export const registerReducer = (state: InitialStateType = initialState, action: RegisterActionsType): InitialStateType => {
     switch (action.type) {
         case 'register/SET-IS-REGISTER':
-            return {...state, isRegister: action.isRegister}
+            return {...state, isRegistered: action.isRegistered}
         default:
             return state;
     }
@@ -38,4 +38,4 @@ type isRegisteredActionType = ReturnType<typeof registerAC>| SetAppErrorType
 export type RegisterActionsType = isRegisteredActionType;
 
 // actions
-export const registerAC = (isRegister: boolean) => ({ type: 'register/SET-IS-REGISTER', isRegister} as const)
+export const registerAC = (isRegistered: boolean) => ({ type: 'register/SET-IS-REGISTER', isRegistered: isRegistered} as const)
