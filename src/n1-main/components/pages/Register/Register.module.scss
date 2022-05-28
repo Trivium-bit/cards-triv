@@ -1,4 +1,4 @@
-@import "src/Common/Styles/variables.sccs";
+@import "src/Common/Styles/variables";
 .registerWrapper {
   display: flex;
   justify-content: center;
@@ -12,16 +12,29 @@
   height: 540px;
   font-family: $fontFamily;
   color: $textColor;
+  font-size: 16px;
   .h1{
     /*border: 1px solid black;*/
-
+    margin-top: -109px;
+  }
+  .errors{
+    color: red;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    width: 200px;
+    /*border: 1px solid black;*/
   }
   .textFields{
     display: flex;
-    justify-content: center;
+    /*flex-wrap: wrap;*/
+    justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    width: 100px;
+    width: 200px;
+  /*  border: 1px solid black;*/
   }
   .buttons{
     margin-top: 2rem;
@@ -44,6 +57,7 @@
       opacity: 0.8;
       text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
       letter-spacing: 0.01em;
+      cursor: pointer;
     }
     .registerButton{
       @extend .cancelButton;

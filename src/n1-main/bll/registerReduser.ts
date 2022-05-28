@@ -1,0 +1,41 @@
+
+import {registerAPI, RegisterParamsType} from "../../api/register-API";
+
+import {Dispatch} from "redux";
+import {setAppErrorAC, SetAppErrorType} from "./app-reducer";
+import { AxiosError } from "axios";
+
+const initialState = {
+    isRegister:false,
+}
+type InitialStateType = typeof initialState
+
+export const registerReducer = (state: InitialStateType = initialState, action: RegisterActionsType): InitialStateType => {
+    switch (action.type) {
+        case 'register/SET-IS-REGISTER':
+            return {...state, isRegister: action.isRegister}
+        default:
+            return state;
+    }
+}
+// thunks
+
+export const registerTC = (data: RegisterParamsType):any => {
+    return (dispatch: Dispatch<RegisterActionsType>) =>{
+        registerAPI.register(data)
+        .then(()=>{
+           dispatch(registerAC(true));
+        })
+        .catch((error: AxiosError) => {
+            // @ts-ignore
+            dispatch(setAppErrorAC(error.response?.data.error));
+        })
+    }
+}
+
+// types
+type isRegisteredActionType = ReturnType<typeof registerAC>| SetAppErrorType
+export type RegisterActionsType = isRegisteredActionType;
+
+// actions
+export const registerAC = (isRegister: boolean) => ({ type: 'register/SET-IS-REGISTER', isRegister} as const)

@@ -1,6 +1,12 @@
 import React from "react";
 import styles from "./../Register/Register.module.scss";
 import {useFormik} from "formik";
+import {RegisterActionsType, registerTC} from "../../../bll/registerReduser";
+import {useDispatch} from "react-redux";
+import {RegisterParamsType} from "../../../../api/register-API";
+import {useAppSelector} from "../../../bll/store";
+import {NullableType} from "../../../bll/app-reducer";
+
 
 type FormikErrorType = {
     email: string
@@ -9,6 +15,8 @@ type FormikErrorType = {
 }
 
 function Register() {
+    const error = useAppSelector<NullableType<string>>(state => state.app.error)
+    const dispatch = useDispatch()
     const formik = useFormik({
         validate: (values) => {
             const errors: Partial<FormikErrorType> = {};
@@ -27,7 +35,7 @@ function Register() {
                 errors.confirmPassword = "Please confirm password"
             }
             if (values.confirmPassword !== values.password) {
-                errors.confirmPassword = "Passwords must be equal"
+                errors.confirmPassword = "Passwords must match"
             }
 
             return errors;
@@ -38,8 +46,8 @@ function Register() {
             confirmPassword: "",
         },
 
-        onSubmit: (values) => {
-            alert(JSON.stringify(values))
+        onSubmit: ({email, password}:RegisterParamsType) => {
+            dispatch<RegisterActionsType>(registerTC({email, password}))
         }
     })
     return (
@@ -58,25 +66,27 @@ function Register() {
                 </label>
 
                 <label>Password
-                    <input {...formik.getFieldProps("password")}/>
+                    <input {...formik.getFieldProps("password")} type={"password"}/>
                     {formik.touched.email && formik.errors.password ?
-                        <div style={{color: "red"}}>{formik.errors.password}</div> : null}
+                        <div className={styles.errors}>{formik.errors.password}</div> : null}
                 </label>
 
                 <label>Confirm password
-                    <input {...formik.getFieldProps("confirmPassword")}/>
+                    <input {...formik.getFieldProps("confirmPassword")} type={"password"}/>
                     {formik.touched.confirmPassword && formik.errors.confirmPassword ?
-                        <div style={{color: "red"}}>{formik.errors.confirmPassword}</div> : null}
+                    <div className={styles.errors}>{formik.errors.confirmPassword}</div> : null}
                 </label>
 
+                <div className={styles.errors}>{error}</div>
                 <form onSubmit={formik.handleSubmit} className={styles.buttons}>
 
                     <button className={styles.cancelButton}>
                         Cancel
                     </button>
-                    <button className={styles.registerButton}>
+                    <button  type="submit" className={styles.registerButton}>
                         Register
                     </button>
+
                 </form>
             </div>
         </div>
