@@ -1,3 +1,6 @@
+import { Dispatch } from "redux"
+import { authAPI } from "../../../n1-main/dall/login-api"
+
 const initialState = {
     isLoggedIn: false,
     email: "",
@@ -22,4 +25,13 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) => ({ type: 'login/SET-IS-L
 // types
 export type IsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>
 
+//thunk
+export const loginTC = (email: string, password: string, rememberMe: boolean) => async (dispatch: Dispatch<IsLoggedInActionsType>) => {
+    await authAPI.login(email, password, rememberMe)
+        .then(res => {
+            dispatch(setIsLoggedInAC(true))
+        }).catch((error) => {
+           
+        })
+}
 
