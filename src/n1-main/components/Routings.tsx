@@ -5,6 +5,7 @@ import NewUser from "./pages/NewUser";
 import PassRecovery from "./pages/PassRecovery";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register/Register";
+import React from "react";
 
 export const PATH = {
   LOGIN: "/login",

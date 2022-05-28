@@ -1,9 +1,7 @@
-
 import {registerAPI, RegisterParamsType} from "../../api/register-API";
-
-import {Dispatch} from "redux";
-import {setAppErrorAC, SetAppErrorType} from "./app-reducer";
+import {AppActionsType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import { AxiosError } from "axios";
+import {AppThunkDispatch} from "./store";
 
 const initialState = {
     isRegistered:false,
@@ -14,27 +12,32 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
     switch (action.type) {
         case 'register/SET-IS-REGISTER':
             return {...state, isRegistered: action.isRegistered}
+
         default:
             return state;
     }
 }
 // thunks
 
-export const registerTC = (data: RegisterParamsType):any => {
-    return (dispatch: Dispatch<RegisterActionsType>) =>{
+export const registerTC = (data: RegisterParamsType) => {
+    return (dispatch: AppThunkDispatch) =>{
+        dispatch(setAppStatusAC("loading"));
         registerAPI.register(data)
         .then(()=>{
            dispatch(registerAC(true));
+           dispatch(setAppStatusAC("succeeded"));
+           dispatch(setAppErrorAC(null));
         })
-        .catch((error: AxiosError) => {
-            // @ts-ignore
-            dispatch(setAppErrorAC(error.response?.data.error));
+        .catch((error: AxiosError<{error: string}>) => {
+            dispatch(setAppStatusAC("succeeded"));
+            dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
+            setTimeout(() => dispatch(setAppErrorAC(null)),10000);
         })
     }
 }
 
 // types
-type isRegisteredActionType = ReturnType<typeof registerAC>| SetAppErrorType
+type isRegisteredActionType = ReturnType<typeof registerAC>| AppActionsType
 export type RegisterActionsType = isRegisteredActionType;
 
 // actions

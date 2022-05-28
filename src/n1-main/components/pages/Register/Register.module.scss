@@ -1,5 +1,7 @@
-@import "src/Common/Styles/variables";
+@import "../../../../Common/Styles/variables";
+
 .registerWrapper {
+  margin-top: 84px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -13,36 +15,55 @@
   font-family: $fontFamily;
   color: $textColor;
   font-size: 16px;
-  .h1{
+  @media screen and (max-width: 500px) {
+    border-radius: 0;
+    height: 100vh;
+    width: 100%;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+  }
+
+  .h1 {
     /*border: 1px solid black;*/
     /*margin-top: -109px;*/
   }
-  .errors{
+
+  .errors {
     color: red;
     font-size: 14px;
     display: flex;
     justify-content: center;
-    /*margin-top: 5px;*/
-    flex-wrap: wrap;
-    width: 200px;
     /*border: 1px solid black;*/
   }
-  .textFields{
+
+  .textFields {
     display: flex;
-    /*flex-wrap: wrap;*/
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    width: 200px;
-  /*  border: 1px solid black;*/
+    width: 280px;
+    /* border: 1px solid black;*/
   }
-  .buttons{
+
+  .buttons {
     margin-top: 2rem;
     display: flex;
     justify-content: center;
-  /*  border: 1px solid black;*/
+    position: relative;
+    /*border: 1px solid black;*/
+    width: 280px;
+    height: 80px;
 
-    .cancelButton{
+    .circularProgress {
+      position: absolute;
+      height: 36px;
+      top: 22px;
+      left: 190px;
+    }
+
+    .cancelButton {
+      position: absolute;
       background-color: #D7D8EF;
       border-radius: 30px;
       border: solid 0;
@@ -58,13 +79,37 @@
       text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
       letter-spacing: 0.01em;
       cursor: pointer;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      top: 22px;
+      left: 0;
     }
-    .registerButton{
+
+    .registerButton {
       @extend .cancelButton;
+      position: absolute;
       background-color: #21268F;
       color: #ECECF9;
       box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
       margin-right: 0;
+      left: 156px;
+    }
+
+    .registerButton:active {
+      width: 130px;
+      height: 40px;
+    }
+
+    .registerButton:hover {
+      background-color: #151b77 !important;
+    }
+
+    .cancelButton:hover {
+      background-color: #c9caec;
+    }
+
+    .cancelButton:active {
+      width: 130px;
+      height: 40px;
     }
   }
 }
