@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import styles from "./../Register/Register.module.scss";
 import {useFormik} from "formik";
 import {registerAC, registerTC} from "../../../bll/registerReduser";
-import {RegisterParamsType} from "../../../../api/register-API";
+import {RegisterParamsType} from "../../../dall/register-API";
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
 import {NullableType, RequestStatusType, setAppErrorAC} from "../../../bll/app-reducer";
 import {InputLabel} from "@mui/material";
@@ -13,7 +13,6 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import Input from "@mui/material/Input";
 import {Navigate, useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-
 
 type FormikErrorType = {
     email: string
@@ -76,9 +75,20 @@ function Register() {
     const buttonHandlerRedirect = () =>{
         navigate("/login");
     }
+    useEffect(() => {
+        const listener = (event: KeyboardEvent) => {
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+                event.preventDefault();
+                formik.handleSubmit()
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+    }, []);
 
     useEffect(() => {
-
         return () => {
             dispatch(setAppErrorAC(null));
             dispatch(registerAC(false));
@@ -152,7 +162,7 @@ function Register() {
                         Cancel
                     </button>
 
-                    <form onSubmit={formik.handleSubmit} >
+                    <form onSubmit={formik.handleSubmit}>
                         { appStatus === "succeeded" ?
                             <button type="submit" className={styles.registerButton}>
                                 Register
