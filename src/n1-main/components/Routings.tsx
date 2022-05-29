@@ -1,10 +1,11 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Error404 from "./pages/Error404";
 import Login from "./pages/Login";
 import NewUser from "./pages/NewUser";
 import PassRecovery from "./pages/PassRecovery";
 import Profile from "./pages/Profile";
-import Register from "./pages/Register";
+import Register from "./pages/Register/Register";
+import React from "react";
 
 export const PATH = {
   LOGIN: "/login",
