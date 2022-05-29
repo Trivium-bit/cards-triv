@@ -1,13 +1,16 @@
 import { Route, Routes } from 'react-router-dom'
 import Error404 from "./pages/Error404";
 import Login from "./pages/Login";
-import NewUser from "./pages/NewUser";
 import PassRecovery from "./pages/PassRecovery";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register/Register";
-import React from "react";
+import Packs from './pages/Packs';
+import PrivateRoutes from "./PrivateRoutes";
+import Home from "./pages/Home";
 
 export const PATH = {
+  HOME: "/",
+  PACKS: "/packs",
   LOGIN: "/login",
   REGISTER: "/register",
   PROFILE: "/profile",
@@ -19,12 +22,14 @@ function Routings() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path={PATH.HOME} element={<Home />} />
         <Route path={PATH.LOGIN} element={<Login />} />
         <Route path={PATH.REGISTER} element={<Register />} />
-        <Route path={PATH.PROFILE} element={<Profile />} />
-        <Route path={PATH.NEW_USER} element={<NewUser />} />
         <Route path={PATH.PASS_RECOVERY} element={<PassRecovery />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path={PATH.PACKS} element={<Packs />} />
+          <Route path={PATH.PROFILE} element={<Profile />} />
+        </Route>
         <Route element={<Error404 />} />
       </Routes>
     </div>

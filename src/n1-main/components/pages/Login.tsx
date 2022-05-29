@@ -1,4 +1,4 @@
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useNavigate, useSearchParams} from "react-router-dom";
 import { PATH } from "../Routings";
 import s from "../../ui/Login.module.css";
 import {useEffect, useState} from "react";
@@ -6,11 +6,12 @@ import Input from "../Input/Input";
 import { AppStoreType, useAppDispatch } from "../../bll/store";
 import { loginTC } from "../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { useSelector } from "react-redux";
+import {ResponseLoginType} from "../../dall/login-api";
 
 function Login() {
-
     const navigate = useNavigate();
-    const isLoggedIn = useSelector<AppStoreType, boolean>(state => state.authReducer.isLoggedIn)
+    const [searchParams] = useSearchParams();
+    const user = useSelector<AppStoreType, ResponseLoginType | undefined>(state => state.app.user)
     const dispatch = useAppDispatch();
 
     let [email, setEmail] = useState<string>('')
@@ -22,10 +23,10 @@ function Login() {
     }
 
     useEffect(() => {
-        if (isLoggedIn) {
-            navigate(PATH.PROFILE)
+        if (user) {
+            navigate(searchParams.get("redirectTo") || "/")
         }
-    }, [])
+    }, [user])
 
     return (
         <div>
@@ -39,6 +40,7 @@ function Login() {
                 <input type="submit" value="Login" />
             </form>
             <NavLink to={PATH.PASS_RECOVERY} className={s.link} >Password Recovery</NavLink>
+            <NavLink to={PATH.REGISTER} className={s.link} >Sing up</NavLink>
         </div>
     );
 }

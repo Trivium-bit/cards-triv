@@ -1,6 +1,5 @@
 import { AxiosError } from "axios"
-import { Dispatch } from "redux"
-import { setAppErrorAC, setAppStatusAC } from "../../../n1-main/bll/app-reducer"
+import {setAppErrorAC, setAppStatusAC, setAppUserAC} from "../../../n1-main/bll/app-reducer"
 import { AppThunkDispatch } from "../../../n1-main/bll/store"
 import { authAPI, ResponseLoginType } from "../../../n1-main/dall/login-api"
 
@@ -11,10 +10,6 @@ const initialState = {
     email: "",
     password: "",
     rememberMe: false
-}
-export type ErrorType = {
-    code: number;
-    message: string;
 }
 
 const responseData: ResponseLoginType = {
@@ -59,6 +54,7 @@ export const loginTC = (email: string, password: string, rememberMe: boolean) =>
                 dispatch(setIsLoggedInAC(true))
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setAppErrorAC(null));
+                dispatch(setAppUserAC(res.data));
             }).catch((error: AxiosError<{error: string}>) => {
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setAppErrorAC(error.response?.data.error || "some Error"));

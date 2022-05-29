@@ -1,12 +1,10 @@
-import './App.css';
-import Header from './n1-main/components/Header';
-import Routings from './n1-main/components/Routings';
 import React from "react";
+import Routings from './n1-main/components/Routings';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-        <Header />
         <Routings />
     </div>
   );
