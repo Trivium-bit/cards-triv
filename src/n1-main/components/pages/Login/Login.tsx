@@ -1,13 +1,13 @@
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import { PATH } from "../Routings";
+import { PATH } from "../../Routings";
 import { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
-import { AppStoreType, useAppDispatch, useAppSelector } from "../../bll/store";
-import { loginTC, setIsLoggedInAC } from "../../../n2-features/f1-auth/a1-login/auth-reducer";
+import { AppStoreType, useAppDispatch, useAppSelector } from "../../../bll/store";
+import { loginTC, setIsLoggedInAC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { useSelector } from "react-redux";
-import { LoginParamsType, ResponseLoginType } from "../../dall/login-api";
+import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
 import { useFormik } from "formik";
-import { NullableType, RequestStatusType, setAppErrorAC } from "../../bll/app-reducer";
+import { NullableType, RequestStatusType, setAppErrorAC } from "../../../bll/app-reducer";
 import { Checkbox, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -124,7 +124,7 @@ function Login() {
                         }
                     </form>
                     <div className={styles.links}>
-                    <NavLink to={PATH.PASS_RECOVERY} className={styles.link} >Password Recovery</NavLink>
+                    <NavLink to={PATH.PASS_RECOVERY} className={styles.link} >Forgot Password</NavLink>
                     <NavLink to={PATH.REGISTER} className={styles.link} >Sign up</NavLink>
                     </div>
                 </div>
