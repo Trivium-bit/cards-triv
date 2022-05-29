@@ -4,15 +4,15 @@ import s from "../../ui/Login.module.css";
 import { useCallback, useState } from "react";
 import Input from "../Input/Input";
 import { ThunkDispatch } from "redux-thunk";
-import { AppStateType } from "../../bll/store";
+import { AppStoreType } from "../../bll/store";
 import { IsLoggedInActionsType, loginTC } from "../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
 
-    const isLoggedIn = useSelector<AppStateType, boolean>(state => state.authReducer.isLoggedIn)
+    const isLoggedIn = useSelector<AppStoreType, boolean>(state => state.authReducer.isLoggedIn)
 
-    const dispatch: ThunkDispatch<AppStateType, { email: string, password: string, rememberMe: boolean }, IsLoggedInActionsType> = useDispatch()
+    const dispatch: ThunkDispatch<AppStoreType, { email: string, password: string, rememberMe: boolean }, IsLoggedInActionsType> = useDispatch()
 
     let [email, setEmail] = useState<string>('')
     let [password, setPassword] = useState<string>('')

@@ -1,6 +1,5 @@
-import { authReducer} from './authReducer'
+import { authReducer} from '../../n2-features/f1-auth/a1-login/auth-reducer';
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
-import { loginReducer } from './loginReducer copy';
 import thunkMiddleware, {ThunkDispatch} from 'redux-thunk';
 import {RegisterActionsType, registerReducer} from "./registerReduser";
 import {profileReducer} from "../../n2-features/f1-auth/a2-profile/profile-reducer";
@@ -8,7 +7,6 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
 
  const rootReducer = combineReducers({
-     login: loginReducer,
      authReducer: authReducer,
      register: registerReducer,
      app: appReducer,

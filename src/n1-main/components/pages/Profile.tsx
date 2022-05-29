@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {AppStateType} from "../../bll/store";
+import {AppStoreType} from "../../bll/store";
 import {ThunkDispatch} from "redux-thunk";
 import {
     ActionType,
@@ -12,8 +12,8 @@ import {PATH} from "../Routings";
 
 const Profile = () => {
     const navigate = useNavigate();
-    const dispatch: ThunkDispatch<AppStateType, string, ActionType> = useDispatch()
-    const { profile,  error } = useSelector<AppStateType, InitialProfileStateType>(state => state.profileReducer)
+    const dispatch: ThunkDispatch<AppStoreType, string, ActionType> = useDispatch()
+    const { profile,  error } = useSelector<AppStoreType, InitialProfileStateType>(state => state.profileReducer)
 
     useEffect(()=>{
        if (!profile) {
