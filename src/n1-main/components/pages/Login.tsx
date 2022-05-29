@@ -109,11 +109,13 @@ function Login() {
                     /> 
                     {formik.touched.password && formik.errors.password ?
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
-                    <Checkbox size="small" color="secondary" /> remember Me
+                         <div className={styles.checkbox}>
+                   <Checkbox size="small" color="secondary" /><div className={styles.txt}>remember Me</div>
+                   </div>
                 </FormControl>
                 <div className={styles.errors}>{error}</div>
                 <div className={styles.button}>
-                    <form onSubmit={formik.handleSubmit}>
+                    <form onSubmit={formik.handleSubmit} className={styles.submit}>
                         {appStatus === "succeeded"
                             ? <button type="submit" className={styles.loginButton}>Login</button>
                             : <div className={styles.circularProgress}>
