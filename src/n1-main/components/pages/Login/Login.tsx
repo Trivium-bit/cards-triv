@@ -106,14 +106,18 @@ function Login() {
                                 </IconButton>
                             </InputAdornment>
                         }
-                    /> 
+                    />
                     {formik.touched.password && formik.errors.password ?
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
-                         <div className={styles.checkbox}>
-                   <Checkbox size="small" color="secondary" /><div className={styles.txt}>remember Me</div>
-                   </div>
+                    <div className={styles.checkbox}>
+                        <Checkbox size="small" color="secondary" /><div className={styles.remembMe}>remember Me</div>
+                    </div>
+                     <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>
                 <div className={styles.errors}>{error}</div>
+
+               
+
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
                         {appStatus === "succeeded"
@@ -124,8 +128,8 @@ function Login() {
                         }
                     </form>
                     <div className={styles.links}>
-                    <NavLink to={PATH.PASS_RECOVERY} className={styles.link} >Forgot Password</NavLink>
-                    <NavLink to={PATH.REGISTER} className={styles.link} >Sign up</NavLink>
+                        <div className={styles.question}>Don’t have an account?</div>
+                        <NavLink to={PATH.REGISTER} className={styles.signUp} >Sign up</NavLink>
                     </div>
                 </div>
             </div>

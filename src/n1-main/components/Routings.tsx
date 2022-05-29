@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import Error404 from "./pages/Error404";
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login";
 import PassRecovery from "./pages/PassRecovery";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register/Register";
