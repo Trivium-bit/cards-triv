@@ -1,5 +1,10 @@
+import { AxiosError } from "axios"
 import { Dispatch } from "redux"
+import { setAppErrorAC, setAppStatusAC } from "../../../n1-main/bll/app-reducer"
+import { AppThunkDispatch } from "../../../n1-main/bll/store"
 import { authAPI, ResponseLoginType } from "../../../n1-main/dall/login-api"
+
+const SET_IS_LOGGED_IN = "login/SET-IS-LOGGED-IN"
 
 const initialState = {
     isLoggedIn: false,
@@ -7,26 +12,32 @@ const initialState = {
     password: "",
     rememberMe: false
 }
+export type ErrorType = {
+    code: number;
+    message: string;
+}
 
-/* const responseData: ResponseLoginType = { 
+const responseData: ResponseLoginType = {
     _id: '',
-    email: '', 
+    email: '',
     name: '',
-    avatar: '', 
+    avatar: '',
     publicCardPacksCount: 0,
-    created: Date, 
-    updated: Date,
-    isAdmin: false, 
+    created: '',
+    updated: '',
+    isAdmin: false,
     verified: false,
     rememberMe: false,
-    error: 'string',
-    } */
+    error: '',
+}
+
+export type ActionType = IsLoggedInActionsType
 
 type InitialStateType = typeof initialState
 
-export const authReducer = (state: InitialStateType = initialState, action: IsLoggedInActionsType): InitialStateType => {
+export const authReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
-        case 'login/SET-IS-LOGGED-IN':
+        case SET_IS_LOGGED_IN:
             return { ...state, isLoggedIn: action.isLoggedIn }
         default:
             return state
@@ -34,22 +45,25 @@ export const authReducer = (state: InitialStateType = initialState, action: IsLo
 }
 
 // actions
-export const setIsLoggedInAC = (isLoggedIn: boolean) => ({ type: 'login/SET-IS-LOGGED-IN', isLoggedIn } as const)
+export const setIsLoggedInAC = (isLoggedIn: boolean) => ({ type: SET_IS_LOGGED_IN, isLoggedIn } as const)
 
 // types
 export type IsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>
 
 //thunk
-export const loginTC = (email: string, password: string, rememberMe: boolean) => async (dispatch: Dispatch<IsLoggedInActionsType>) => {
-    await authAPI.login(email, password, rememberMe)
-        .then(res => {
-            dispatch(setIsLoggedInAC(true))
-        }).catch (e => {
-            const error = e.response
-            ? e.response.data.error
-            : (e.message + ', more details in the console');
-            console.log('Error: ', {...e})
-        }
-      )
-}
+export const loginTC = (email: string, password: string, rememberMe: boolean) =>
+    async (dispatch: AppThunkDispatch) => {
+        dispatch(setAppStatusAC("loading"));
+        await authAPI.login(email, password, rememberMe)
+            .then((res) => {
+                dispatch(setIsLoggedInAC(true))
+                dispatch(setAppStatusAC("succeeded"));
+                dispatch(setAppErrorAC(null));
+            }).catch((error: AxiosError<{error: string}>) => {
+                dispatch(setAppStatusAC("succeeded"));
+                dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
+                setTimeout(() => dispatch(setAppErrorAC(null)),10000);
+            }
+            )
+    }
 

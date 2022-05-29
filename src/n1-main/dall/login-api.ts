@@ -13,14 +13,14 @@ export const authAPI = {
    }
 
 //types
-export type ResponseLoginType<D = {}> = { 
+export type ResponseLoginType = { 
         _id: string; 
         email: string; 
         name: string; 
         avatar?: string; 
         publicCardPacksCount: number; // количество колод        
-        created: Date; 
-        updated: Date; 
+        created: string; 
+        updated: string; 
         isAdmin: boolean; 
         verified: boolean; // подтвердил ли почту 
         rememberMe: boolean; 

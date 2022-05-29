@@ -1,30 +1,32 @@
-import { NavLink } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import { PATH } from "../Routings";
 import s from "../../ui/Login.module.css";
-import { useCallback, useState } from "react";
+import {useEffect, useState} from "react";
 import Input from "../Input/Input";
-import { ThunkDispatch } from "redux-thunk";
-import { AppStoreType } from "../../bll/store";
-import { IsLoggedInActionsType, loginTC } from "../../../n2-features/f1-auth/a1-login/auth-reducer";
-import { useDispatch, useSelector } from "react-redux";
+import { AppStoreType, useAppDispatch } from "../../bll/store";
+import { loginTC } from "../../../n2-features/f1-auth/a1-login/auth-reducer";
+import { useSelector } from "react-redux";
 
 function Login() {
 
+    const navigate = useNavigate();
     const isLoggedIn = useSelector<AppStoreType, boolean>(state => state.authReducer.isLoggedIn)
-
-    const dispatch: ThunkDispatch<AppStoreType, { email: string, password: string, rememberMe: boolean }, IsLoggedInActionsType> = useDispatch()
+    const dispatch = useAppDispatch();
 
     let [email, setEmail] = useState<string>('')
     let [password, setPassword] = useState<string>('')
     let [rememberMe, setRememberMe] = useState<boolean>(false)
 
     const onSubmit = () => {
-        dispatch(loginTC(email, password, rememberMe))
+        dispatch(loginTC(email,password,rememberMe))
     }
 
-    if (isLoggedIn) {
-        return <NavLink to={PATH.PROFILE}></NavLink>
-    }
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate(PATH.PROFILE)
+        }
+    }, [])
+
     return (
         <div>
             <form className={s.loginForm} onSubmit={onSubmit}>
