@@ -1,0 +1,125 @@
+@import "../../../Common/Styles/variables.scss";
+
+.loginWrapper {
+  margin-top: 84px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: $backGroundColor;
+  border-radius: $borderRadius;
+  width: 413px;
+  height: 540px;
+  font-family: $fontFamily;
+  color: $textColor;
+  font-size: 16px;
+  @media screen and (max-width: 500px) {
+    border-radius: 0;
+    height: 100vh;
+    width: 100%;
+    margin-top: 0;
+    position: absolute;
+    top: 0;
+  }
+
+/*   .h1 {
+    border: 1px solid black;
+    margin-top: -109px;
+  } */
+
+  .errors {
+    color: red;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    /*border: 1px solid black;*/
+  }
+
+  .textFields {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: 280px;
+    /* border: 1px solid black;*/
+  }
+
+  .button {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    /*border: 1px solid black;*/
+    width: 280px;
+    height: 80px;
+
+    .circularProgress {
+      position: absolute;
+      height: 36px;
+      top: 22px;
+      left: 190px;
+    }
+
+    .loginButton {
+      border-radius: 30px;
+      border: solid 0;
+      height: 36px;
+      width: 124px;
+      margin-right: 2rem;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 19px;
+      opacity: 0.8;
+      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.01em;
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+      top: 22px;
+      left: 0;
+      background-color: #21268F;
+      color: #ECECF9;
+      box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      margin-right: 0;
+      left: 156px;
+    }
+
+    .loginButton:active {
+      width: 130px;
+      height: 40px;
+    }
+
+    .loginButton:hover {
+      background-color: #151b77 !important;
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+     
+  }
+  .link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif;
+    color: rgb(11, 0, 170);
+    font-size: 14px;
+    font-weight: 300;
+    margin: 10px;
+    text-decoration: none;
+    line-height: 1.71429;
+    text-align: left
+}
+  
+  a:hover {
+      color: rgb(241, 0, 181);
+  }
+  
+  }
+}

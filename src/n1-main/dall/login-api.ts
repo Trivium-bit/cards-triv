@@ -13,7 +13,8 @@ export type LoginParamsType = {
 
 export const authAPI = {
     login({email, password, rememberMe}: LoginParamsType) {
-        return instance.post<ResponseLoginType>('auth/login', {email, password, rememberMe});
+        const promise = instance.post<ResponseLoginType>('auth/login', { email, password, rememberMe });
+        return promise;
     },
 }
 
