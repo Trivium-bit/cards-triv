@@ -1,7 +1,8 @@
-import {registerAPI, RegisterParamsType} from "../../api/register-API";
+import {registerAPI, RegisterParamsType} from "../dall/register-API";
 import {AppActionsType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import { AxiosError } from "axios";
 import {AppThunkDispatch} from "./store";
+import {customSuccessAlert} from "../../utils/customSuccessAlertUtils";
 
 const initialState = {
     isRegistered:false,
@@ -27,6 +28,7 @@ export const registerTC = (data: RegisterParamsType) => {
            dispatch(registerAC(true));
            dispatch(setAppStatusAC("succeeded"));
            dispatch(setAppErrorAC(null));
+           customSuccessAlert()
         })
         .catch((error: AxiosError<{error: string}>) => {
             dispatch(setAppStatusAC("succeeded"));
