@@ -49,7 +49,7 @@ export type IsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>
 export const loginTC = (email: string, password: string, rememberMe: boolean) =>
     async (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
-        await authAPI.login(email, password, rememberMe)
+        await authAPI.login({email, password, rememberMe})
             .then((res) => {
                 dispatch(setIsLoggedInAC(true))
                 dispatch(setAppStatusAC("succeeded"));

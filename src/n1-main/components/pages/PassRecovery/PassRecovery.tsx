@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../../Common/Components/Button";
 
 
-function PassRecovery() {
+export const PassRecovery =()=> {
     const navigate = useNavigate();
     const onClickHandler = () =>{
         navigate("/login");
@@ -27,6 +27,5 @@ function PassRecovery() {
     );
 }
 
-export default PassRecovery;
 
 
