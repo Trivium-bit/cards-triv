@@ -19,7 +19,6 @@ const Profile = () => {
                                     utils
                                 </Box>
                             </Grid>
-
                         </Grid>
                         <Grid xs={9} item>
                             <MyPacks/>
