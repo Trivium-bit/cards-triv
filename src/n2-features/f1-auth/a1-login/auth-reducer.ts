@@ -1,7 +1,7 @@
 import { AxiosError } from "axios"
 import { setAppErrorAC, setAppStatusAC, setAppUserAC } from "../../../n1-main/bll/app-reducer"
 import { AppThunkDispatch } from "../../../n1-main/bll/store"
-import { authAPI, LoginParamsType, NewPasswordType, ResponseLoginType } from "../../../n1-main/dall/login-api"
+import { authAPI, LoginParamsType, NewPasswordType } from "../../../n1-main/dall/login-api"
 
 const SET_IS_LOGGED_IN = "login/SET-IS-LOGGED-IN"
 const SET_NEW_PASSWORD = "login/SET-NEW-PASSWORD"

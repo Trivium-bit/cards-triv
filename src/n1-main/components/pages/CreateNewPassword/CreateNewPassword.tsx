@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../bll/store";
 import { sendNewPasswordTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { NewPasswordType } from "../../../dall/login-api";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 type FormikErrorType = {
     password: string
@@ -53,7 +53,7 @@ function CreateNewPassword() {
     };
 
     useEffect(() => {
-        { info && <Navigate replace to="/login" /> }
+        info && <Navigate replace to="/login" />
     }, [info])
 
     useEffect(() => {
@@ -95,13 +95,11 @@ function CreateNewPassword() {
                 </FormControl>
                 <div className={styles.errors}>{error}</div>
 
-                <div className={styles.question}>Create new password and we will send you<br />
-                    further instruction to email <br />
-                </div>
+                <div className={styles.textInstruction}>Create new password and we will send you further instruction to email</div>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
                         {appStatus === "succeeded"
-                            ? <button type="submit" className={styles.loginButton}>Create new password</button>
+                            ? <button type="submit" className={styles.sendButton}>Create new password</button>
                             : <div className={styles.circularProgress}>
                                 <CircularProgress />
                             </div>
