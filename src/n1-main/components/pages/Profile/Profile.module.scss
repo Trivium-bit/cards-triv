@@ -1,5 +1,7 @@
 .profileBlock {
-
+  a {
+    text-decoration: none;
+  }
   .profileContainer {
     height: 80vh;
     background: white;
@@ -18,21 +20,6 @@
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
       min-height: 300px;
-    }
-    .profileImg {
-      padding: 24px;
-      display: flex;
-      justify-content: center
-    }
-    .img {
-      width: 100px;
-      border-radius: 100%;
-    }
-    .infoGroup {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: nowrap;
-      align-items: center;
     }
   }
 }

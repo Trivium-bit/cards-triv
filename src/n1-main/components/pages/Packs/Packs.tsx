@@ -1,9 +1,10 @@
 import React from 'react';
 
+
 const Packs = () => {
     return (
         <div>
-            Packs
+            packs
         </div>
     );
 };

@@ -1,0 +1,27 @@
+.infoGroup {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.desc {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #2D2E46;
+  opacity: 0.5;
+}
+.btn {
+  margin-top: 15px;
+  color: #21268F;
+}
+.profileImg {
+  padding: 24px;
+  display: flex;
+  justify-content: center
+}
+.img {
+  width: 100px;
+  border-radius: 100%;
+}

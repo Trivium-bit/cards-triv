@@ -4,7 +4,7 @@ import Login from "./pages/Login/Login";
 import PassRecovery from "./pages/PassRecovery/PassRecovery";
 import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
-import Packs from './pages/Packs';
+import Packs from './pages/Packs/Packs';
 import PrivateRoutes from "./PrivateRoutes";
 import Home from "./pages/Home";
 import EditProfile from "./pages/EditProfile/EditProfile";
