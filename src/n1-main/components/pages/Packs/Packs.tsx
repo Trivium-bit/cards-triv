@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Box, Container, Grid} from "@mui/material";
 import MyPacks from "./MyPacks/MyPacks";
 import s from './Packs.module.scss'
 
 const Packs = () => {
+    const [show, setShow] = useState("MyPacks")
+
     return (
         <Container fixed >
             <Box className={s.packsContainer}>
@@ -13,8 +15,16 @@ const Packs = () => {
                             <Box className={s.showPacks}>
                                 <span className={s.title}>Show packs cards</span>
                                 <Box className={s.btnGroup}>
-                                    <button className={`${s.btn} ${s.buttonActive}`}>My</button>
-                                    <button className={s.btn}>All</button>
+                                    <button className={show === "MyPacks" ? s.buttonActive : s.btn}
+                                        onClick={() => setShow("MyPacks")}
+                                        // @ts-ignore
+                                        active={show === "MyPacks"}
+                                    >My</button>
+                                    <button className={show === "AllPacks" ? s.buttonActive : s.btn}
+                                            onClick={() => setShow("AllPacks")}
+                                        // @ts-ignore
+                                            active={show === "MyPacks"}
+                                    >All</button>
                                 </Box>
                                 <Box>
                                   <span className={s.title}>Number of cards</span>
@@ -22,9 +32,19 @@ const Packs = () => {
                             </Box>
                         </Grid>
                     </Grid>
-                    <Grid xs={9} item>
-                        <MyPacks/>
-                    </Grid>
+                    {show === "MyPacks" && (
+                            <Grid xs={9} item>
+                                <MyPacks/>
+                            </Grid>
+                        )
+                    }
+                    {show === "AllPacks" && (
+                        <Grid xs={9} item>
+                            all packs
+                        </Grid>
+                    )
+                    }
+
                 </Grid>
             </Box>
         </Container>
