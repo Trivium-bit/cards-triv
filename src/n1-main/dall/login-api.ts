@@ -16,7 +16,7 @@ export type NewPasswordType = {
 }
 
 export const authAPI = {
-    login({email, password, rememberMe}: LoginParamsType) {
+    login({ email, password, rememberMe }: LoginParamsType) {
         const promise = instance.post<ResponseLoginType>('auth/login', { email, password, rememberMe });
         return promise;
     },
