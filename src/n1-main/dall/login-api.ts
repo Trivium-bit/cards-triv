@@ -10,12 +10,20 @@ export type LoginParamsType = {
     password: string,
     rememberMe: boolean,
 }
+export type NewPasswordType = {
+    password: string,
+    resetPasswordToken: string,
+}
 
 export const authAPI = {
     login({email, password, rememberMe}: LoginParamsType) {
         const promise = instance.post<ResponseLoginType>('auth/login', { email, password, rememberMe });
         return promise;
     },
+    setNewPassword({password, resetPasswordToken}: NewPasswordType) {
+        const promise = instance.post<resetPasswordType>('/auth/set-new-password', { password, resetPasswordToken });
+        return promise;
+    }
 }
 
 //types
@@ -32,3 +40,7 @@ export type ResponseLoginType = {
     rememberMe: boolean;
     error?: string;
 }
+export type resetPasswordType = {
+    info: string
+    error: string;
+    }
