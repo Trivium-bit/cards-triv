@@ -16,23 +16,9 @@ const initialState = {
     newPassword: {
         password: "",
         resetPasswordToken: ""
-    }
+    },
+    info:""
 }
-
-const responseData: ResponseLoginType = {
-    _id: '',
-    email: '',
-    name: '',
-    avatar: '',
-    publicCardPacksCount: 0,
-    created: '',
-    updated: '',
-    isAdmin: false,
-    verified: false,
-    rememberMe: false,
-    error: '',
-}
-
 
 
 export type ActionType = IsLoggedInActionsType | SetNewPasswordActionsType
@@ -44,7 +30,8 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
         case SET_IS_LOGGED_IN:
             return { ...state, isLoggedIn: action.isLoggedIn }
         case SET_NEW_PASSWORD:
-            return { ...state,  }
+            return { ...state, newPassword: action.newPassword }
+
         default:
             return state
     }
@@ -52,7 +39,7 @@ export const authReducer = (state: InitialStateType = initialState, action: Acti
 
 // actions
 export const setIsLoggedInAC = (isLoggedIn: boolean) => ({ type: SET_IS_LOGGED_IN, isLoggedIn } as const)
-export const setNewPasswordAC = (password: string) => ({ type: SET_NEW_PASSWORD, password } as const)
+export const setNewPasswordAC = (newPassword: NewPasswordType) => ({ type: SET_NEW_PASSWORD, newPassword } as const)
 
 // types
 export type IsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>
@@ -76,15 +63,16 @@ export const loginTC = (loginParams: LoginParamsType) =>
             )
     }
 
-    export const sendNewPasswordTC = (newPassword: NewPasswordType) =>
+export const sendNewPasswordTC = (newPassword: NewPasswordType) =>
     async (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
         await authAPI.setNewPassword(newPassword)
             .then((res) => {
-                setNewPasswordAC(newPassword.password)
+                setNewPasswordAC(newPassword)
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setAppErrorAC(null));
-                }).catch((error: AxiosError<{ error: string }>) => {
+                return res.data.info
+            }).catch((error: AxiosError<{ error: string }>) => {
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
                 setTimeout(() => dispatch(setAppErrorAC(null)), 10000);
