@@ -1,39 +1,32 @@
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import { PATH } from "../../Routings";
-import { useEffect, useState } from "react";
-import styles from "./Login.module.scss";
-import { AppStoreType, useAppDispatch, useAppSelector } from "../../../bll/store";
-import { loginTC, setIsLoggedInAC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
-import { useSelector } from "react-redux";
-import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
+import styles from "./CreateNewPassword.module.scss";
 import { useFormik } from "formik";
 import { NullableType, RequestStatusType, setAppErrorAC } from "../../../bll/app-reducer";
-import { Checkbox, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
+import { CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../bll/store";
+import { sendNewPasswordTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
+import { NewPasswordType } from "../../../dall/login-api";
+import { Navigate } from "react-router-dom";
 
 type FormikErrorType = {
-    email: string
     password: string
 }
 
-function Login() {
+function CreateNewPassword() {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
     const error = useAppSelector<NullableType<string>>(state => state.app.error);
-    const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
-    const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const user = useSelector<AppStoreType, ResponseLoginType | undefined>(state => state.app.user)
+    const info = useAppSelector<string>(state => state.authReducer.info);
+
+    const dispatch = useAppDispatch();
+
+    //const {token} = useParams();
 
     const formik = useFormik({
         validate: (values) => {
             const errors: Partial<FormikErrorType> = {};
-            if (!values.email) {
-                errors.email = 'Email Required';
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
-            }
             if (values.password.length < 8) {
                 errors.password = "Invalid password length"
             }
@@ -43,15 +36,15 @@ function Login() {
             return errors;
         },
         initialValues: {
-            email: "",
             password: "",
-            rememberMe: false,
+            resetPasswordToken: ""
         },
 
-        onSubmit: (loginParams: LoginParamsType) => {
-            dispatch(loginTC(loginParams));
+        onSubmit: (newPassword: NewPasswordType) => {
+            dispatch(sendNewPasswordTC(newPassword))
+
         }
-    })
+    });
     const handleClickShowPassword = () => {
         setIsPassType(!isPassType);
     };
@@ -60,16 +53,12 @@ function Login() {
     };
 
     useEffect(() => {
-        if (user) {
-            navigate(searchParams.get("redirectTo") || "/")
-        }
-    }, [user])
+        info && <Navigate replace to="/login" />
+    }, [info])
 
     useEffect(() => {
-
         return () => {
             dispatch(setAppErrorAC(null));
-            dispatch(setIsLoggedInAC(false));
         }
     }, [dispatch])
 
@@ -79,18 +68,10 @@ function Login() {
                 It-incubator
             </h1>
             <h2 className={styles.h2}>
-                Sign in
+                Create new password
             </h2>
             <div className={styles.textFields}>
-                <FormControl sx={{ m: 1, width: '28ch' }} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
-                    <Input {...formik.getFieldProps("email")}
-                    />
-                </FormControl>
-                {formik.touched.email && formik.errors.email ?
-                    <div className={styles.errors}>{formik.errors.email}</div> : null}
-
-                <FormControl sx={{ m: 1, width: '28ch' }} variant="standard">
+                <FormControl sx={{ m: 1, width: '32ch' }} variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input {...formik.getFieldProps("password")}
                         id="standard-adornment-password"
@@ -109,32 +90,24 @@ function Login() {
                     />
                     {formik.touched.password && formik.errors.password ?
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
-                    <div className={styles.checkbox}>
-                        <Checkbox size="small" color="secondary" /><div className={styles.remembMe}>remember Me</div>
-                    </div>
-                     <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>
                 <div className={styles.errors}>{error}</div>
 
-               
-
+                <div className={styles.textInstruction}>Create new password and we will send you further instruction to email</div>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
                         {appStatus === "succeeded"
-                            ? <button type="submit" className={styles.loginButton}>Login</button>
+                            ? <button type="submit" className={styles.sendButton}>Create new password</button>
                             : <div className={styles.circularProgress}>
                                 <CircularProgress />
                             </div>
                         }
                     </form>
-                    <div className={styles.links}>
-                        <div className={styles.question}>Don’t have an account?</div>
-                        <NavLink to={PATH.REGISTER} className={styles.signUp} >Sign up</NavLink>
-                    </div>
+
                 </div>
             </div>
         </div>
     );
 }
 
-export default Login;
+export default CreateNewPassword;

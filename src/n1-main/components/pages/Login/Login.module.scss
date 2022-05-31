@@ -64,6 +64,7 @@
     font-size: 14px;
     font-weight: 300;
     line-height: 1.71429;
+    opacity: 0.8;
   }
 
   .forgPass {
@@ -110,10 +111,7 @@
     height: 80px;
 
     .circularProgress {
-      position: absolute;
-      height: 36px;
-      top: 22px;
-      left: 190px;
+      margin-top: 20px;
     }
 
     .loginButton {

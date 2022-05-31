@@ -7,6 +7,7 @@ import Register from "./pages/Register/Register";
 import Packs from './pages/Packs/Packs';
 import PrivateRoutes from "./PrivateRoutes";
 import Home from "./pages/Home";
+import CreateNewPassword from './pages/CreateNewPassword/CreateNewPassword';
 import EditProfile from "./pages/EditProfile/EditProfile";
 
 export const PATH = {
@@ -17,7 +18,8 @@ export const PATH = {
   PROFILE: "/profile",
   EDIT_PROFILE: "/profile/edit",
   NEW_USER: "/new-user",
-  PASS_RECOVERY: "/pass-recovery"
+  PASS_RECOVERY: "/pass-recovery",
+  CREATE_NEW_PASSWORD: "/create-new-password"
 }
 
 function Routings() {
@@ -28,6 +30,7 @@ function Routings() {
         <Route path={PATH.LOGIN} element={<Login />} />
         <Route path={PATH.REGISTER} element={<Register />} />
         <Route path={PATH.PASS_RECOVERY} element={<PassRecovery />} />
+        <Route path={PATH.CREATE_NEW_PASSWORD} element={<CreateNewPassword />} />
         <Route element={<PrivateRoutes />}>
           <Route path={PATH.PACKS} element={<Packs />} />
           <Route path={PATH.PROFILE} element={<Profile />} />
