@@ -48,8 +48,8 @@ function Login() {
             rememberMe: false,
         },
 
-        onSubmit: ({ email, password, rememberMe }: LoginParamsType) => {
-            dispatch(loginTC(email, password, rememberMe));
+        onSubmit: (loginParams: LoginParamsType) => {
+            dispatch(loginTC(loginParams));
         }
     })
     const handleClickShowPassword = () => {

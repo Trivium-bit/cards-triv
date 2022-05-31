@@ -16,12 +16,12 @@ export type NewPasswordType = {
 }
 
 export const authAPI = {
-    login({email, password, rememberMe}: LoginParamsType) {
+    login({ email, password, rememberMe }: LoginParamsType) {
         const promise = instance.post<ResponseLoginType>('auth/login', { email, password, rememberMe });
         return promise;
     },
-    setNewPassword({password, resetPasswordToken}: NewPasswordType) {
-        const promise = instance.post<resetPasswordType>('/auth/set-new-password', { password, resetPasswordToken });
+    setNewPassword({ password, resetPasswordToken }: NewPasswordType) {
+        const promise = instance.post<ResetPasswordType>('/auth/set-new-password', { password, resetPasswordToken });
         return promise;
     }
 }
@@ -32,7 +32,7 @@ export type ResponseLoginType = {
     email: string;
     name: string;
     avatar?: string;
-    publicCardPacksCount: number;       
+    publicCardPacksCount: number;
     created: string;
     updated: string;
     isAdmin: boolean;
@@ -40,7 +40,7 @@ export type ResponseLoginType = {
     rememberMe: boolean;
     error?: string;
 }
-export type resetPasswordType = {
+export type ResetPasswordType = {
     info: string
     error: string;
-    }
+}
