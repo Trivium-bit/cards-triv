@@ -16,27 +16,23 @@ const Packs = () => {
                                 <span className={s.title}>Show packs cards</span>
                                 <Box className={s.btnGroup}>
                                     <button className={show === "MyPacks" ? s.buttonActive : s.btn}
-                                        onClick={() => setShow("MyPacks")}
-                                        // @ts-ignore
-                                        active={show === "MyPacks"}
+                                            onClick={() => setShow("MyPacks")}
                                     >My</button>
                                     <button className={show === "AllPacks" ? s.buttonActive : s.btn}
                                             onClick={() => setShow("AllPacks")}
-                                        // @ts-ignore
-                                            active={show === "MyPacks"}
                                     >All</button>
                                 </Box>
                                 <Box>
-                                  <span className={s.title}>Number of cards</span>
+                                    <span className={s.title}>Number of cards</span>
                                 </Box>
                             </Box>
                         </Grid>
                     </Grid>
                     {show === "MyPacks" && (
-                            <Grid xs={9} item>
-                                <MyPacks/>
-                            </Grid>
-                        )
+                        <Grid xs={9} item>
+                            <MyPacks/>
+                        </Grid>
+                    )
                     }
                     {show === "AllPacks" && (
                         <Grid xs={9} item>

@@ -31,8 +31,8 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
 }));
 const rows = [
     { name: "Pack name", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
-    { name: "Pack name", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
-    { name: "Pack name", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
+    { name: "Pack name 2", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
+    { name: "Pack name 3", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
 ]
 
 const MyTable = () => {
