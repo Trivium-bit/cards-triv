@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-    Button,
+    Box,
     Paper,
-    Stack,
     styled,
     Table,
     TableBody, TableCell,
@@ -11,6 +10,7 @@ import {
     TableHead,
     TableRow
 } from "@mui/material";
+import s from './MyTable.module.scss'
 
 const StyledTableCell = styled(TableCell)(({ }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -35,8 +35,6 @@ const rows = [
     { name: "Pack name", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
 ]
 
-
-
 const MyTable = () => {
     return (
         <TableContainer component={Paper}>
@@ -47,7 +45,7 @@ const MyTable = () => {
                         <StyledTableCell align="right">Cards</StyledTableCell>
                         <StyledTableCell align="right">Last Updates</StyledTableCell>
                         <StyledTableCell align="right">Created By</StyledTableCell>
-                        <StyledTableCell align="right">Actions</StyledTableCell>
+                        <StyledTableCell align="center">Actions</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -60,11 +58,11 @@ const MyTable = () => {
                             <StyledTableCell align="right">{row.lastUpdate}</StyledTableCell>
                             <StyledTableCell align="right">{row.createdBy}</StyledTableCell>
                             <StyledTableCell align="right">
-                                <Stack direction="row" spacing={1}>
-                                    <Button variant="outlined">Delete</Button>
-                                    <Button variant="outlined">Edit</Button>
-                                    <Button variant="outlined">Learn</Button>
-                                </Stack>
+                                <Box className={s.buttonGroup}>
+                                    <button className={s.delete}>Delete</button>
+                                    <button className={s.main}>Edit</button>
+                                    <button className={s.main}>Learn</button>
+                                </Box>
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}
