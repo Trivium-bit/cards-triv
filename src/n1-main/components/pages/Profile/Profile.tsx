@@ -26,7 +26,6 @@ const Profile = () => {
                     </Grid>
                 </Box>
             </Container>
-
         </div>
     );
 };
