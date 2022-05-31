@@ -71,9 +71,7 @@ function CreateNewPassword() {
                 Create new password
             </h2>
             <div className={styles.textFields}>
-
-
-                <FormControl sx={{ m: 1, width: '28ch' }} variant="standard">
+                <FormControl sx={{ m: 1, width: '32ch' }} variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input {...formik.getFieldProps("password")}
                         id="standard-adornment-password"
