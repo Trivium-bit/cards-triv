@@ -1,0 +1,22 @@
+.buttonGroup {
+  display: flex;
+  justify-content: space-evenly;
+  .main {
+    padding: 4px 6px;
+    border-radius: 2px;
+    border: none;
+    background: #D7D8EF;
+    color: #21268F;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .delete {
+    border-radius: 2px;
+    padding: 4px;
+    border: none;
+    background: red;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+  }
+}

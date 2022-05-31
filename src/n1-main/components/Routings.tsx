@@ -1,12 +1,13 @@
 import { Route, Routes } from 'react-router-dom'
 import Error404 from "./pages/Error404";
-import Profile from "./pages/Profile";
+import Login from "./pages/Login/Login";
+import PassRecovery from "./pages/PassRecovery/PassRecovery";
+import Profile from "./pages/Profile/Profile";
 import Register from "./pages/Register/Register";
-import Packs from './pages/Packs';
+import Packs from './pages/Packs/Packs';
 import PrivateRoutes from "./PrivateRoutes";
 import Home from "./pages/Home";
-import Login from "./pages/Login/Login";
-import {PassRecovery} from "./pages/PassRecovery/PassRecovery";
+import EditProfile from "./pages/EditProfile/EditProfile";
 
 export const PATH = {
   HOME: "/",
@@ -14,6 +15,7 @@ export const PATH = {
   LOGIN: "/login",
   REGISTER: "/register",
   PROFILE: "/profile",
+  EDIT_PROFILE: "/profile/edit",
   NEW_USER: "/new-user",
   PASS_RECOVERY: "/pass-recovery"
 }
@@ -29,6 +31,7 @@ function Routings() {
         <Route element={<PrivateRoutes />}>
           <Route path={PATH.PACKS} element={<Packs />} />
           <Route path={PATH.PROFILE} element={<Profile />} />
+          <Route path={PATH.EDIT_PROFILE} element={<EditProfile />} />
         </Route>
         <Route element={<Error404 />} />
       </Routes>

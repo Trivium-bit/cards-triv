@@ -5,7 +5,7 @@ import styles from "./Login.module.scss";
 import { AppStoreType, useAppDispatch, useAppSelector } from "../../../bll/store";
 import { loginTC, setIsLoggedInAC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { useSelector } from "react-redux";
-import {LoginParamsType, ResponseLoginType} from "../../../dall/login-api";
+import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
 import { useFormik } from "formik";
 import { NullableType, RequestStatusType, setAppErrorAC } from "../../../bll/app-reducer";
 import { Checkbox, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";

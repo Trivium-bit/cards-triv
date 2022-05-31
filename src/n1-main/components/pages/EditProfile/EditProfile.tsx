@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Packs = () => {
+const EditProfile = () => {
     return (
         <div>
-            Packs
+            EditProfile
         </div>
     );
 };
 
-export default Packs;
+export default EditProfile;
