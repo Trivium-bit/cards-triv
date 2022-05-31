@@ -4,7 +4,7 @@ import {useFormik} from "formik";
 import {registerAC, registerTC} from "../../../bll/registerReduser";
 import {RegisterParamsType} from "../../../dall/register-API";
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
-import {NullableType, RequestStatusType, setAppErrorAC} from "../../../bll/app-reducer";
+import { RequestStatusType, setAppErrorAC} from "../../../bll/app-reducer";
 import {InputLabel} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -24,7 +24,6 @@ type FormikErrorType = {
 function Register() {
     const [isPassType, setIsPassType] = useState<boolean>(true);
     const [isConfirmPassType, setConfirmPassIsType] = useState<boolean>(true);
-    const error = useAppSelector<NullableType<string>>(state => state.app.error);
     const dispatch = useAppDispatch();
     const isRegistered = useAppSelector<boolean>(state => state.register.isRegistered);
     const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
@@ -87,7 +86,7 @@ function Register() {
         return () => {
             document.removeEventListener("keydown", listener);
         };
-    }, []);
+    }, [formik]);
 
     useEffect(() => {
         return () => {
@@ -107,7 +106,7 @@ function Register() {
                 Sign up
             </h2>
             <div className={styles.textFields}>
-                <FormControl sx={{m: 1, width: '28ch'}} variant="standard">
+                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
                     <Input {...formik.getFieldProps("email")}
                     />
@@ -115,7 +114,7 @@ function Register() {
                 {formik.touched.email && formik.errors.email ?
                     <div className={styles.errors}>{formik.errors.email}</div> : null}
 
-                <FormControl sx={{m: 1, width: '28ch'}} variant="standard">
+                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input {...formik.getFieldProps("password")}
                            id="standard-adornment-password"
@@ -136,7 +135,7 @@ function Register() {
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
 
                 </FormControl>
-                <FormControl sx={{m: 1, width: '28ch'}} variant="standard">
+                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-confirmPassword">Confirm Password</InputLabel>
                     <Input {...formik.getFieldProps("confirmPassword")}
                            id="standard-adornment-confirmPassword"
@@ -157,7 +156,7 @@ function Register() {
                     {formik.touched.confirmPassword && formik.errors.confirmPassword ?
                         <div className={styles.errors}>{formik.errors.confirmPassword}</div> : null}
                 </FormControl>
-                <div className={styles.errors}>{error}</div>
+                {/*<div className={styles.errors}>{error}</div>*/}
                 <div className={styles.buttons}>
                     <Button title={"Cancel"} callBack={buttonHandlerRedirect}  className={styles.cancelButton}/>
                     <form onSubmit={formik.handleSubmit}>
