@@ -1,5 +1,5 @@
 .buttonGroup {
-display: flex;
+  display: flex;
   justify-content: space-evenly;
   .main {
     padding: 4px 6px;
@@ -7,6 +7,8 @@ display: flex;
     border: none;
     background: #D7D8EF;
     color: #21268F;
+    cursor: pointer;
+    font-weight: 600;
   }
   .delete {
     border-radius: 2px;
@@ -14,5 +16,7 @@ display: flex;
     border: none;
     background: red;
     color: white;
+    cursor: pointer;
+    font-weight: 600;
   }
 }
