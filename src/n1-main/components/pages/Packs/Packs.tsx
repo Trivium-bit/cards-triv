@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Box, Container, Grid} from "@mui/material";
 import MyPacks from "./MyPacks/MyPacks";
 import s from './Packs.module.scss'
+import AllPacks from "./AllPacks/AllPacks";
 
 const Packs = () => {
     const [show, setShow] = useState("MyPacks")
@@ -36,7 +37,7 @@ const Packs = () => {
                     }
                     {show === "AllPacks" && (
                         <Grid xs={9} item>
-                            all packs
+                            <AllPacks/>
                         </Grid>
                     )
                     }

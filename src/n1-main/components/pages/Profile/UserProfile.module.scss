@@ -4,17 +4,25 @@
   flex-wrap: nowrap;
   align-items: center;
 }
-
+.name {
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 27px;
+}
 .desc {
   font-weight: 400;
   font-size: 14px;
-  line-height: 17px;
+  line-height: 25px;
   color: #2D2E46;
   opacity: 0.5;
 }
-.btn {
+.editBtn {
   margin-top: 15px;
   color: #21268F;
+  background: transparent;
+  border: 1px solid #635D80;
+  border-radius: 2px;
+  padding: 4px 10px;
 }
 .profileImg {
   padding: 24px;
