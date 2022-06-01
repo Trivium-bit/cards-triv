@@ -75,7 +75,7 @@ export const sendNewPasswordTC = (newPassword: NewPasswordType) =>
             }).catch((error: AxiosError<{ error: string }>) => {
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
-                setTimeout(() => dispatch(setAppErrorAC(null)), 10000);
+                setTimeout(() => dispatch(setAppErrorAC(null)),10000);
             }
             )
     }

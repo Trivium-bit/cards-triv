@@ -13,6 +13,7 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
 import Input from "@mui/material/Input";
 import {Navigate, useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
+import Button from "../../../../Common/Components/Button";
 
 type FormikErrorType = {
     email: string
@@ -158,15 +159,11 @@ function Register() {
                 </FormControl>
                 <div className={styles.errors}>{error}</div>
                 <div className={styles.buttons}>
-                    <button onClick={buttonHandlerRedirect} className={styles.cancelButton}>
-                        Cancel
-                    </button>
-
+                    <Button title={"Cancel"} callBack={buttonHandlerRedirect}  className={styles.cancelButton}/>
                     <form onSubmit={formik.handleSubmit}>
                         { appStatus === "succeeded" ?
-                            <button type="submit" className={styles.registerButton}>
-                                Register
-                            </button>:
+                            <Button title={"Register"} type="submit" className={styles.registerButton}/>
+                                :
                             <div className={styles.circularProgress}>
                                 <CircularProgress/>
                             </div>
