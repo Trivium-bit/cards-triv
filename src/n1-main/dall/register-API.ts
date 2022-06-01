@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {RecoveryEmailType} from "../components/pages/PassRecovery/PassRecovery";
 
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
@@ -28,5 +29,11 @@ type RegisterResponse ={
 export const registerAPI = {
     register(values:RegisterParamsType){
         return instance.post<RegisterResponse>(`/auth/register`, values)
+    }
+}
+
+export const forgotPassAPI = {
+    forgotPass(email:RecoveryEmailType){
+        return instance.post(`/auth/forgot`, email)
     }
 }
