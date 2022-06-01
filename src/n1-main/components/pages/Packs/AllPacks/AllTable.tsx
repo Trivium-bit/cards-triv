@@ -11,7 +11,7 @@ import {
     TableHead,
     TableRow
 } from "@mui/material";
-import s from './MyTable.module.scss'
+import s from './AllTable.module.scss'
 
 const StyledTableCell = styled(TableCell)(({ }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -31,9 +31,9 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
     },
 }));
 const rows = [
-    {_id:v4(), name: "Pack name", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
-    {_id:v4(), name: "Pack name 2", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
-    {_id:v4(), name: "Pack name 3", cards: 4, lastUpdate: "21.02.21", createdBy: "marina"},
+    {_id: v4(), name: "Pack name bla bla", cards: 4, lastUpdate: "21.02.21", createdBy: "Marina"},
+    {_id: v4(),name: "Pack name bla", cards: 4, lastUpdate: "21.02.21", createdBy: "vitali"},
+    {_id: v4(),name: "Pack name bbbla", cards: 4, lastUpdate: "21.02.21", createdBy: "dmitrii"},
 ]
 
 const MyTable = () => {
@@ -60,8 +60,6 @@ const MyTable = () => {
                             <StyledTableCell align="right">{row.createdBy}</StyledTableCell>
                             <StyledTableCell align="right">
                                 <Box className={s.buttonGroup}>
-                                    <button className={s.delete}>Delete</button>
-                                    <button className={s.main}>Edit</button>
                                     <button className={s.main}>Learn</button>
                                 </Box>
                             </StyledTableCell>

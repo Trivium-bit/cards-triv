@@ -1,10 +1,10 @@
 import React from 'react';
 import s from "./UserProfile.module.scss";
 import {Link} from "react-router-dom";
-import {Button} from "@mui/material";
 import {useSelector} from "react-redux";
 import {AppStoreType} from "../../../bll/store";
 import {ResponseLoginType} from "../../../dall/login-api";
+import Button from "../../../../Common/Components/Button";
 
 const UserProfile = () => {
     const user = useSelector<AppStoreType, ResponseLoginType | undefined>((state) => state.app.user);
@@ -20,7 +20,9 @@ const UserProfile = () => {
                         <div className={s.name}>{user.name}</div>
                         <div className={s.desc}>Front-end Dev</div>
                         <Link to="/profile/edit">
-                            <Button className={s.btn} variant="outlined">Edit Profile</Button>
+                            <Button
+                                className={s.editBtn}
+                                title={'Edit profile'}/>
                         </Link>
                     </div>
                 </div>
