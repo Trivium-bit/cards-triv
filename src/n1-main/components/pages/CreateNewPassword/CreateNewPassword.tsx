@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../bll/store";
 import { sendNewPasswordTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { NewPasswordType } from "../../../dall/login-api";
-import { Navigate } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 
 type FormikErrorType = {
     password: string
@@ -19,13 +19,13 @@ function CreateNewPassword() {
     const error = useAppSelector<NullableType<string>>(state => state.app.error);
     const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
     const info = useAppSelector<string>(state => state.authReducer.info);
-
+    //let resetPasswordToken = useAppSelector<string | undefined>(state => state.authReducer.resetPasswordToken)
+    let [token, setToken] = useState<string | undefined>("")
     const dispatch = useAppDispatch();
-
-    //const {token} = useParams();
-
+    const params = useParams<"token">();
+    console.log(params.token) //40977b10-e1cc-11ec-8d31-61eb72bbb506
     const formik = useFormik({
-        validate: (values) => {
+        validate: (values: NewPasswordType) => {
             const errors: Partial<FormikErrorType> = {};
             if (values.password.length < 8) {
                 errors.password = "Invalid password length"
@@ -37,12 +37,11 @@ function CreateNewPassword() {
         },
         initialValues: {
             password: "",
-            resetPasswordToken: ""
+            resetPasswordToken: token as string
         },
-
-        onSubmit: (newPassword: NewPasswordType) => {
-            dispatch(sendNewPasswordTC(newPassword))
-
+        onSubmit: ({ password, resetPasswordToken }: NewPasswordType) => {
+            dispatch(sendNewPasswordTC({ password, resetPasswordToken }))
+            setToken(params.token)
         }
     });
     const handleClickShowPassword = () => {

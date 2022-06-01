@@ -12,7 +12,7 @@ export type LoginParamsType = {
 }
 export type NewPasswordType = {
     password: string,
-    resetPasswordToken: string,
+    resetPasswordToken: string | undefined
 }
 
 export const authAPI = {
