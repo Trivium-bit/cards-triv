@@ -20,7 +20,6 @@ const initialState = {
     info:""
 }
 
-
 export type ActionType = IsLoggedInActionsType | SetNewPasswordActionsType
 
 type InitialStateType = typeof initialState
