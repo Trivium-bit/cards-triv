@@ -83,7 +83,7 @@ const EditProfileModal = ({avatar,name,email,title}:ModalPropsType) => {
                         </Box>
                     </Box>
                     <Box className={s.modalBtnGroup}>
-                        <Button className={s.btnCancel} title={'Cancel'}/>
+                        <Button onClick={handleClose} className={s.btnCancel} title={'Cancel'}/>
                         <Button className={s.btnSave} title={'Save'}/>
                     </Box>
                 </Box>
