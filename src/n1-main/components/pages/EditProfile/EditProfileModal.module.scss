@@ -1,0 +1,56 @@
+.editBtn {
+  margin-top: 15px;
+  color: #21268F;
+  background: transparent;
+  border: 1px solid #635D80;
+  border-radius: 2px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.modalMainBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .avatarBlock {
+    position: relative;
+    width: 100px;
+
+    .avatarImg {
+      width: 100px;
+    }
+    .iconUpload {
+      position: absolute;
+      bottom: -11px;
+      right: -10px;
+    }
+  }
+
+  .inputForms {
+    width: 250px;
+    margin: 20px 0;
+  }
+}
+
+.modalBtnGroup {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+  .btnSave {
+    background: #21268F;
+    color: white;
+    border-radius: 30px;
+    padding: 9px 30px;
+    border:none;
+    cursor: pointer;
+  }
+  .btnCancel  {
+    background: #D7D8EF;
+    color: #21268F;
+    border-radius: 30px;
+    padding: 9px 30px;
+    border:none;
+    cursor: pointer;
+  }
+}
