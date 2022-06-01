@@ -7,7 +7,7 @@ import { loginTC, setIsLoggedInAC } from "../../../../n2-features/f1-auth/a1-log
 import { useSelector } from "react-redux";
 import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
 import { useFormik } from "formik";
-import { NullableType, RequestStatusType, setAppErrorAC } from "../../../bll/app-reducer";
+import {RequestStatusType, setAppErrorAC } from "../../../bll/app-reducer";
 import { Checkbox, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -19,7 +19,7 @@ type FormikErrorType = {
 function Login() {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
-    const error = useAppSelector<NullableType<string>>(state => state.app.error);
+    /*const error = useAppSelector<NullableType<string>>(state => state.app.error);*/
     const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
     const navigate = useNavigate();
@@ -82,7 +82,7 @@ function Login() {
                 Sign in
             </h2>
             <div className={styles.textFields}>
-                <FormControl sx={{ m: 1, width: '28ch' }} variant="standard">
+                <FormControl sx={{ m: 1, width: '35ch' }} variant="standard">
                     <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
                     <Input {...formik.getFieldProps("email")}
                     />
@@ -90,7 +90,7 @@ function Login() {
                 {formik.touched.email && formik.errors.email ?
                     <div className={styles.errors}>{formik.errors.email}</div> : null}
 
-                <FormControl sx={{ m: 1, width: '28ch' }} variant="standard">
+                <FormControl sx={{ m: 1, width: '35ch' }} variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input {...formik.getFieldProps("password")}
                         id="standard-adornment-password"
@@ -109,14 +109,15 @@ function Login() {
                     />
                     {formik.touched.password && formik.errors.password ?
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
-                    <div className={styles.checkbox}>
-                        <Checkbox size="small" color="secondary" /><div className={styles.remembMe}>remember Me</div>
-                    </div>
+                    <label className={styles.checkbox}>
+                        <Checkbox {...formik.getFieldProps("rememberMe")}
+                                  size="small"
+                                  color="secondary" />
+                                  <div className={styles.remembMe}>remember Me</div>
+                    </label>
                      <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>
-                <div className={styles.errors}>{error}</div>
-
-               
+                {/*<div className={styles.errors}>{error}</div>*/}
 
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
