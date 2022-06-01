@@ -1,0 +1,62 @@
+.header {
+    height : 60px;
+    line-height : 60px;
+    background-color: #EBE0E9;
+
+    a {
+        text-decoration: none;
+        border: none;
+    }
+
+    span {
+        font-weight: 600;
+        color: #2D2E46;
+        cursor: pointer;
+    }
+
+    .logOut {
+        display: block;
+        font-size: 15px;
+        text-align: right;
+    }
+
+    .headerLink {
+        &.headerLinkActive {
+            background-color: #DCCCDB;
+            border-bottom: 3px solid #21268F;
+            margin-top: -3px;
+
+            .packList {
+                .title {
+                    opacity: 1;
+                }
+
+                .icon {
+                    opacity: 1;
+                    color: #2D2E46;
+                }
+            }
+        }
+
+        .packList {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:active {
+                color: #2D2E46;
+            }
+
+            .title {
+                margin-left: 10px;
+                font-weight: 400;
+                font-size: 14px;
+                opacity: 0.4;
+            }
+
+            .icon {
+                opacity: 0.4;
+            }
+        }
+    }
+}
