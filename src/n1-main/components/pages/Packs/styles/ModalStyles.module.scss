@@ -1,0 +1,40 @@
+.modalBlock {
+  .modalTitle {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    text-align: center;
+  }
+  .modalText {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+  }
+  .modalBtnGroup {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+
+    .btnSave {
+      background: #21268F;
+      color: white;
+      border-radius: 30px;
+      padding: 9px 30px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btnCancel {
+      background: #D7D8EF;
+      color: #21268F;
+      border-radius: 30px;
+      padding: 9px 30px;
+      border: none;
+      cursor: pointer;
+    }
+  }
+  .inputsForm {
+    width: 350px;
+    margin: 20px 0;
+  }
+}
