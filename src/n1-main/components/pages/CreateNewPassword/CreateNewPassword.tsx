@@ -16,8 +16,8 @@ type FormikErrorType = {
 function CreateNewPassword() {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
-    const error = useAppSelector<NullableType<string>>(state => state.app.error);
-    const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
+    const error = useAppSelector<NullableType<string>>(state => state.appReducer.error);
+    const appStatus = useAppSelector<RequestStatusType>(state => state.appReducer.status);
     const info = useAppSelector<string>(state => state.authReducer.info);
     let navigate = useNavigate();
 

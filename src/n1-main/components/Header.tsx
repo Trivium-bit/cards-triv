@@ -6,8 +6,8 @@ import ArticleIcon from '@mui/icons-material/Article';
 import PersonIcon from '@mui/icons-material/Person';
 import { PATH } from './Routings'
 import {useAppDispatch} from "../bll/store";
-import {userLogOutAC} from "../bll/app-reducer";
 import s from "../ui/Header.module.scss";
+import {logOut} from "../../n2-features/f1-auth/a1-login/auth-reducer";
 
 
 function Header() {
@@ -16,7 +16,7 @@ function Header() {
 
     const handleLogOut = () => {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        dispatch(userLogOutAC())
+        dispatch(logOut())
     }
 
     return (

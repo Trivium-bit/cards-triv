@@ -1,9 +1,10 @@
 import {forgotPassAPI, registerAPI, RegisterParamsType} from "../dall/register-API";
 import {AppActionsType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
-import { AxiosError } from "axios";
+import {AxiosError} from "axios";
 import {AppThunkDispatch} from "./store";
 import {customSuccessAlert} from "../../utils/customSuccessAlertUtils";
 import {RecoveryEmailType} from "../components/pages/PassRecovery/PassRecovery";
+import {handleNetworkError} from "../../utils/error.utils";
 
 const initialState = {
     isRegistered: false,
@@ -15,9 +16,9 @@ type InitialStateType = typeof initialState
 
 export const registerReducer = (state: InitialStateType = initialState, action: RegisterActionsType): InitialStateType => {
     switch (action.type) {
-        case 'register/SET-IS-REGISTER':
+        case 'REGISTER/SET-IS-REGISTER':
             return {...state, isRegistered: action.isRegistered}
-        case "checkEmail/GET-EMAIL":
+        case "GET-EMAIL/GET-EMAIL":
             return {...state, email: action.email}
         default:
             return state;
@@ -26,39 +27,37 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
 // thunks
 
 export const registerTC = (data: RegisterParamsType) => {
-    return (dispatch: AppThunkDispatch) =>{
+    return (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
-        registerAPI.register(data)
-        .then(()=>{
-           dispatch(registerAC(true));
-           dispatch(setAppStatusAC("succeeded"));
-           dispatch(setAppErrorAC(null));
-           customSuccessAlert()
-        })
-        .catch((error: AxiosError<{error: string}>) => {
-            dispatch(setAppStatusAC("succeeded"));
-            dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
-        })
+        registerAPI.registerReducer(data)
+            .then(() => {
+                dispatch(registerAC(true));
+                dispatch(setAppStatusAC("succeeded"));
+                dispatch(setAppErrorAC(null));
+                customSuccessAlert()
+            })
+            .catch((error: AxiosError<{ error: string }>) => {
+                handleNetworkError(error, dispatch)
+            })
     }
 }
-export const forgotTC = (email:RecoveryEmailType) =>{
-    return (dispatch: AppThunkDispatch) =>{
+export const forgotTC = (email: RecoveryEmailType) => {
+    return (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
         forgotPassAPI.forgotPass(email)
-            .then(()=>{
+            .then(() => {
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(getEmailAC(email))
             })
-            .catch((error: AxiosError<{error: string}>) => {
-                dispatch(setAppStatusAC("succeeded"));
-                dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
+            .catch((error: AxiosError<{ error: string }>) => {
+                handleNetworkError(error, dispatch)
             })
     }
 }
 // types
-type isRegisteredActionType = ReturnType<typeof registerAC>| AppActionsType | ReturnType<typeof getEmailAC>
+type isRegisteredActionType = ReturnType<typeof registerAC> | AppActionsType | ReturnType<typeof getEmailAC>
 export type RegisterActionsType = isRegisteredActionType;
 
 // actions
-export const registerAC = (isRegistered: boolean) => ({ type: 'register/SET-IS-REGISTER', isRegistered} as const)
-export const getEmailAC = (email: RecoveryEmailType) => ({ type: 'checkEmail/GET-EMAIL', email} as const)
+export const registerAC = (isRegistered: boolean) => ({type: 'REGISTER/SET-IS-REGISTER', isRegistered} as const)
+export const getEmailAC = (email: RecoveryEmailType) => ({type: 'GET-EMAIL/GET-EMAIL', email} as const)
