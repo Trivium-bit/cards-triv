@@ -17,7 +17,7 @@ export type RecoveryEmailType = {
 export const PassRecovery =()=> {
     const navigate = useNavigate();
     const onClickHandler = () =>{
-        navigate("/login");
+        navigate(PATH.LOGIN);
     }
     const dispatch = useAppDispatch();
     const formik = useFormik({

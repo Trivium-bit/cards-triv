@@ -1,14 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react';
 import {Box, Container, Grid} from "@mui/material";
 import MyPacks from "./MyPacks/MyPacks";
 import s from './Packs.module.scss'
 import AllPacks from "./AllPacks/AllPacks";
 
+
 const Packs = () => {
     const [show, setShow] = useState("MyPacks")
 
     return (
-        <Container fixed >
+        <Container fixed>
             <Box className={s.packsContainer}>
                 <Grid container>
                     <Grid xs={3} item>
@@ -18,10 +19,12 @@ const Packs = () => {
                                 <Box className={s.btnGroup}>
                                     <button className={show === "MyPacks" ? s.buttonActive : s.btn}
                                             onClick={() => setShow("MyPacks")}
-                                    >My</button>
+                                    >My
+                                    </button>
                                     <button className={show === "AllPacks" ? s.buttonActive : s.btn}
                                             onClick={() => setShow("AllPacks")}
-                                    >All</button>
+                                    >All
+                                    </button>
                                 </Box>
                                 <Box>
                                     <span className={s.title}>Number of cards</span>

@@ -6,7 +6,7 @@ export type UserType = ResponseLoginType | undefined;
 
 const initialState = {
     error: null as NullableType<string>,
-    status: 'succeeded' as RequestStatusType,
+    status: 'idle' as RequestStatusType,
     user: undefined as UserType
 }
 
@@ -19,8 +19,6 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
             return {...state, status: action.status}
         case 'APP/SET-USER':
             return {...state, user: action.user}
-        case 'APP/USER_LOG_OUT':
-            return {...state, user: undefined}
         default:
             return state
     }
@@ -28,8 +26,7 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
 //actions
 export const setAppErrorAC = (error: NullableType<string>) => ({type: "APP/SET-ERROR", error}) as const;
 export const setAppStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status}) as const;
-export const setAppUserAC = (user: ResponseLoginType) => ({ type: "APP/SET-USER", user}) as const;
-export const userLogOutAC = () => ({ type: 'APP/USER_LOG_OUT'}) as const;
+export const setAppUserAC = (user: ResponseLoginType|undefined) => ({ type: "APP/SET-USER", user}) as const;
 
 //types
 export type NullableType<T> = null | T
@@ -37,6 +34,5 @@ type InitialStateType = typeof initialState
 export type SetAppErrorType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatus = ReturnType<typeof setAppStatusAC>
 export type SetAppUser = ReturnType<typeof setAppUserAC>
-export type UserLogOut = ReturnType<typeof userLogOutAC>
 
-export type AppActionsType = SetAppErrorType | SetAppStatus | SetAppUser | UserLogOut
+export type AppActionsType = SetAppErrorType | SetAppStatus | SetAppUser
