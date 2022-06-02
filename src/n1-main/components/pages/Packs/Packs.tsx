@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 import {Box, Container, Grid} from "@mui/material";
 import MyPacks from "./MyPacks/MyPacks";
-import s from './Packs.module.scss'
+import s from './styles/Packs.module.scss'
 import AllPacks from "./AllPacks/AllPacks";
 
 

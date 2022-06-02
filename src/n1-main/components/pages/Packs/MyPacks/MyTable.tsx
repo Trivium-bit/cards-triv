@@ -182,7 +182,7 @@ const MyTable = () => {
                         <FormControlLabel value="Confused" control={<Radio />} label="Confused" />
                     </RadioGroup>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseLearn} className={s.btnCancel} title={'Cancel'}/>
+                        <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'}/>
                         <Button className={modalStyles.btnSave} title={'Next'}/>
                     </Box>
                 </Box>

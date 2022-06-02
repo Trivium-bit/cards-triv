@@ -1,29 +1,14 @@
 import React from 'react';
-import {Box, Input, InputAdornment} from "@mui/material";
-import SearchIcon from '@mui/icons-material/Search';
-
-import s from './MyPacks.module.scss'
+import {Box} from "@mui/material";
 import MyTable from "./MyTable";
 import Paginator from "../../../../../Common/Components/Paginator";
-import Button from "../../../../../Common/Components/Button";
+import PacksHeader from "../PacksHeader";
+import s from './MyPacks.module.scss'
 
 const MyPacks = () => {
     return (
         <Box className={s.myPacksBlock}>
-            <h1 className={s.title}>My packs list</h1>
-            <Box className={s.elements}>
-                <Input
-                        placeholder={"Search..."}
-                        startAdornment={
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        }
-                    />
-                <Button
-                    className={s.addBtn}
-                    title={'Add New Pack'}/>
-            </Box>
+            <PacksHeader />
             <Box className={s.table}>
                 <MyTable/>
             </Box>
