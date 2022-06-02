@@ -1,6 +1,6 @@
 import React from 'react';
 import {Navigate} from "react-router-dom";
-import {PATH} from "../Routings";
+import {PATH} from "../AppRoutes";
 
 
 const Home = () => {
