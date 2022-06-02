@@ -1,5 +1,5 @@
 import React, {ButtonHTMLAttributes, DetailedHTMLProps} from 'react'
-
+import styles from "./../Components/ButtonStyles.module.scss"
 
 // тип пропсов обычной кнопки, children в котором хранится название кнопки там уже описан
 type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
@@ -19,7 +19,7 @@ const Button: React.FC<SuperButtonPropsType> = (
 
     return (
         <button onClick={callBack}
-                className={className}
+                className={ `${styles.commonButtonStyles} + ${className}`}
                 {...restProps} // отдаём кнопке остальные пропсы если они есть (children там внутри)
         >{title}</button>
     )
