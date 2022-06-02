@@ -5,9 +5,9 @@ import { CircularProgress, FormControl, IconButton, Input, InputAdornment, Input
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../bll/store";
-import { sendNewPasswordTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
+import { setNewPasswordAC, sendNewPasswordTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { NewPasswordType } from "../../../dall/login-api";
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 type FormikErrorType = {
     password: string
@@ -19,11 +19,13 @@ function CreateNewPassword() {
     const error = useAppSelector<NullableType<string>>(state => state.app.error);
     const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
     const info = useAppSelector<string>(state => state.authReducer.info);
-    //let resetPasswordToken = useAppSelector<string | undefined>(state => state.authReducer.resetPasswordToken)
-    let [token, setToken] = useState<string | undefined>("")
-    const dispatch = useAppDispatch();
+    let navigate = useNavigate();
+
     const params = useParams<"token">();
-    console.log(params.token) //40977b10-e1cc-11ec-8d31-61eb72bbb506
+    let token = params.token;
+
+    const dispatch = useAppDispatch();
+
     const formik = useFormik({
         validate: (values: NewPasswordType) => {
             const errors: Partial<FormikErrorType> = {};
@@ -41,7 +43,7 @@ function CreateNewPassword() {
         },
         onSubmit: ({ password, resetPasswordToken }: NewPasswordType) => {
             dispatch(sendNewPasswordTC({ password, resetPasswordToken }))
-            setToken(params.token)
+            dispatch(setNewPasswordAC(info))
         }
     });
     const handleClickShowPassword = () => {
@@ -52,14 +54,15 @@ function CreateNewPassword() {
     };
 
     useEffect(() => {
-        info && <Navigate replace to="/login" />
-    }, [info])
+        dispatch(setAppErrorAC(null));
+    }, [dispatch]);
 
     useEffect(() => {
-        return () => {
-            dispatch(setAppErrorAC(null));
+        debugger
+        if (info) {
+            return navigate("/login");
         }
-    }, [dispatch])
+    }, [info]);
 
     return (
         <div className={styles.loginWrapper}>
@@ -91,7 +94,6 @@ function CreateNewPassword() {
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
                 </FormControl>
                 <div className={styles.errors}>{error}</div>
-
                 <div className={styles.textInstruction}>Create new password and we will send you further instruction to email</div>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
