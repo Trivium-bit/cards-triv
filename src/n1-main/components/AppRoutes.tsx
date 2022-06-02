@@ -21,6 +21,8 @@ export const PATH = {
   PASS_RECOVERY: "/pass-recovery",
   CREATE_NEW_PASSWORD: "/create-new-password",
   CHECK_EMAIL: "/check-email",
+  ERROR404: "/404",
+  ANY_ROUTE:"*"
 }
 
 function AppRoutes() {
@@ -37,8 +39,8 @@ function AppRoutes() {
           <Route path={PATH.PACKS} element={<Packs />} />
           <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
-        <Route path={"*"} element={<Navigate to={"/404"}/>} />
-        <Route path={"/404"} element={<Error404 />} />
+        <Route path={PATH.ANY_ROUTE} element={<Navigate to={PATH.ERROR404}/>} />
+        <Route path={PATH.ERROR404} element={<Error404 />} />
       </Routes>
     </div>
   );
