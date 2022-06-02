@@ -1,0 +1,76 @@
+@import "variables";
+
+@mixin windowMargin($margin-right, $margin-left) {
+  margin-right: $margin-right;
+  margin-left: $margin-left;
+}
+
+@mixin windows() {
+  margin-top: 84px;
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  background-color: $windowBackGroundColor;
+  border-radius: $borderRadius;
+  width: 413px;
+  height: 540px;
+  font-family: $fontFamily;
+  color: $textColor;
+  font-size: 16px;
+
+  @media screen and (max-width: $maxWindowWidth) {
+    border-radius: 0;
+    height: 100vh;
+    width: 100%;
+    margin-top: 0;
+    label {
+      @include windowMargin(20px, 20px);
+
+      div {
+        @include windowMargin(0, 0);
+      }
+
+    }
+    div {
+      @include windowMargin(20px, 20px);
+
+    }
+
+    input + div {
+      @include windowMargin(0, 0);
+    }
+    p {
+      width: 311px !important;
+    }
+    span {
+      margin-left: 20px;
+    }
+    a {
+      @include windowMargin(20px, 20px);
+    }
+    .goBack {
+      p {
+
+      }
+
+      > a {
+        @include windowMargin(0, 0);
+      }
+
+      > span {
+        @include windowMargin(0, 0);
+      }
+    }
+    /*.newPassTextFields{
+      div{
+        @include windowMargin(5px, 5px);
+      }
+      label{
+        @include windowMargin(5px, 5px);
+      }
+    }*/
+  }
+}
+

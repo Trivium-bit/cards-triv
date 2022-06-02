@@ -1,5 +1,5 @@
 import styles from "./PasswordRecovery.module.scss";
-import React from "react";
+import React, {useEffect} from "react";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../../Common/Components/Button";
@@ -40,7 +40,18 @@ export const PassRecovery =()=> {
             navigate(PATH.CHECK_EMAIL)
         }
     })
-
+    useEffect(() => {
+        const listener = (event: KeyboardEvent) => {
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+                event.preventDefault();
+                formik.handleSubmit()
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+    }, [formik]);
     return (
         <div className={styles.passRecoveryWrapper}>
             <h2 className={styles.h2}>It-incubator</h2>
@@ -53,8 +64,9 @@ export const PassRecovery =()=> {
                 Enter your email address and we will send you further instructions
             </p>
             <form onSubmit={formik.handleSubmit}>
-                <Button className={styles.button} title={"Send Instructions"}/>
+                <Button type={"submit"} className={styles.button} title={"Send Instructions"}/>
             </form>
+
             <p className={styles.pSmall}>
                 Did you remember your password?
             </p>

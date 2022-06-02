@@ -1,33 +1,8 @@
-@import "../../../../Common/Styles/variables.scss";
+@import "../../../../Common/Styles/mixins";
+@import "../../../../Common/Styles/variables";
 
 .loginWrapper {
-  margin-top: 84px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: $windowBackGroundColor;
-  border-radius: $borderRadius;
-  width: 413px;
-  height: 600px;
-  font-family: $fontFamily;
-  color: $textColor;
-  font-size: 16px;
-
-  @media screen and (max-width: 500px) {
-    border-radius: 0;
-    height: 100vh;
-    width: 100%;
-    margin-top: 0;
-    position: absolute;
-    top: 0;
-  }
-
-  .h1 {
-    margin-top: -90px;
-  }
+  @include windows();
 
   .errors {
     color: red;
@@ -37,6 +12,14 @@
     /*border: 1px solid black;*/
   }
 
+  .newPassTextFields {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    width: 280px;
+    /* border: 1px solid black;*/
+  }
   .textFields {
     display: flex;
     justify-content: space-between;
@@ -45,7 +28,6 @@
     width: 280px;
     /* border: 1px solid black;*/
   }
-
   .checkbox {
     display: flex;
     align-items: center;
@@ -69,12 +51,9 @@
   }
 
   .forgPass {
+    display: flex;
+    justify-content: right;
     padding-top: 10px;
-    width: 120px;
-    height: 17px;
-    left: 695px;
-    top: 395px;
-    padding-left: 220px;
 
     @font-face {
       font-family: 'SF UI Display';
@@ -116,7 +95,7 @@
     }
 
     .loginButton {
-      margin-top: 120px;
+
       border-radius: 30px;
       border: solid 0;
       height: 36px;

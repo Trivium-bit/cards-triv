@@ -65,6 +65,7 @@ export const Login = React.memo(() => {
             navigate(searchParams.get("redirectTo") || "/")
         }
     }, [user, navigate, searchParams]) // это редирект на профайл
+
     useEffect(() => {
         const listener = (event: KeyboardEvent) => {
             if (event.code === "Enter" || event.code === "NumpadEnter") {
@@ -77,6 +78,7 @@ export const Login = React.memo(() => {
             document.removeEventListener("keydown", listener);
         };
     }, [formik]);
+
     return (
         <div className={styles.loginWrapper}>
             <h1 className={styles.h1}>
@@ -118,7 +120,7 @@ export const Login = React.memo(() => {
                                   checked={formik.getFieldProps("rememberMe").value}
                                   size="small"
                                   color="secondary"/>
-                        <p className={styles.remembMe}>remember Me</p>
+                        <div className={styles.remembMe}>remember Me</div>
                     </label>
                     <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>

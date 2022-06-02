@@ -10,6 +10,7 @@ import errorText from "./../../../images/404Text.svg";
 
 export const Error404 = () => {
 
+
     return (
         <div className={styles.ErrorWrapper } >
 
