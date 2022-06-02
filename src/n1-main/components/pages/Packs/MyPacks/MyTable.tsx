@@ -135,7 +135,7 @@ const MyTable = () => {
                     <h1 className={modalStyles.modalTitle}>Delete Pack</h1>
                     <Box>
                         <span className={modalStyles.modalText}>Do you really want to remove
-                            <b>{rowToDelete?.name}</b>?
+                            <b> {rowToDelete?.name}</b>?
                             All cards will be excluded from this course
                         </span>
                     </Box>
