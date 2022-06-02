@@ -4,7 +4,9 @@ import UserProfile from "./UserProfile";
 import MyPacks from "../Packs/MyPacks/MyPacks";
 import s from './Profile.module.scss'
 
+
 const Profile = () => {
+
     return (
         <div className={s.profileBlock}>
             <Container fixed >

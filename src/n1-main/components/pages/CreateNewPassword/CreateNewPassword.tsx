@@ -8,6 +8,8 @@ import { useAppDispatch, useAppSelector } from "../../../bll/store";
 import { setNewPasswordAC, sendNewPasswordTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { NewPasswordType } from "../../../dall/login-api";
 import { useNavigate, useParams } from "react-router-dom";
+import Button from "../../../../Common/Components/Button";
+import {PATH} from "../../AppRoutes";
 
 type FormikErrorType = {
     password: string
@@ -23,7 +25,6 @@ function CreateNewPassword() {
 
     const params = useParams<"token">();
     let token = params.token;
-    console.log(token)
 
     const dispatch = useAppDispatch();
 
@@ -59,9 +60,9 @@ function CreateNewPassword() {
     }, [dispatch]);
 
     useEffect(() => {
-        debugger
+
         if (info) {
-            return navigate("/login");
+            return navigate(PATH.LOGIN);
         }
     }, [info]);
 
@@ -104,7 +105,7 @@ function CreateNewPassword() {
                         ? <div className={styles.circularProgress}>
                             <CircularProgress />
                         </div>
-                        : <button type="submit" className={styles.sendButton}>Create new password</button>
+                        : <Button title={"Create new password"} type="submit" className={styles.sendButton}/>
                            
                         }
                     </form>
