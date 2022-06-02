@@ -36,7 +36,7 @@ export const registerTC = (data: RegisterParamsType) => {
            customSuccessAlert()
         })
         .catch((error: AxiosError<{error: string}>) => {
-            dispatch(setAppStatusAC("succeeded"));
+            dispatch(setAppStatusAC("failed"));
             dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
         })
     }
@@ -50,7 +50,7 @@ export const forgotTC = (email:RecoveryEmailType) =>{
                 dispatch(getEmailAC(email))
             })
             .catch((error: AxiosError<{error: string}>) => {
-                dispatch(setAppStatusAC("succeeded"));
+                dispatch(setAppStatusAC("failed"));
                 dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
             })
     }

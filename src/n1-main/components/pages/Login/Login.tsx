@@ -1,13 +1,13 @@
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import {NavLink, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { PATH } from "../../Routings";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
-import { AppStoreType, useAppDispatch, useAppSelector } from "../../../bll/store";
-import { loginTC, setIsLoggedInAC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
+import {AppStoreType, useAppDispatch, useAppSelector} from "../../../bll/store";
+import { loginTC} from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { useSelector } from "react-redux";
 import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
 import { useFormik } from "formik";
-import {RequestStatusType, setAppErrorAC } from "../../../bll/app-reducer";
+import {RequestStatusType} from "../../../bll/app-reducer";
 import { Checkbox, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -16,16 +16,19 @@ type FormikErrorType = {
     password: string
 }
 
-function Login() {
+export const Login = React.memo(()=> {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
-    /*const error = useAppSelector<NullableType<string>>(state => state.app.error);*/
     const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const user = useSelector<AppStoreType, ResponseLoginType | undefined>(state => state.app.user)
+    const user = useSelector<AppStoreType, ResponseLoginType | undefined>(state => state.app.user);
 
+
+
+    const params = useParams<"login">();
+    console.log(params.login)
     const formik = useFormik({
         validate: (values) => {
             const errors: Partial<FormikErrorType> = {};
@@ -45,7 +48,7 @@ function Login() {
         initialValues: {
             email: "",
             password: "",
-            rememberMe: false,
+            rememberMe: true,
         },
 
         onSubmit: (loginParams: LoginParamsType) => {
@@ -58,20 +61,11 @@ function Login() {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-
     useEffect(() => {
         if (user) {
             navigate(searchParams.get("redirectTo") || "/")
         }
-    }, [user])
-
-    useEffect(() => {
-
-        return () => {
-            dispatch(setAppErrorAC(null));
-            dispatch(setIsLoggedInAC(false));
-        }
-    }, [dispatch])
+    }, [user, navigate, searchParams]) // это редирект на профайл
 
     return (
         <div className={styles.loginWrapper}>
@@ -111,21 +105,21 @@ function Login() {
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
                     <label className={styles.checkbox}>
                         <Checkbox {...formik.getFieldProps("rememberMe")}
+                                  checked={formik.getFieldProps("rememberMe").value}
                                   size="small"
                                   color="secondary" />
-                                  <div className={styles.remembMe}>remember Me</div>
+                                  <p className={styles.remembMe}>remember Me</p>
                     </label>
                      <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>
-                {/*<div className={styles.errors}>{error}</div>*/}
-
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
-                        {appStatus === "succeeded"
-                            ? <button type="submit" className={styles.loginButton}>Login</button>
-                            : <div className={styles.circularProgress}>
+                        {appStatus === "loading"
+                            ? <div className={styles.circularProgress}>
                                 <CircularProgress />
                             </div>
+                            :
+                            <button type="submit" className={styles.loginButton}>Login</button>
                         }
                     </form>
                     <div className={styles.links}>
@@ -136,6 +130,5 @@ function Login() {
             </div>
         </div>
     );
-}
+})
 
-export default Login;

@@ -14,6 +14,7 @@ import Input from "@mui/material/Input";
 import {Navigate, useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "../../../../Common/Components/Button";
+import {PATH} from "../../Routings";
 
 type FormikErrorType = {
     email: string
@@ -73,7 +74,7 @@ function Register() {
         event.preventDefault();
     };
     const buttonHandlerRedirect = () =>{
-        navigate("/login");
+        navigate(PATH.LOGIN);
     }
     useEffect(() => {
         const listener = (event: KeyboardEvent) => {
@@ -156,16 +157,16 @@ function Register() {
                     {formik.touched.confirmPassword && formik.errors.confirmPassword ?
                         <div className={styles.errors}>{formik.errors.confirmPassword}</div> : null}
                 </FormControl>
-                {/*<div className={styles.errors}>{error}</div>*/}
                 <div className={styles.buttons}>
                     <Button title={"Cancel"} callBack={buttonHandlerRedirect}  className={styles.cancelButton}/>
                     <form onSubmit={formik.handleSubmit}>
-                        { appStatus === "succeeded" ?
-                            <Button title={"Register"} type="submit" className={styles.registerButton}/>
-                                :
+                        { appStatus === "loading"
+                            ?
                             <div className={styles.circularProgress}>
                                 <CircularProgress/>
                             </div>
+                            :
+                            <Button title={"Register"} type="submit" className={styles.registerButton}/>
                         }
                     </form>
 
