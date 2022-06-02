@@ -23,6 +23,7 @@ function CreateNewPassword() {
 
     const params = useParams<"token">();
     let token = params.token;
+    console.log(token)
 
     const dispatch = useAppDispatch();
 
@@ -97,11 +98,14 @@ function CreateNewPassword() {
                 <div className={styles.textInstruction}>Create new password and we will send you further instruction to email</div>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
-                        {appStatus === "succeeded"
-                            ? <button type="submit" className={styles.sendButton}>Create new password</button>
-                            : <div className={styles.circularProgress}>
-                                <CircularProgress />
-                            </div>
+
+
+                        {appStatus === "loading"
+                        ? <div className={styles.circularProgress}>
+                            <CircularProgress />
+                        </div>
+                        : <button type="submit" className={styles.sendButton}>Create new password</button>
+                           
                         }
                     </form>
 
