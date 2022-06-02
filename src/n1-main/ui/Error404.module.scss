@@ -1,4 +1,3 @@
-/*noinspection CssUnknownTarget*/
 @import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500');
 
 @-moz-keyframes rocketMovement {
@@ -119,13 +118,13 @@
 
 .ErrorWrapper {
   background-size: cover;
-  background: url(http://salehriaz.com/404Page/img/bg_purple.png) repeat-x left top;
+  background: url("./../../images/error404BG.png") repeat-x left top;
   height: 100vh;
   overflow: hidden;
 
   .stars {
     background-size: contain;
-    background: url(http://salehriaz.com/404Page/img/overlay_stars.svg) repeat left top;
+    background: url("./../../images/overlay_stars.svg") repeat left top;
 
     .centralBody {
       padding: 17% 5% 10% 5%;
@@ -205,6 +204,7 @@
           left: 15%;
           z-index: 90;
           animation: spinEarth 100s infinite linear both;
+          width: 100px;
         }
 
         .objectMoon {
@@ -213,6 +213,7 @@
           left: 25%;
           transform: rotate(0deg);
           transition: transform ease-in 99999999999s;
+          width: 80px;
         }
       }
 
@@ -226,6 +227,7 @@
 
         .objectAstronaut {
           animation: rotateAstronaut 200s infinite linear both alternate;
+          width: 140px;
         }
       }
     }

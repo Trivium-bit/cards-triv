@@ -8,7 +8,7 @@
   flex-direction: column;
   margin-left: auto;
   margin-right: auto;
-  background-color: $backGroundColor;
+  background-color: $windowBackGroundColor;
   border-radius: $borderRadius;
   width: 413px;
   height: 540px;
@@ -62,52 +62,35 @@
 
     .cancelButton {
       position: absolute;
-      background-color: #D7D8EF;
-      border-radius: 30px;
-      border: solid 0;
+      background-color: #D7D8EF !important;
       height: 36px;
       width: 124px;
       margin-right: 2rem;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 19px;
-      color: #21268F;
       opacity: 0.8;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-      letter-spacing: 0.01em;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
       top: 22px;
       left: 0;
+      color: #21268F;
     }
 
     .registerButton {
-      @extend .cancelButton;
+      opacity: 0.8;
+      top: 22px;
+      height: 36px;
+      width: 124px;
       position: absolute;
-      background-color: #21268F;
-      color: #ECECF9;
-      box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      background-color: #21268F !important;
       margin-right: 0;
       left: 156px;
-    }
-
-    .registerButton:active {
-      width: 130px;
-      height: 40px;
+      color:  #ECECF9 !important;
     }
 
     .registerButton:hover {
-      background-color: #151b77 !important;
+      background-color: #4448c2!important;
     }
 
     .cancelButton:hover {
-      background-color: #c9caec;
+      background-color: #c9caec !important;
     }
 
-    .cancelButton:active {
-      width: 130px;
-      height: 40px;
-    }
   }
 }
