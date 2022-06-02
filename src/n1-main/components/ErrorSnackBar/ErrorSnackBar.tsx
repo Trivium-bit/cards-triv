@@ -4,11 +4,12 @@ import {useAppDispatch, useAppSelector} from "../../bll/store";
 import {NullableType, setAppErrorAC} from "../../bll/app-reducer";
 import Alert from "@mui/material/Alert";
 import {AlertTitle} from "@mui/material";
+import {appStatusErrorSelector} from "../../../Common/Selectors/Selectors";
 
 
 export const ErrorSnackBar = () => {
     const dispatch = useAppDispatch();
-    const error = useAppSelector<NullableType<string>>(state => state.app.error);
+    const error = useAppSelector<NullableType<string>>(appStatusErrorSelector);
     const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;

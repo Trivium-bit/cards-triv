@@ -5,12 +5,12 @@ import {ErrorSnackBar} from "./n1-main/components/ErrorSnackBar/ErrorSnackBar";
 import {useAppDispatch, useAppSelector} from "./n1-main/bll/store";
 import {initializeAppTC} from "./n2-features/f1-auth/a1-login/auth-reducer";
 import {CircularProgress} from "@mui/material";
+import {isInitializedSelector} from "./Common/Selectors/Selectors";
 
 
 function App() {
-    const isInitialized = useAppSelector<boolean>(state => state.authReducer.isInitialized);
+    const isInitialized = useAppSelector<boolean>(isInitializedSelector);
     const dispatch = useAppDispatch();
-
 
     useEffect(()=>{
         dispatch(initializeAppTC())

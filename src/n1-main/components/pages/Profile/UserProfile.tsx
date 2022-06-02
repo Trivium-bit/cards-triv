@@ -1,14 +1,13 @@
 import React from 'react';
 import s from "./UserProfile.module.scss";
-import {useSelector} from "react-redux";
-import {AppStoreType} from "../../../bll/store";
+import {useAppSelector} from "../../../bll/store";
 import {ResponseLoginType} from "../../../dall/login-api";
 import EditProfileModal from "../EditProfile/EditProfileModal";
+import {appUserSelector} from "../../../../Common/Selectors/Selectors";
 
 
 const UserProfile = () => {
-    const user = useSelector<AppStoreType, ResponseLoginType | undefined>((state) => state.app.user);
-
+    const user = useAppSelector<ResponseLoginType | undefined>(appUserSelector);
 
     return (
         <>

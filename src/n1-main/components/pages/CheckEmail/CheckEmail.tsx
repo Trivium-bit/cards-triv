@@ -3,9 +3,10 @@ import styles from "./CheckEmail.module.scss";
 import commonStyles from "./../../../../Common/Styles/commonStyles.module.scss";
 import checkEmailImage from "./../../../../images/checkEmail.svg"
 import {useAppSelector} from "../../../bll/store";
-export const CheckEmail:FC = () => {
+import {emailSelector} from "../../../../Common/Selectors/Selectors";
 
-    const email = useAppSelector<string>(state => state.register.email.email);
+export const CheckEmail:FC = () => {
+    const email = useAppSelector<string>(emailSelector);
     return (
         <div className={styles.checkEmailWrapper}>
             <h2 className={commonStyles.h2}>It-incubator</h2>

@@ -1,7 +1,8 @@
 import {cardsAPI} from "../../n1-main/dall/cardsAPI";
 import {AppThunkDispatch} from "../../n1-main/bll/store";
 import {AxiosError} from "axios";
-import {setAppErrorAC, setAppStatusAC} from "../../n1-main/bll/app-reducer";
+import {setAppStatusAC} from "../../n1-main/bll/app-reducer";
+import {handleNetworkError} from "../../utils/error.utils";
 
 const SET_CARDS = "CARDS/SET_CARDS"
 
@@ -43,8 +44,7 @@ export const getCardsTC = () =>(dispatch:AppThunkDispatch) =>{
             dispatch(setAppStatusAC("succeeded"));
         })
         .catch((error: AxiosError<{ error: string }>) => {
-            dispatch(setAppStatusAC("failed"));
-            dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
+            handleNetworkError(error, dispatch)
         })
 }
 

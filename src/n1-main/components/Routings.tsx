@@ -2,13 +2,13 @@ import { Route, Routes } from 'react-router-dom'
 import Error404 from "./pages/Error404";
 import {PassRecovery} from "./pages/PassRecovery/PassRecovery";
 import Profile from "./pages/Profile/Profile";
-import Register from "./pages/Register/Register";
 import Packs from './pages/Packs/Packs';
 import PrivateRoutes from "./PrivateRoutes";
 import Home from "./pages/Home";
 import CreateNewPassword from './pages/CreateNewPassword/CreateNewPassword';
 import {CheckEmail} from "./pages/CheckEmail/CheckEmail";
 import {Login} from "./pages/Login/Login";
+import {Register} from "./pages/Register/Register";
 
 export const PATH = {
   HOME: "/",

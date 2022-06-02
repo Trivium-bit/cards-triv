@@ -9,8 +9,8 @@ import {CardsActionType} from "../../n2-features/f2-cards/cardsReducer";
 
  const rootReducer = combineReducers({
      authReducer: authReducer,
-     register: registerReducer,
-     app: appReducer,
+     registerReducer: registerReducer,
+     appReducer: appReducer,
      profileReducer: profileReducer,
  })
 
