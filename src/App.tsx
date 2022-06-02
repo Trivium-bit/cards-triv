@@ -7,7 +7,6 @@ import {initializeAppTC} from "./n2-features/f1-auth/a1-login/auth-reducer";
 import {CircularProgress} from "@mui/material";
 import {isInitializedSelector} from "./Common/Selectors/Selectors";
 
-
 function App() {
     const isInitialized = useAppSelector<boolean>(isInitializedSelector);
     const dispatch = useAppDispatch();
