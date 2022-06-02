@@ -1,15 +1,15 @@
-import {NavLink, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import {NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { PATH } from "../../Routings";
 import React, { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
-import {AppStoreType, useAppDispatch, useAppSelector} from "../../../bll/store";
+import {useAppDispatch, useAppSelector} from "../../../bll/store";
 import { loginTC} from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
-import { useSelector } from "react-redux";
 import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
 import { useFormik } from "formik";
 import {RequestStatusType} from "../../../bll/app-reducer";
 import { Checkbox, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {appStatusSelector, appUserSelector} from "../../../../Common/Selectors/Selectors";
 
 type FormikErrorType = {
     email: string
@@ -20,15 +20,11 @@ export const Login = React.memo(()=> {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
     const dispatch = useAppDispatch();
-    const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
+    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const user = useSelector<AppStoreType, ResponseLoginType | undefined>(state => state.app.user);
+    const user = useAppSelector<ResponseLoginType | undefined>(appUserSelector);
 
-
-
-    const params = useParams<"login">();
-    console.log(params.login)
     const formik = useFormik({
         validate: (values) => {
             const errors: Partial<FormikErrorType> = {};
@@ -66,7 +62,18 @@ export const Login = React.memo(()=> {
             navigate(searchParams.get("redirectTo") || "/")
         }
     }, [user, navigate, searchParams]) // это редирект на профайл
-
+    useEffect(() => {
+        const listener = (event: KeyboardEvent) => {
+            if (event.code === "Enter" || event.code === "NumpadEnter") {
+                event.preventDefault();
+                formik.handleSubmit()
+            }
+        };
+        document.addEventListener("keydown", listener);
+        return () => {
+            document.removeEventListener("keydown", listener);
+        };
+    }, [formik]);
     return (
         <div className={styles.loginWrapper}>
             <h1 className={styles.h1}>

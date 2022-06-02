@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import styles from "./../Register/Register.module.scss";
 import {useFormik} from "formik";
-import {registerAC, registerTC} from "../../../bll/registerReduser";
+import {registerTC} from "../../../bll/registerReduser";
 import {RegisterParamsType} from "../../../dall/register-API";
 import {useAppDispatch, useAppSelector} from "../../../bll/store";
-import { RequestStatusType, setAppErrorAC} from "../../../bll/app-reducer";
+import { RequestStatusType} from "../../../bll/app-reducer";
 import {InputLabel} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -15,6 +15,7 @@ import {Navigate, useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "../../../../Common/Components/Button";
 import {PATH} from "../../Routings";
+import {appStatusSelector, isRegisteredSelector} from "../../../../Common/Selectors/Selectors";
 
 type FormikErrorType = {
     email: string
@@ -22,12 +23,12 @@ type FormikErrorType = {
     confirmPassword: string
 }
 
-function Register() {
+export const Register = React.memo(()=> {
     const [isPassType, setIsPassType] = useState<boolean>(true);
     const [isConfirmPassType, setConfirmPassIsType] = useState<boolean>(true);
     const dispatch = useAppDispatch();
-    const isRegistered = useAppSelector<boolean>(state => state.register.isRegistered);
-    const appStatus = useAppSelector<RequestStatusType>(state => state.app.status);
+    const isRegistered = useAppSelector<boolean>(isRegisteredSelector);
+    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const navigate = useNavigate();
 
     const formik = useFormik({
@@ -89,12 +90,6 @@ function Register() {
         };
     }, [formik]);
 
-    useEffect(() => {
-        return () => {
-            dispatch(setAppErrorAC(null));
-            dispatch(registerAC(false));
-        }
-    }, [dispatch])
     if (isRegistered) {
         return <Navigate to={"/login"}/>
     }
@@ -174,6 +169,6 @@ function Register() {
             </div>
         </div>
     );
-}
+})
 
-export default Register;
+

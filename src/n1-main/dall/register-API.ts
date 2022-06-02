@@ -27,7 +27,7 @@ type RegisterResponse ={
 }
 
 export const registerAPI = {
-    register(values:RegisterParamsType){
+    registerReducer(values:RegisterParamsType){
         return instance.post<RegisterResponse>(`/auth/register`, values)
     }
 }
