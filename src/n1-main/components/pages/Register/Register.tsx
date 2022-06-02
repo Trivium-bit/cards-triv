@@ -14,7 +14,7 @@ import Input from "@mui/material/Input";
 import {Navigate, useNavigate} from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "../../../../Common/Components/Button";
-import {PATH} from "../../Routings";
+import {PATH} from "../../AppRoutes";
 import {appStatusSelector, isRegisteredSelector} from "../../../../Common/Selectors/Selectors";
 
 type FormikErrorType = {

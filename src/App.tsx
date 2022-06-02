@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import Routings from './n1-main/components/Routings';
+import AppRoutes from './n1-main/components/AppRoutes';
 import './App.css';
 import {ErrorSnackBar} from "./n1-main/components/ErrorSnackBar/ErrorSnackBar";
 import {useAppDispatch, useAppSelector} from "./n1-main/bll/store";
@@ -24,7 +24,7 @@ function App() {
     }
   return (
     <div className="App">
-        <Routings />
+        <AppRoutes />
         <ErrorSnackBar/>
     </div>
   );
