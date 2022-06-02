@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import Button from "../../../../../Common/Components/Button";
 import s from './AllTable.module.scss'
+import modalStyles from '../styles/ModalStyles.module.scss'
 
 //types
 type CardPropsType = {
@@ -109,12 +110,12 @@ const MyTable = () => {
                 open={!!openAnswer}
                 onClose={handleCloseAnswer}
             >
-                <Box sx={modalStyle} className={s.modalBlock }>
-                    <h1 className={s.modalTitle}>{openAnswer?.name}</h1>
-                    <p className={s.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
-                    <Box className={s.modalBtnGroup}>
-                        <Button onClick={handleCloseAnswer} className={s.btnCancel} title={'Cancel'}/>
-                        <Button onClick={handleOpenLearn} className={s.btnSave} title={'Show Answer'}/>
+                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                    <h1 className={modalStyles.modalTitle}>{openAnswer?.name}</h1>
+                    <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
+                    <Box className={modalStyles.modalBtnGroup}>
+                        <Button onClick={handleCloseAnswer} className={modalStyles.btnCancel} title={'Cancel'}/>
+                        <Button onClick={handleOpenLearn} className={modalStyles.btnSave} title={'Show Answer'}/>
                     </Box>
                 </Box>
             </Modal>
@@ -125,11 +126,11 @@ const MyTable = () => {
                 open={openLearn}
                 onClose={handleCloseLearn}
             >
-                <Box sx={modalStyle} className={s.modalBlock }>
-                    <h1 className={s.modalTitle}>Learn {openAnswer?.name}</h1>
-                    <p className={s.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
-                    <p className={s.modalText}><b>Answer:</b>“This is how "This" works in JavaScript”</p>
-                    <p className={s.modalText}><b>Rate yourself:</b></p>
+                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                    <h1 className={modalStyles.modalTitle}>Learn {openAnswer?.name}</h1>
+                    <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
+                    <p className={modalStyles.modalText}><b>Answer:</b>“This is how "This" works in JavaScript”</p>
+                    <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
                     <RadioGroup
                         aria-labelledby="demo-radio-buttons-group-label"
                         defaultValue="female"
@@ -139,9 +140,9 @@ const MyTable = () => {
                         <FormControlLabel value="Forgot" control={<Radio />} label="Forgot" />
                         <FormControlLabel value="Confused" control={<Radio />} label="Confused" />
                     </RadioGroup>
-                    <Box className={s.modalBtnGroup}>
-                        <Button onClick={handleCloseLearn} className={s.btnCancel} title={'Cancel'}/>
-                        <Button className={s.btnSave} title={'Next'}/>
+                    <Box className={modalStyles.modalBtnGroup}>
+                        <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'}/>
+                        <Button className={modalStyles.btnSave} title={'Next'}/>
                     </Box>
                 </Box>
             </Modal>
