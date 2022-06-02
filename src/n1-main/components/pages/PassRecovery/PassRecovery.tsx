@@ -6,7 +6,7 @@ import Button from "../../../../Common/Components/Button";
 import {useFormik} from "formik";
 import {useAppDispatch} from "../../../bll/store";
 import {forgotTC} from "../../../bll/registerReduser";
-import {PATH} from "../../Routings";
+import {PATH} from "../../AppRoutes";
 
 type FormikErrorType = {
     email: string

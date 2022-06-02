@@ -1,5 +1,5 @@
 import {NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import { PATH } from "../../Routings";
+import { PATH } from "../../AppRoutes";
 import React, { useEffect, useState } from "react";
 import styles from "./Login.module.scss";
 import {useAppDispatch, useAppSelector} from "../../../bll/store";

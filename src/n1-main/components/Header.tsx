@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import {Box, Container} from "@mui/material";
 import ArticleIcon from '@mui/icons-material/Article';
 import PersonIcon from '@mui/icons-material/Person';
-import { PATH } from './Routings'
+import { PATH } from './AppRoutes'
 import {useAppDispatch} from "../bll/store";
 import s from "../ui/Header.module.scss";
 import {logOut} from "../../n2-features/f1-auth/a1-login/auth-reducer";

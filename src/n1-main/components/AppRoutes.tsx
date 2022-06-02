@@ -1,5 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
-import Error404 from "./pages/Error404";
+import {Navigate, Route, Routes } from 'react-router-dom'
 import {PassRecovery} from "./pages/PassRecovery/PassRecovery";
 import Profile from "./pages/Profile/Profile";
 import Packs from './pages/Packs/Packs';
@@ -9,6 +8,8 @@ import CreateNewPassword from './pages/CreateNewPassword/CreateNewPassword';
 import {CheckEmail} from "./pages/CheckEmail/CheckEmail";
 import {Login} from "./pages/Login/Login";
 import {Register} from "./pages/Register/Register";
+import {Error404} from "./pages/Error404";
+import React from "react";
 
 export const PATH = {
   HOME: "/",
@@ -20,9 +21,11 @@ export const PATH = {
   PASS_RECOVERY: "/pass-recovery",
   CREATE_NEW_PASSWORD: "/set-new-password/:token",
   CHECK_EMAIL: "/check-email",
+  ERROR404: "/404",
+  ANY_ROUTE:"*"
 }
 
-function Routings() {
+function AppRoutes() {
   return (
     <div>
       <Routes>
@@ -36,10 +39,11 @@ function Routings() {
           <Route path={PATH.PACKS} element={<Packs />} />
           <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
-        <Route element={<Error404 />} />
+        <Route path={PATH.ANY_ROUTE} element={<Navigate to={PATH.ERROR404}/>} />
+        <Route path={PATH.ERROR404} element={<Error404 />} />
       </Routes>
     </div>
   );
 }
 
-export default Routings;
+export default AppRoutes;
