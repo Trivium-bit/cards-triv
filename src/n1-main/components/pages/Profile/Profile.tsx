@@ -6,7 +6,6 @@ import s from './Profile.module.scss'
 
 
 const Profile = () => {
-
     return (
         <div className={s.profileBlock}>
             <Container fixed >
