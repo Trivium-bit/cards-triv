@@ -3,6 +3,7 @@ import {Box, Container, Grid} from "@mui/material";
 import MyPacks from "./MyPacks/MyPacks";
 import s from './styles/Packs.module.scss'
 import AllPacks from "./AllPacks/AllPacks";
+import Slider from "../../Slider/Slider";
 
 
 
@@ -28,7 +29,8 @@ const Packs = () => {
                                     </button>
                                 </Box>
                                 <Box>
-                                    <span className={s.title}>Number of cards</span>
+                                    <p className={s.title}>Number of cards</p>
+                                    <Slider/>
                                 </Box>
                             </Box>
                         </Grid>

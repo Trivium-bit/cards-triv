@@ -3,6 +3,7 @@ import {Box, Container, Grid} from "@mui/material";
 import UserProfile from "./UserProfile";
 import MyPacks from "../Packs/MyPacks/MyPacks";
 import s from './Profile.module.scss'
+import Slider from "../../Slider/Slider";
 
 
 const Profile = () => {
@@ -17,7 +18,8 @@ const Profile = () => {
                                    <UserProfile/>
                                 </Box>
                                 <Box className={s.utils}>
-                                    utils
+                                    <p className={s.utilsTitle}>Number of Cards</p>
+                                    <Slider/>
                                 </Box>
                             </Grid>
                         </Grid>
