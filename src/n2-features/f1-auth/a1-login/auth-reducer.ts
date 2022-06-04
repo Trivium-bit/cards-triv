@@ -58,10 +58,10 @@ export type isAuthActionType =
 export type AuthorizationActionType = isAuthActionType
 
 //thunk
-export const loginTC = (loginParams: LoginParamsType) =>
+export const loginTC = ({email, password, rememberMe}: LoginParamsType) =>
     async (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
-        await authAPI.login(loginParams)
+        await authAPI.login({email, password, rememberMe})
             .then((res) => {
                 dispatch(setIsLoggedInAC(true))
                 dispatch(setAppStatusAC("succeeded"));

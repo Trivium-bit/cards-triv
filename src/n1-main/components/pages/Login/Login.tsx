@@ -50,8 +50,8 @@ export const Login = React.memo(() => {
             rememberMe: true,
         },
 
-        onSubmit: (loginParams: LoginParamsType) => {
-            dispatch(loginTC(loginParams));
+        onSubmit: ({email, password, rememberMe}: LoginParamsType) => {
+            dispatch(loginTC({email, password, rememberMe}));
         }
     })
     const handleClickShowPassword = () => {
