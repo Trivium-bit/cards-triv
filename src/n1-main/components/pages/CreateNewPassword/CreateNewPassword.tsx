@@ -64,7 +64,7 @@ function CreateNewPassword() {
         if (info) {
             return navigate(PATH.LOGIN);
         }
-    }, [info]);
+    }, [info, navigate]);
 
     return (
         <div className={styles.loginWrapper}>
