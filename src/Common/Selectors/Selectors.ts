@@ -22,3 +22,4 @@ export const isLoggedInSelector = (state: AppStoreType):boolean =>{
 export const isInitializedSelector = (state: AppStoreType):boolean =>{
     return state.authReducer.isInitialized
 }
+
