@@ -23,10 +23,10 @@ export const authAPI = {
         return instance.post<ResponseResetPasswordType>('/auth/set-new-password', {password, resetPasswordToken});
     },
     me() {
-        return instance.post<ResponseLoginType>(`/auth/me`, {})
+        return instance.post<ResponseLoginType>(`/auth/me`, {});
     },
     logOut() {
-        return instance.delete<{ info: string, error: string }>(`/auth/me`)
+        return instance.delete<{ info: string, error: string }>(`/auth/me`);
     }
 }
 
