@@ -2,7 +2,7 @@ import axios from 'axios'
 import {RecoveryEmailType} from "../components/pages/PassRecovery/PassRecovery";
 
 export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/' ,
+    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
     withCredentials: true,
 })
 export type RegisterParamsType = {
@@ -10,7 +10,7 @@ export type RegisterParamsType = {
     password: string
 }
 
-type RegisterResponse ={
+type RegisterResponse = {
     addedUser: {
         created: string
         email: string
@@ -27,13 +27,27 @@ type RegisterResponse ={
 }
 
 export const registerAPI = {
-    registerReducer(values:RegisterParamsType){
+    registerReducer(values: RegisterParamsType) {
         return instance.post<RegisterResponse>(`/auth/register`, values)
     }
 }
 
 export const forgotPassAPI = {
-    forgotPass(email:RecoveryEmailType){
-        return instance.post(`/auth/forgot`, email)
+    forgotPass(email: RecoveryEmailType) {
+        return instance.post(`/auth/forgot`,
+            {
+                    email:email.email,
+                    // кому восстанавливать пароль
+                    from: "test-front-admin <dmitryLotkov9@gmail.com>",
+                    // можно указать разработчика фронта)
+                    message: `<div style="background-color: #f7f7f7; padding: 15px">
+                        Follow 
+                        <a href='https://trivium-bit.github.io/cards-triv/#/set-new-password/$token$'
+                        style="font-weight: bold; color: #1a73e8;">
+                        this link</a> to recover your password
+                        </div>` // хтмп-письмо, вместо $token$ бэк вставит токен
+
+            }
+        )
     }
 }
