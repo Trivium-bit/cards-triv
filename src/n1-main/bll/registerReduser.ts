@@ -3,8 +3,9 @@ import {AppActionsType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
 import {AppThunkDispatch} from "./store";
 import {customSuccessAlert} from "../../utils/customSuccessAlertUtils";
-import {RecoveryEmailType} from "../components/pages/PassRecovery/PassRecovery";
+
 import {handleNetworkError} from "../../utils/error.utils";
+import {RecoveryEmailType} from "../components/pages/PassRecovery/PassRecovery";
 
 const initialState = {
     isRegistered: false,
@@ -42,7 +43,7 @@ export const registerTC = (data: RegisterParamsType) => {
 export const forgotTC = (email: RecoveryEmailType) => {
     return (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
-        forgotPassAPI.forgotPass(email)
+        forgotPassAPI.forgotPass(email, )
             .then(() => {
                 localStorage.setItem("email", JSON.stringify(email.email));
                 const valueAsString = localStorage.getItem("email");

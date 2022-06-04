@@ -1,6 +1,7 @@
 import { AppStoreType } from "../../n1-main/bll/store";
 import { NullableType, RequestStatusType, UserType } from "../../n1-main/bll/app-reducer";
-import { ResponseCardsPackType } from "../../n1-main/dall/cardsAPI";
+import {ResponseCardsPackType} from "../../n1-main/dall/cardsAPI";
+
 
 export const appStatusSelector = (state: AppStoreType): RequestStatusType => {
     return state.appReducer.status
@@ -14,7 +15,7 @@ export const appUserSelector = (state: AppStoreType): UserType => {
 export const isRegisteredSelector = (state: AppStoreType): boolean => {
     return state.registerReducer.isRegistered
 }
-export const emailSelector = (state: AppStoreType):string =>{
+export const emailSelector = (state: AppStoreType): string => {
     return state.registerReducer.email
 }
 export const isLoggedInSelector = (state: AppStoreType): boolean => {
@@ -26,4 +27,3 @@ export const carsPackSelector = (state: AppStoreType): ResponseCardsPackType => 
 export const isInitializedSelector = (state: AppStoreType): boolean => {
     return state.authReducer.isInitialized
 }
-

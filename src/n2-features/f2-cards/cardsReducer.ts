@@ -1,5 +1,5 @@
 import store, { AppStoreType } from './../../n1-main/bll/store';
-import { cardsAPI, ResponseCardsPackType } from "../../n1-main/dall/cardsAPI";
+import {cardsAPI, ResponseCardsPackType} from "../../n1-main/dall/cardsAPI";
 import { AppThunkDispatch } from "../../n1-main/bll/store";
 import { AxiosError } from "axios";
 import { setAppStatusAC } from "../../n1-main/bll/app-reducer";
@@ -72,6 +72,8 @@ export type GetCardsPackActionType = ReturnType<typeof getCardsPackAC>
 //thunk
 export const getCardsPuckTC = () => (dispatch: AppThunkDispatch, getState: AppStoreType) => {
     dispatch(setAppStatusAC("loading"));
+
+
     cardsAPI.getCardsPack()
         .then((response) => {
             let cardsPack = store.getState().cardsReducer.cardsPack
