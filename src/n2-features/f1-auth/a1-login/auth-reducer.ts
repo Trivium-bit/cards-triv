@@ -1,8 +1,8 @@
-import {AxiosError} from "axios"
-import {setAppStatusAC, setAppUserAC} from "../../../n1-main/bll/app-reducer"
-import {AppThunkDispatch} from "../../../n1-main/bll/store"
-import {authAPI, LoginParamsType, NewPasswordType} from "../../../n1-main/dall/login-api"
-import {handleNetworkError} from "../../../utils/error.utils"
+import { AxiosError } from "axios"
+import { setAppStatusAC, setAppUserAC } from "../../../n1-main/bll/app-reducer"
+import { AppThunkDispatch } from "../../../n1-main/bll/store"
+import { authAPI, LoginParamsType, NewPasswordType } from "../../../n1-main/dall/login-api"
+import { handleNetworkError } from "../../../utils/error.utils"
 
 const SET_IS_LOGGED_IN = "login/SET-IS-LOGGED-IN"
 const SEND_NEW_PASSWORD = "login/SEND-NEW-PASSWORD"
@@ -12,11 +12,6 @@ const SET_IS_INITIALIZED_IN = "login/SET_IS_INITIALIZED_IN";
 const initialState = {
     isLoggedIn: false,
     isInitialized: false,
-    loginParams: {
-        email: "",
-        password: "",
-        rememberMe: false,
-    },
     password: "",
     info: ""
 }
@@ -26,23 +21,23 @@ type InitialStateType = typeof initialState
 export const authReducer = (state: InitialStateType = initialState, action: isAuthActionType): InitialStateType => {
     switch (action.type) {
         case SET_IS_LOGGED_IN:
-            return {...state, isLoggedIn: action.isLoggedIn}
+            return { ...state, isLoggedIn: action.isLoggedIn }
         case SEND_NEW_PASSWORD:
-            return {...state, password: action.password}
+            return { ...state, password: action.password }
         case SET_IS_INITIALIZED_IN:
-            return {...state, isInitialized: action.isInitialized}
+            return { ...state, isInitialized: action.isInitialized }
         case SET_NEW_PASSWORD:
-            return {...state, info: action.info}
+            return { ...state, info: action.info }
         default:
             return state
     }
 }
 
 // actions
-export const setIsLoggedInAC = (isLoggedIn: boolean) => ({type: SET_IS_LOGGED_IN, isLoggedIn} as const)
-export const sendNewPasswordAC = (password: string) => ({type: SEND_NEW_PASSWORD, password} as const)
-export const setNewPasswordAC = (info: string) => ({type: SET_NEW_PASSWORD, info} as const)
-export const setInitializedAC = (isInitialized: boolean) => ({type: SET_IS_INITIALIZED_IN, isInitialized} as const);
+export const setIsLoggedInAC = (isLoggedIn: boolean) => ({ type: SET_IS_LOGGED_IN, isLoggedIn } as const)
+export const sendNewPasswordAC = (password: string) => ({ type: SEND_NEW_PASSWORD, password } as const)
+export const setNewPasswordAC = (info: string) => ({ type: SET_NEW_PASSWORD, info } as const)
+export const setInitializedAC = (isInitialized: boolean) => ({ type: SET_IS_INITIALIZED_IN, isInitialized } as const);
 
 // types
 export type IsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>
@@ -58,31 +53,31 @@ export type isAuthActionType =
 export type AuthorizationActionType = isAuthActionType
 
 //thunk
-export const loginTC = ({email, password, rememberMe}: LoginParamsType) =>
+export const loginTC = ({ email, password, rememberMe }: LoginParamsType) =>
     async (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
-        await authAPI.login({email, password, rememberMe})
+        await authAPI.login({ email, password, rememberMe })
             .then((res) => {
-                dispatch(setIsLoggedInAC(true))
+                dispatch(setIsLoggedInAC(true));
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setAppUserAC(res.data));
             }).catch((error: AxiosError<{ error: string }>) => {
-                    handleNetworkError(error, dispatch);
-                }
+                handleNetworkError(error, dispatch);
+            }
             )
     }
 
-export const sendNewPasswordTC = ({password, resetPasswordToken}: NewPasswordType) =>
+export const sendNewPasswordTC = ({ password, resetPasswordToken }: NewPasswordType) =>
     async (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
-        await authAPI.setNewPassword({password, resetPasswordToken})
+        await authAPI.setNewPassword({ password, resetPasswordToken })
             .then((res) => {
                 sendNewPasswordAC(password);
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setNewPasswordAC(res.data.info));
             }).catch((error: AxiosError<{ error: string }>) => {
-                    handleNetworkError(error, dispatch);
-                }
+                handleNetworkError(error, dispatch);
+            }
             )
     }
 
@@ -90,13 +85,13 @@ export const logOut = () => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     authAPI.logOut()
         .then(() => {
-            dispatch(setIsLoggedInAC(false))
-            dispatch(setAppStatusAC('succeeded'))
+            dispatch(setIsLoggedInAC(false));
+            dispatch(setAppStatusAC('succeeded'));
             dispatch(setAppUserAC(undefined));
         })
         .catch((error: AxiosError<{ error: string }>) => {
-                handleNetworkError(error, dispatch);
-            }
+            handleNetworkError(error, dispatch);
+        }
         )
 }
 
@@ -110,8 +105,8 @@ export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
         }
     })
         .catch((error: AxiosError<{ error: string }>) => {
-                handleNetworkError(error, dispatch);
-            }
+            handleNetworkError(error, dispatch);
+        }
         )
         .finally(() => {
             dispatch(setInitializedAC(true));
