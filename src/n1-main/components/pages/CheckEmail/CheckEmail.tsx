@@ -5,7 +5,7 @@ import checkEmailImage from "./../../../../images/checkEmail.svg"
 import {useAppSelector} from "../../../bll/store";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {RequestStatusType} from "../../../bll/app-reducer";
-import {GlobalProgressAnimation} from "../../../../Common/Components/GlobalProgressAnimation";
+import {Loader} from "../../../../Common/Components/Loader";
 
 
 export const CheckEmail: FC = () => {
@@ -16,7 +16,7 @@ export const CheckEmail: FC = () => {
         emailFromLocalStorage = emailFromLocalStorage.replace(/['"]+/g, '') //убираем кавычки из строки из localStorage
     }
     if (appStatus === "loading") {
-        return <GlobalProgressAnimation/>
+        return <Loader/>
     }
 
     return (

@@ -6,10 +6,9 @@ import { useAppDispatch, useAppSelector } from "../../../bll/store";
 import { loginTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
 import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
 import { useFormik } from "formik";
-import { RequestStatusType } from "../../../bll/app-reducer";
-import { Checkbox, CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
+import { Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { appStatusSelector, appUserSelector } from "../../../../Common/Selectors/Selectors";
+import { appUserSelector } from "../../../../Common/Selectors/Selectors";
 import Button from "../../../../Common/Components/Button";
 
 type FormikErrorType = {
@@ -21,7 +20,6 @@ export const Login = React.memo(() => {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
     const dispatch = useAppDispatch();
-    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const user = useAppSelector<ResponseLoginType | undefined>(appUserSelector);
@@ -119,19 +117,13 @@ export const Login = React.memo(() => {
                             checked={formik.getFieldProps("rememberMe").value}
                             size="small"
                             color="secondary" />
-                        <div className={styles.remembMe}>remember Me</div>
+                        <div className={styles.remembMe}>Remember Me</div>
                     </label>
                     <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
-                        {appStatus === "loading"
-                            ? <div className={styles.circularProgress}>
-                                <CircularProgress />
-                            </div>
-                            :
                             <Button title={"Login"} type="submit" className={styles.loginButton} />
-                        }
                     </form>
                     <div className={styles.links}>
                         <div className={styles.question}>Don’t have an account?</div>

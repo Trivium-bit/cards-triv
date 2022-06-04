@@ -2,18 +2,12 @@ import React from 'react';
 import {Navigate, Outlet, useLocation} from "react-router-dom";
 import {useAppSelector} from "../bll/store";
 import Header from "./Header";
-import {isInitializedSelector, isLoggedInSelector} from "../../Common/Selectors/Selectors";
-
-import {GlobalProgressAnimation} from "../../Common/Components/GlobalProgressAnimation";
+import {isLoggedInSelector} from "../../Common/Selectors/Selectors";
 
 const PrivateRoutes = () => {
     const location = useLocation();
-    const isInitialized = useAppSelector<boolean>(isInitializedSelector);
-    const isLoggedIn = useAppSelector<boolean>(isLoggedInSelector);
 
-    if (!isInitialized) {
-        return <GlobalProgressAnimation/>
-    }
+    const isLoggedIn = useAppSelector<boolean>(isLoggedInSelector);
 
     if (!isLoggedIn) {
         return (
