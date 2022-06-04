@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { v4 } from 'uuid';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal,
@@ -14,6 +14,11 @@ import {
 import Button from "../../../../../Common/Components/Button";
 import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
+import { useAppDispatch, useAppSelector } from '../../../../bll/store';
+import { getCardsPuckTC } from '../../../../../n2-features/f2-cards/cardsReducer';
+import { ResponseCardsPackType } from '../../../../dall/cardsAPI';
+import { carsPackSelector } from '../../../../../Common/Selectors/Selectors';
+
 
 //types
 type CardPropsType = {
@@ -67,6 +72,9 @@ const MyTable = () => {
     const [openAnswer, setOpenAnswer] = useState<CardPropsType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const cardPacksResponse = useAppSelector<ResponseCardsPackType | undefined>(carsPackSelector);
+
+    const dispatch = useAppDispatch();
 
     const handleOpenDelete = (card: CardPropsType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
@@ -90,6 +98,13 @@ const MyTable = () => {
     const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAnswer(event.target.value);
     };
+
+    useEffect(() => {
+       dispatch(getCardsPuckTC)
+    }, [dispatch]);
+
+
+
     return (
         <Box>
             {/*//my table*/}

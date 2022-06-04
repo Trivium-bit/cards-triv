@@ -1,46 +1,82 @@
-import {cardsAPI} from "../../n1-main/dall/cardsAPI";
-import {AppThunkDispatch} from "../../n1-main/bll/store";
-import {AxiosError} from "axios";
-import {setAppStatusAC} from "../../n1-main/bll/app-reducer";
-import {handleNetworkError} from "../../utils/error.utils";
+import store, { AppStoreType } from './../../n1-main/bll/store';
+import { cardsAPI, ResponseCardsPackType } from "../../n1-main/dall/cardsAPI";
+import { AppThunkDispatch } from "../../n1-main/bll/store";
+import { AxiosError } from "axios";
+import { setAppStatusAC } from "../../n1-main/bll/app-reducer";
+import { handleNetworkError } from "../../utils/error.utils";
 
-const SET_CARDS = "CARDS/SET_CARDS"
+const SET_CARDS_PACK = "CARDS/SET_CARDS_PACK"
+const GET_CARDS_PACK = "CARDS/GET_CARDS_PACK"
 
 const initialState = {
-    isLoading: false,
+    cardsPack: {
+        packName: "",
+        min: 1,
+        max: 100,
+        sortPacks: "",
+        page: 1,
+        pageCount: 8,
+        user_id: ""
+    },
+    cardPacksResponse: {
+        cardPacks: [
+            {
+                _id: "",
+                user_id: "",
+                name: "",
+                cardsCount: 0,
+                created: "",
+                updated: ""
+            },
+        ],
+        cardPacksTotalCount: 0,
+        maxCardsCount: 0,
+        minCardsCount: 0,
+        page: 1,
+        pageCount: 8
+    }
 }
 
+export type RequestCardsPackType = {
+    packName: string
+    min: number
+    max: number
+    sortPacks: string
+    page: number
+    pageCount: number
+    user_id: string
+}
 
+type InitialStateType = typeof initialState
 
-export type InitialProfileStateType = {
-
-};
-
-export type CardsActionType = SetCardsActionType
-
-export const cardsReducer = (state: InitialProfileStateType = initialState, action: CardsActionType): InitialProfileStateType => {
+export type CardsPackActionType = SetCardsPackActionType | GetCardsPackActionType
+export const cardsReducer = (state: InitialStateType = initialState, action: CardsPackActionType): InitialStateType => {
     switch (action.type) {
-        case "CARDS/SET_CARDS":
-            return {...state, isCardsLoaded:action.isCardsLoaded}
+        case "CARDS/SET_CARDS_PACK":
+            return { ...state, cardsPack: action.cardsPack }
+        case "CARDS/GET_CARDS_PACK":
+            return { ...state, cardPacksResponse: action.cardPacksResponse }
         default:
             return state
     }
 }
 
 // actions
-export const setCardsAC = (isCardsLoaded: boolean) => ({ type: SET_CARDS, isCardsLoaded } as const)
+export const setCardsPackAC = (cardsPack: RequestCardsPackType) => ({ type: SET_CARDS_PACK, cardsPack } as const)
+export const getCardsPackAC = (cardPacksResponse: ResponseCardsPackType) => ({ type: GET_CARDS_PACK, cardPacksResponse } as const)
 
 // types
-export type SetCardsActionType = ReturnType<typeof setCardsAC>
+export type SetCardsPackActionType = ReturnType<typeof setCardsPackAC>
+export type GetCardsPackActionType = ReturnType<typeof getCardsPackAC>
 
 //thunk
-
-
-export const getCardsTC = () =>(dispatch:AppThunkDispatch) =>{
+export const getCardsPuckTC = () => (dispatch: AppThunkDispatch, getState: AppStoreType) => {
     dispatch(setAppStatusAC("loading"));
-    cardsAPI.getCards()
-        .then(() =>{
-            dispatch(setCardsAC(true));
+    cardsAPI.getCardsPack()
+        .then((response) => {
+            let cardsPack = store.getState().cardsReducer.cardsPack
+            dispatch(setCardsPackAC(cardsPack));
+            dispatch(getCardsPackAC(response.data));
             dispatch(setAppStatusAC("succeeded"));
         })
         .catch((error: AxiosError<{ error: string }>) => {
