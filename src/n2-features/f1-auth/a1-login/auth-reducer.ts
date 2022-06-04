@@ -104,15 +104,9 @@ export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
             dispatch(setAppUserAC(res.data));
         }
     })
-<<<<<<< HEAD
-        .catch((error: AxiosError<{ error: string }>) => {
-            handleNetworkError(error, dispatch);
-        }
-=======
         .catch(() => {
-                dispatch(setAppStatusAC("failed"));
-            }
->>>>>>> 392f7765219770f4fc9fc5865e82266de54c55c2
+            dispatch(setAppStatusAC("failed"));
+        }
         )
         .finally(() => {
             dispatch(setInitializedAC(true));
