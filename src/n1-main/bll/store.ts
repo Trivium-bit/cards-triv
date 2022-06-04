@@ -6,6 +6,7 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
 import {CardsPackActionType, cardsReducer} from "../../n2-features/f2-cards/cardsReducer";
 
+
  const rootReducer = combineReducers({
      authReducer: authReducer,
      registerReducer: registerReducer,
