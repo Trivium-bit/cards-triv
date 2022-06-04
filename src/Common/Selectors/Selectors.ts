@@ -14,7 +14,7 @@ export const isRegisteredSelector = (state: AppStoreType):boolean =>{
     return state.registerReducer.isRegistered
 }
 export const emailSelector = (state: AppStoreType):string =>{
-    return state.registerReducer.email.email
+    return state.registerReducer.email
 }
 export const isLoggedInSelector = (state: AppStoreType):boolean =>{
     return state.authReducer.isLoggedIn

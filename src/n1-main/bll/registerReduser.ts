@@ -8,9 +8,7 @@ import {handleNetworkError} from "../../utils/error.utils";
 
 const initialState = {
     isRegistered: false,
-    email: {
-        email: ""
-    }
+    email: ""
 }
 type InitialStateType = typeof initialState
 
@@ -46,9 +44,12 @@ export const forgotTC = (email: RecoveryEmailType) => {
         dispatch(setAppStatusAC("loading"));
         forgotPassAPI.forgotPass(email)
             .then(() => {
+                localStorage.setItem("email", JSON.stringify(email.email));
+                const valueAsString = localStorage.getItem("email");
+                if (valueAsString) {
                 dispatch(setAppStatusAC("succeeded"));
-                dispatch(getEmailAC(email))
-            })
+                dispatch(getEmailAC(valueAsString));
+            }})
             .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch)
             })
@@ -60,4 +61,4 @@ export type RegisterActionsType = isRegisteredActionType;
 
 // actions
 export const registerAC = (isRegistered: boolean) => ({type: 'REGISTER/SET-IS-REGISTER', isRegistered} as const)
-export const getEmailAC = (email: RecoveryEmailType) => ({type: 'GET-EMAIL/GET-EMAIL', email} as const)
+export const getEmailAC = (email: string) => ({type: 'GET-EMAIL/GET-EMAIL', email} as const)
