@@ -17,12 +17,10 @@ export type NewPasswordType = {
 
 export const authAPI = {
     login({ email, password, rememberMe }: LoginParamsType) {
-        const promise = instance.post<ResponseLoginType>('auth/login', { email, password, rememberMe });
-        return promise;
+        return instance.post<ResponseLoginType>('auth/login', {email, password, rememberMe});
     },
     setNewPassword({ password, resetPasswordToken }: NewPasswordType) {
-        const promise = instance.post<ResponseResetPasswordType>('/auth/set-new-password', { password, resetPasswordToken });
-        return promise;
+        return instance.post<ResponseResetPasswordType>('/auth/set-new-password', {password, resetPasswordToken});
     },
     me() {
         return instance.post<ResponseLoginType>(`/auth/me`, {});

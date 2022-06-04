@@ -1,3 +1,4 @@
+import React from "react";
 import {Navigate, Route, Routes } from 'react-router-dom'
 import {PassRecovery} from "./pages/PassRecovery/PassRecovery";
 import Profile from "./pages/Profile/Profile";
@@ -9,11 +10,12 @@ import {CheckEmail} from "./pages/CheckEmail/CheckEmail";
 import {Login} from "./pages/Login/Login";
 import {Register} from "./pages/Register/Register";
 import {Error404} from "./pages/Error404";
-import React from "react";
+import CardDetails from "./pages/Packs/CardDetails";
 
 export const PATH = {
   HOME: "/",
   PACKS: "/packs",
+  PACKS_DETAILS: '/packs/:packId',
   LOGIN: "/login",
   REGISTER: "/register",
   PROFILE: "/profile",
@@ -37,6 +39,7 @@ function AppRoutes() {
         <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>} />
         <Route element={<PrivateRoutes />}>
           <Route path={PATH.PACKS} element={<Packs />} />
+          <Route path={PATH.PACKS_DETAILS} element={<CardDetails />} />
           <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
         <Route path={PATH.ANY_ROUTE} element={<Navigate to={PATH.ERROR404}/>} />

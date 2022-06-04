@@ -14,20 +14,29 @@ import {
 import Button from "../../../../../Common/Components/Button";
 import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
+<<<<<<< HEAD
 import { useAppDispatch, useAppSelector } from '../../../../bll/store';
 import { getCardsPuckTC } from '../../../../../n2-features/f2-cards/cardsReducer';
 import { ResponseCardsPackType } from '../../../../dall/cardsAPI';
 import { carsPackSelector } from '../../../../../Common/Selectors/Selectors';
 
+=======
+import {Link} from "react-router-dom";
+>>>>>>> 392f7765219770f4fc9fc5865e82266de54c55c2
 
 //types
-type CardPropsType = {
+type PackPropsType = {
     _id: string
     name:string
     cards: number
     lastUpdate: string
     createdBy: string
 }
+const cards: PackPropsType[] = [
+    {_id:v4(), name: "First pack", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 1"},
+    {_id:v4(), name: "Second pack ", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 2"},
+    {_id:v4(), name: "Pack name 3", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 3"},
+]
 
 //mui styles
 const StyledTableCell = styled(TableCell)(({ }) => ({
@@ -48,11 +57,6 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
     },
 }));
 
-const cards: CardPropsType[] = [
-    {_id:v4(), name: "First pack", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 1"},
-    {_id:v4(), name: "Second pack ", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 2"},
-    {_id:v4(), name: "Pack name 3", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 3"},
-]
 const modalStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -68,18 +72,18 @@ const modalStyle = {
 const MyTable = () => {
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardPropsType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardPropsType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<PackPropsType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<PackPropsType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const cardPacksResponse = useAppSelector<ResponseCardsPackType | undefined>(carsPackSelector);
 
     const dispatch = useAppDispatch();
 
-    const handleOpenDelete = (card: CardPropsType) => setRowToDelete(card);
+    const handleOpenDelete = (card: PackPropsType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
 
-    const handleOpenAnswer = (card: CardPropsType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: PackPropsType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
 
     const handleOpenLearn = () => setOpenLearn(true);
@@ -113,9 +117,9 @@ const MyTable = () => {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell align="right">Cards</StyledTableCell>
-                            <StyledTableCell align="right">Last Updates</StyledTableCell>
-                            <StyledTableCell align="right">Created By</StyledTableCell>
+                            <StyledTableCell align="left">Cards</StyledTableCell>
+                            <StyledTableCell align="left">Last Updates</StyledTableCell>
+                            <StyledTableCell align="left">Created By</StyledTableCell>
                             <StyledTableCell align="center">Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -123,11 +127,14 @@ const MyTable = () => {
                         {cards.map((card) => (
                             <StyledTableRow key={card._id}>
                                 <StyledTableCell component="th" scope="row">
-                                    {card.name}
+                                    <Link to={`/packs/${card._id}`}>
+                                        {card.name}
+                                    </Link>
+
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{card.cards}</StyledTableCell>
-                                <StyledTableCell align="right">{card.lastUpdate}</StyledTableCell>
-                                <StyledTableCell align="right">{card.createdBy}</StyledTableCell>
+                                <StyledTableCell align="left">{card.cards}</StyledTableCell>
+                                <StyledTableCell align="left">{card.lastUpdate}</StyledTableCell>
+                                <StyledTableCell align="left">{card.createdBy}</StyledTableCell>
                                 <StyledTableCell align="right">
                                     <Box className={s.buttonGroup}>
                                         <button onClick={() => handleOpenDelete(card)} className={s.delete} >Delete</button>

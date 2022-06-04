@@ -81,7 +81,7 @@ export const sendNewPasswordTC = ({ password, resetPasswordToken }: NewPasswordT
             )
     }
 
-export const logOut = () => (dispatch: AppThunkDispatch) => {
+export const logOutTC = () => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     authAPI.logOut()
         .then(() => {
@@ -104,9 +104,15 @@ export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
             dispatch(setAppUserAC(res.data));
         }
     })
+<<<<<<< HEAD
         .catch((error: AxiosError<{ error: string }>) => {
             handleNetworkError(error, dispatch);
         }
+=======
+        .catch(() => {
+                dispatch(setAppStatusAC("failed"));
+            }
+>>>>>>> 392f7765219770f4fc9fc5865e82266de54c55c2
         )
         .finally(() => {
             dispatch(setInitializedAC(true));

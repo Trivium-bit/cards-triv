@@ -80,9 +80,9 @@ const MyTable = () => {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell align="right">Cards</StyledTableCell>
-                            <StyledTableCell align="right">Last Updates</StyledTableCell>
-                            <StyledTableCell align="right">Created By</StyledTableCell>
+                            <StyledTableCell align="left">Cards</StyledTableCell>
+                            <StyledTableCell align="left">Last Updates</StyledTableCell>
+                            <StyledTableCell align="left">Created By</StyledTableCell>
                             <StyledTableCell align="center">Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -92,9 +92,9 @@ const MyTable = () => {
                                 <StyledTableCell component="th" scope="row">
                                     {card.name}
                                 </StyledTableCell>
-                                <StyledTableCell align="right">{card.cards}</StyledTableCell>
-                                <StyledTableCell align="right">{card.lastUpdate}</StyledTableCell>
-                                <StyledTableCell align="right">{card.createdBy}</StyledTableCell>
+                                <StyledTableCell align="left">{card.cards}</StyledTableCell>
+                                <StyledTableCell align="left">{card.lastUpdate}</StyledTableCell>
+                                <StyledTableCell align="left">{card.createdBy}</StyledTableCell>
                                 <StyledTableCell align="right">
                                     <Box className={s.buttonGroup}>
                                         <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
