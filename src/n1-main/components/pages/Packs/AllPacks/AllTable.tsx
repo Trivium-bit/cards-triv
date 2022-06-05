@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
-import { v4 } from 'uuid';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
-    Box, FormControlLabel, Modal,
+    Box, CircularProgress, FormControlLabel, Modal, Pagination,
     Paper, Radio, RadioGroup,
     styled,
     Table,
@@ -14,21 +13,17 @@ import {
 import Button from "../../../../../Common/Components/Button";
 import s from './AllTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
+import {useLocation, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    myCardsIsLoadingSelector,
+    myCardsPaginationSelector,
+    myCardsSelector
+} from "../../../../../Common/Selectors/Selectors";
+import {CardsType, getCardsTC} from "../../../../../n2-features/f2-cards/cardsReducer";
 
 //types
-type CardPropsType = {
-    _id: string
-    name:string
-    cards: number
-    lastUpdate: string
-    createdBy: string
-}
 
-const cards: CardPropsType[]  = [
-    {_id: v4(), name: "Marina's pack", cards: 4, lastUpdate: "21.02.21", createdBy: "Marina"},
-    {_id: v4(),name: "Vitaly's pack", cards: 5, lastUpdate: "21.09.21", createdBy: "Vitali"},
-    {_id: v4(),name: "Dmitry's pack", cards: 9, lastUpdate: "21.12.21", createdBy: "Dmitrii"},
-]
 
 //styles mui
 const StyledTableCell = styled(TableCell)(({ }) => ({
@@ -62,10 +57,20 @@ const modalStyle = {
 
 //table
 const MyTable = () => {
-    const [openAnswer, setOpenAnswer] = useState<CardPropsType | undefined>(undefined);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch<any>();
+    const myCards = useSelector(myCardsSelector);
+    const myCardsIsLoading = useSelector(myCardsIsLoadingSelector);
+    const myCardsPagination = useSelector(myCardsPaginationSelector);
+    const [openAnswer, setOpenAnswer] = useState<CardsType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
 
-    const handleOpenAnswer = (card: CardPropsType) => setOpenAnswer(card);
+    const currentPage = useMemo(() => {
+        return new URLSearchParams(location.search)?.get("page") || "1";
+    }, [location.search]);
+
+    const handleOpenAnswer = (card: CardsType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
 
     const handleOpenLearn = () => setOpenLearn(true);
@@ -73,6 +78,14 @@ const MyTable = () => {
         setOpenAnswer(undefined);
         setOpenLearn(false);
     };
+
+    const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
+        navigate(`/packs?page=${page}`)
+    }
+
+    useEffect(() => {
+        dispatch(getCardsTC(currentPage))
+    },[currentPage]);
     return (
         <Box>
             <TableContainer component={Paper}>
@@ -87,25 +100,35 @@ const MyTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {cards.map((card) => (
+                        {myCardsIsLoading ? (
+                            <StyledTableRow>
+                                <StyledTableCell>
+                                    <CircularProgress />
+                                </StyledTableCell>
+                            </StyledTableRow>
+                        ) : (
+                        myCards.map((card) => (
                             <StyledTableRow key={card.name}>
                                 <StyledTableCell component="th" scope="row">
                                     {card.name}
                                 </StyledTableCell>
-                                <StyledTableCell align="left">{card.cards}</StyledTableCell>
-                                <StyledTableCell align="left">{card.lastUpdate}</StyledTableCell>
-                                <StyledTableCell align="left">{card.createdBy}</StyledTableCell>
+                                <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
+                                <StyledTableCell align="left">{card.updated}</StyledTableCell>
+                                <StyledTableCell align="left">{card.created}</StyledTableCell>
                                 <StyledTableCell align="right">
                                     <Box className={s.buttonGroup}>
                                         <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
                                     </Box>
                                 </StyledTableCell>
                             </StyledTableRow>
-                        ))}
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
             {/*// Show Answer Modal*/}
+            <Pagination onChange={handleChangePagination} count={myCardsPagination.count} page={myCardsPagination.current} shape="rounded" />
+
             <Modal
                 open={!!openAnswer}
                 onClose={handleCloseAnswer}
