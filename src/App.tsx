@@ -20,7 +20,6 @@ function App() {
     if (!isInitialized) {
         return <Loader/>
     }
-
     return (
         <div className="App">
             {appStatus === 'loading' && <Loader/>}

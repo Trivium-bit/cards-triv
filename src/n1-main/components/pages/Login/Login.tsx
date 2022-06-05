@@ -1,15 +1,16 @@
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import { PATH } from "../../AppRoutes";
-import React, { useEffect, useState } from "react";
+import {NavLink, useNavigate, useSearchParams} from "react-router-dom";
+import {PATH} from "../../AppRoutes";
+import React, {useEffect, useState} from "react";
 import styles from "./Login.module.scss";
-import { useAppDispatch, useAppSelector } from "../../../bll/store";
-import { loginTC } from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
-import { LoginParamsType, ResponseLoginType } from "../../../dall/login-api";
-import { useFormik } from "formik";
-import { Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { appUserSelector } from "../../../../Common/Selectors/Selectors";
+import {useAppDispatch, useAppSelector} from "../../../bll/store";
+import {loginTC} from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
+import {LoginParamsType, ResponseLoginType} from "../../../dall/login-api";
+import {useFormik} from "formik";
+import {Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import { appUserSelector} from "../../../../Common/Selectors/Selectors";
 import Button from "../../../../Common/Components/Button";
+
 
 type FormikErrorType = {
     email: string
@@ -47,8 +48,8 @@ export const Login = React.memo(() => {
             rememberMe: true,
         },
 
-        onSubmit: ({ email, password, rememberMe }: LoginParamsType) => {
-            dispatch(loginTC({ email, password, rememberMe }));
+        onSubmit: (loginParams: LoginParamsType) => {
+            dispatch(loginTC(loginParams));
         }
     })
     const handleClickShowPassword = () => {
@@ -61,7 +62,7 @@ export const Login = React.memo(() => {
         if (user) {
             navigate(searchParams.get("redirectTo") || "/")
         }
-    }, [user, navigate, searchParams]); // это редирект на профайл
+    }, [user, navigate, searchParams]) // это редирект на профайл
 
     useEffect(() => {
         const listener = (event: KeyboardEvent) => {
@@ -85,7 +86,7 @@ export const Login = React.memo(() => {
                 Sign in
             </h2>
             <div className={styles.textFields}>
-                <FormControl sx={{ m: 1, width: '35ch' }} variant="standard">
+                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
                     <Input {...formik.getFieldProps("email")}
                     />
@@ -93,37 +94,37 @@ export const Login = React.memo(() => {
                 {formik.touched.email && formik.errors.email ?
                     <div className={styles.errors}>{formik.errors.email}</div> : null}
 
-                <FormControl sx={{ m: 1, width: '35ch' }} variant="standard">
+                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                     <Input {...formik.getFieldProps("password")}
-                        id="standard-adornment-password"
-                        type={isPassType ? 'password' : 'text'}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                >
-                                    {isPassType ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
+                           id="standard-adornment-password"
+                           type={isPassType ? 'password' : 'text'}
+                           endAdornment={
+                               <InputAdornment position="end">
+                                   <IconButton
+                                       aria-label="toggle password visibility"
+                                       onClick={handleClickShowPassword}
+                                       onMouseDown={handleMouseDownPassword}
+                                   >
+                                       {isPassType ? <VisibilityOff/> : <Visibility/>}
+                                   </IconButton>
+                               </InputAdornment>
+                           }
                     />
                     {formik.touched.password && formik.errors.password ?
                         <div className={styles.errors}>{formik.errors.password}</div> : null}
                     <label className={styles.checkbox}>
                         <Checkbox {...formik.getFieldProps("rememberMe")}
-                            checked={formik.getFieldProps("rememberMe").value}
-                            size="small"
-                            color="secondary" />
-                        <div className={styles.remembMe}>Remember Me</div>
+                                  checked={formik.getFieldProps("rememberMe").value}
+                                  size="small"
+                                  color="secondary"/>
+                        <div className={styles.remembMe}>remember Me</div>
                     </label>
                     <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
-                            <Button title={"Login"} type="submit" className={styles.loginButton} />
+                            <Button title={"Login"} type="submit" className={styles.loginButton}/>
                     </form>
                     <div className={styles.links}>
                         <div className={styles.question}>Don’t have an account?</div>

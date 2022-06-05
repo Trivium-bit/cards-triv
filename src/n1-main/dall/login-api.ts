@@ -32,15 +32,15 @@ export const authAPI = {
 
 //types
 export type ResponseLoginType = {
-    _id: string;
+    name: string ;
     email: string;
-    name: string;
+    _id: string ;
     avatar?: string;
-    publicCardPacksCount: number;
-    created: string;
-    updated: string;
+    publicCardPacksCount: number; // количество колод
+    created: Date;
+    updated: Date;
     isAdmin: boolean;
-    verified: boolean;
+    verified: boolean;// подтвердил ли почту
     rememberMe: boolean;
     error?: string;
 }

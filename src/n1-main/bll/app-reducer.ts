@@ -1,4 +1,8 @@
 import {ResponseLoginType} from "../dall/login-api";
+import {AppThunkDispatch} from "./store";
+import {profileAPI} from "../dall/profile-api";
+import {AxiosError} from "axios";
+import {handleNetworkError} from "../../utils/error.utils";
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type UserType = ResponseLoginType | undefined;
@@ -12,13 +16,19 @@ const initialState = {
 
 export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
-
         case "APP/SET-ERROR":
             return {...state, error: action.error}
         case 'APP/SET-STATUS':
             return {...state, status: action.status}
         case 'APP/SET-USER':
             return {...state, user: action.user}
+        case "APP/UPDATE-USER-NAME":
+            // @ts-ignore
+            return {...state, user: {...state.user, name:action.userName}}
+        case "APP/UPDATE-USER-PHOTO":
+            // @ts-ignore
+
+            return {...state, user: {...state.user, avatar:action.photo}}
         default:
             return state
     }
@@ -27,6 +37,8 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
 export const setAppErrorAC = (error: NullableType<string>) => ({type: "APP/SET-ERROR", error}) as const;
 export const setAppStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status}) as const;
 export const setAppUserAC = (user: ResponseLoginType|undefined) => ({ type: "APP/SET-USER", user}) as const;
+export const updateUserNameAC = (userName: string|undefined) => ({type: "APP/UPDATE-USER-NAME", userName}) as const;
+export const updateUserPhotoAC = (avatar:any) => ({type: "APP/UPDATE-USER-PHOTO", avatar}) as const;
 
 //types
 export type NullableType<T> = null | T
@@ -34,5 +46,25 @@ type InitialStateType = typeof initialState
 export type SetAppErrorType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatus = ReturnType<typeof setAppStatusAC>
 export type SetAppUser = ReturnType<typeof setAppUserAC>
+export type UpdateUserName = ReturnType<typeof updateUserNameAC>
+export type UpdateUserPhoto = ReturnType<typeof updateUserPhotoAC>
 
-export type AppActionsType = SetAppErrorType | SetAppStatus | SetAppUser
+export type AppActionsType = SetAppErrorType | SetAppStatus | SetAppUser | UpdateUserName | UpdateUserPhoto
+
+//thunks
+
+export const updateUserTC = (name: string | undefined, photo: string) => (dispatch: AppThunkDispatch) => {
+    dispatch(setAppStatusAC("loading"));
+    profileAPI.updateProfile(name, photo)
+        .then((res) => {
+            if(res.data){
+                dispatch(setAppStatusAC("succeeded"));
+                dispatch(updateUserNameAC(res.data.updatedUser.name))
+                dispatch(updateUserPhotoAC(res.data.updatedUser.avatar))
+            }
+        })
+        .catch((error: AxiosError<{ error: string }>) => {
+                handleNetworkError(error, dispatch);
+            }
+        )
+}

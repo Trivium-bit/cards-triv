@@ -3,7 +3,6 @@ import {setAppStatusAC, setAppUserAC} from "../../../n1-main/bll/app-reducer"
 import {AppThunkDispatch} from "../../../n1-main/bll/store"
 import {authAPI, LoginParamsType, NewPasswordType} from "../../../n1-main/dall/login-api"
 import {handleNetworkError} from "../../../utils/error.utils"
-import {profileAPI} from "../../../n1-main/dall/profile-api";
 
 const SET_IS_LOGGED_IN = "login/SET-IS-LOGGED-IN"
 const SEND_NEW_PASSWORD = "login/SEND-NEW-PASSWORD"
@@ -41,10 +40,11 @@ export const setNewPasswordAC = (info: string) => ({type: SET_NEW_PASSWORD, info
 export const setInitializedAC = (isInitialized: boolean) => ({type: SET_IS_INITIALIZED_IN, isInitialized} as const);
 
 // types
-export type IsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>
-export type SendNewPasswordActionsType = ReturnType<typeof sendNewPasswordAC>
-export type SetNewPasswordActionsType = ReturnType<typeof setNewPasswordAC>
+export type IsLoggedInActionsType = ReturnType<typeof setIsLoggedInAC>;
+export type SendNewPasswordActionsType = ReturnType<typeof sendNewPasswordAC>;
+export type SetNewPasswordActionsType = ReturnType<typeof setNewPasswordAC>;
 export type SetInitializedActionsType = ReturnType<typeof setInitializedAC>;
+
 
 export type isAuthActionType =
     IsLoggedInActionsType
@@ -88,7 +88,7 @@ export const logOutTC = () => (dispatch: AppThunkDispatch) => {
         .then(() => {
             dispatch(setIsLoggedInAC(false));
             dispatch(setAppStatusAC('succeeded'));
-            dispatch(setAppUserAC(undefined));
+            dispatch(setAppUserAC(undefined ));
         })
         .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch);
@@ -114,12 +114,5 @@ export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
         })
 }
 
-export const updateUser = (dispatch: AppThunkDispatch) => (name: string, filePath: string) => {
-    dispatch(setAppStatusAC("loading"));
-    profileAPI.updateProfile(name, filePath)
-        .then((res) => {
-                console.log(res)
-            }
-        )
-}
+
 
