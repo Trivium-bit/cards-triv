@@ -7,7 +7,7 @@ export const instance = axios.create({
 
 
 export const cardsAPI = {
-    getCards() {
-        return instance.get("/cards/pack");
+    getCards(page: string) {
+        return instance.get(`/cards/pack?page=${page}`);
     }
 }
