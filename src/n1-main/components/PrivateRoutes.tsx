@@ -1,7 +1,7 @@
 import React from 'react';
 import {Navigate, Outlet, useLocation} from "react-router-dom";
-import {useAppSelector} from "../bll/store";
-import Header from "./Header";
+import {useAppSelector} from "../../state/store";
+import Header from "./pages/Header/Header";
 import {isLoggedInSelector} from "../../Common/Selectors/Selectors";
 
 const PrivateRoutes = () => {

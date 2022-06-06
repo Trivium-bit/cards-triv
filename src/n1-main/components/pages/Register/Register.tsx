@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import styles from "./../Register/Register.module.scss";
 import {useFormik} from "formik";
-import {registerTC} from "../../../bll/registerReduser";
-import {RegisterParamsType} from "../../../dall/register-API";
-import {useAppDispatch, useAppSelector} from "../../../bll/store";
+import {registerTC} from "../../../../state/registerReduser";
+import {RegisterParamsType} from "../../../../api/registerAPI";
+import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {InputLabel} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";

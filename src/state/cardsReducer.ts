@@ -1,7 +1,7 @@
-import {cardsAPI} from "../../n1-main/dall/cardsAPI";
-import {AppThunkDispatch} from "../../n1-main/bll/store";
+import {cardsAPI} from "../api/cardsAPI";
+import {AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
-import {handleNetworkError} from "../../utils/error.utils";
+import {handleNetworkError} from "../utils/error.utils";
 
 const SET_CARDS = "CARDS/SET_CARDS"
 const SET_IS_LOADING_CARDS = "CARDS/IS_LOADING"

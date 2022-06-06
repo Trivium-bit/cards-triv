@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import s from "./UserProfile.module.scss";
-import {useAppSelector} from "../../../bll/store";
+import {useAppSelector} from "../../../../state/store";
 import EditProfileModal from "../EditProfile/EditProfileModal";
 import {appUserSelector} from "../../../../Common/Selectors/Selectors";
 import anonymousUserPhoto from "./../../../../images/anonymousUserPhoto.jpg";
-import {UserType} from "../../../bll/app-reducer";
+import {UserType} from "../../../../state/app-reducer";
 
 const UserProfile = ( ) => {
     const user = useAppSelector<UserType>(appUserSelector);

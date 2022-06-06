@@ -20,7 +20,7 @@ import {
     myCardsPaginationSelector,
     myCardsSelector
 } from "../../../../../Common/Selectors/Selectors";
-import {CardsType, getCardsTC} from "../../../../../n2-features/f2-cards/cardsReducer";
+import {CardsType, getCardsTC} from "../../../../../state/cardsReducer";
 
 //types
 

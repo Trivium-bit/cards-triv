@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {ResponseLoginType} from "./login-api";
+import {ResponseLoginType} from "./loginAPI";
 
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
@@ -20,4 +20,5 @@ export const profileAPI = {
 
         );
     }
+
 }

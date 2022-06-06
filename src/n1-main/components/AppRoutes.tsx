@@ -9,7 +9,7 @@ import CreateNewPassword from './pages/CreateNewPassword/CreateNewPassword';
 import {CheckEmail} from "./pages/CheckEmail/CheckEmail";
 import {Login} from "./pages/Login/Login";
 import {Register} from "./pages/Register/Register";
-import {Error404} from "./pages/Error404";
+import {Error404} from "./pages/Error404/Error404";
 import CardDetails from "./pages/Packs/CardDetails";
 
 export const PATH = {

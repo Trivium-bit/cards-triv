@@ -2,9 +2,9 @@ import React, {FC} from 'react';
 import styles from "./CheckEmail.module.scss";
 import commonStyles from "./../../../../Common/Styles/commonStyles.module.scss";
 import checkEmailImage from "./../../../../images/checkEmail.svg"
-import {useAppSelector} from "../../../bll/store";
+import {useAppSelector} from "../../../../state/store";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
-import {RequestStatusType} from "../../../bll/app-reducer";
+import {RequestStatusType} from "../../../../state/app-reducer";
 import {Loader} from "../../../../Common/Components/Loader";
 
 

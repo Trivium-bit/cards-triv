@@ -1,8 +1,8 @@
-import {ResponseLoginType} from "../dall/login-api";
+import {ResponseLoginType} from "../api/loginAPI";
 import {AppThunkDispatch} from "./store";
-import {profileAPI} from "../dall/profile-api";
+import {profileAPI} from "../api/profileAPI";
 import {AxiosError} from "axios";
-import {handleNetworkError} from "../../utils/error.utils";
+import {handleNetworkError} from "../utils/error.utils";
 
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
