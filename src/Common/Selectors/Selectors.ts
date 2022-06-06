@@ -1,5 +1,5 @@
 import { AppStoreType } from "../../n1-main/bll/store";
-import { NullableType, RequestStatusType, UserType } from "../../n1-main/bll/app-reducer";
+import {NullableType, RequestStatusType, UserType} from "../../n1-main/bll/app-reducer";
 import {ResponseCardsPackType} from "../../n1-main/dall/cardsAPI";
 
 

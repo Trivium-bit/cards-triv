@@ -15,8 +15,9 @@ export const profileAPI = {
     getProfile() {
         return instance.post<UserProfileType>("auth/me");
     },
-    updateProfile(name: string | undefined, photo: string) {
-        return instance.put<UserProfileType>("auth/me", {name, photo},
+    updateProfile(name: string |undefined, avatar: string |undefined) {
+        return instance.put<UserProfileType>("auth/me", {name, avatar}
+
         );
     }
 }

@@ -22,7 +22,7 @@ export const authAPI = {
     setNewPassword({ password, resetPasswordToken }: NewPasswordType) {
         return instance.post<ResponseResetPasswordType>('/auth/set-new-password', {password, resetPasswordToken});
     },
-    me() {
+    authMe() {
         return instance.post<ResponseLoginType>(`/auth/me`, {});
     },
     logOut() {
@@ -37,8 +37,8 @@ export type ResponseLoginType = {
     _id: string ;
     avatar?: string;
     publicCardPacksCount: number; // количество колод
-    created: Date;
-    updated: Date;
+    created: string;
+    updated: string;
     isAdmin: boolean;
     verified: boolean;// подтвердил ли почту
     rememberMe: boolean;

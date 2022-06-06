@@ -1,5 +1,5 @@
 import {AxiosError} from "axios"
-import {setAppStatusAC, setAppUserAC} from "../../../n1-main/bll/app-reducer"
+import {setAppStatusAC, setAppUserAC, UserType} from "../../../n1-main/bll/app-reducer"
 import {AppThunkDispatch} from "../../../n1-main/bll/store"
 import {authAPI, LoginParamsType, NewPasswordType} from "../../../n1-main/dall/login-api"
 import {handleNetworkError} from "../../../utils/error.utils"
@@ -88,7 +88,7 @@ export const logOutTC = () => (dispatch: AppThunkDispatch) => {
         .then(() => {
             dispatch(setIsLoggedInAC(false));
             dispatch(setAppStatusAC('succeeded'));
-            dispatch(setAppUserAC(undefined ));
+            dispatch(setAppUserAC( undefined as UserType));
         })
         .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch);
@@ -98,7 +98,7 @@ export const logOutTC = () => (dispatch: AppThunkDispatch) => {
 
 export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
-    authAPI.me().then((res) => {
+    authAPI.authMe().then((res) => {
         if (res.data.name) {
             dispatch(setIsLoggedInAC(true));
             dispatch(setAppStatusAC('succeeded'));

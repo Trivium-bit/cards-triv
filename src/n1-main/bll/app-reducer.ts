@@ -4,10 +4,12 @@ import {profileAPI} from "../dall/profile-api";
 import {AxiosError} from "axios";
 import {handleNetworkError} from "../../utils/error.utils";
 
+
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-export type UserType = ResponseLoginType | undefined;
+
 //status = loading - крутилку показываем
 
+export type UserType = ResponseLoginType | undefined;
 const initialState = {
     error: null as NullableType<string>,
     status: 'idle' as RequestStatusType,
@@ -25,10 +27,9 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
         case "APP/UPDATE-USER-NAME":
             // @ts-ignore
             return {...state, user: {...state.user, name:action.userName}}
-        case "APP/UPDATE-USER-PHOTO":
+        case "APP/UPDATE-USER-AVATAR":
             // @ts-ignore
-
-            return {...state, user: {...state.user, avatar:action.photo}}
+            return {...state, user: {...state.user, avatar:action.avatar}}
         default:
             return state
     }
@@ -36,9 +37,9 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
 //actions
 export const setAppErrorAC = (error: NullableType<string>) => ({type: "APP/SET-ERROR", error}) as const;
 export const setAppStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status}) as const;
-export const setAppUserAC = (user: ResponseLoginType|undefined) => ({ type: "APP/SET-USER", user}) as const;
-export const updateUserNameAC = (userName: string|undefined) => ({type: "APP/UPDATE-USER-NAME", userName}) as const;
-export const updateUserPhotoAC = (avatar:any) => ({type: "APP/UPDATE-USER-PHOTO", avatar}) as const;
+export const setAppUserAC = (user: UserType) => ({ type: "APP/SET-USER", user}) as const;
+export const updateUserNameAC = (userName: string ) => ({type: "APP/UPDATE-USER-NAME", userName}) as const;
+export const updateUserAvatarAC = (avatar:string | undefined) => ({type: "APP/UPDATE-USER-AVATAR", avatar}) as const;
 
 //types
 export type NullableType<T> = null | T
@@ -47,20 +48,21 @@ export type SetAppErrorType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatus = ReturnType<typeof setAppStatusAC>
 export type SetAppUser = ReturnType<typeof setAppUserAC>
 export type UpdateUserName = ReturnType<typeof updateUserNameAC>
-export type UpdateUserPhoto = ReturnType<typeof updateUserPhotoAC>
+export type UpdateUserPhoto = ReturnType<typeof updateUserAvatarAC>
 
 export type AppActionsType = SetAppErrorType | SetAppStatus | SetAppUser | UpdateUserName | UpdateUserPhoto
 
 //thunks
 
-export const updateUserTC = (name: string | undefined, photo: string) => (dispatch: AppThunkDispatch) => {
+export const updateUserTC = (name: string|undefined, avatar: string |undefined) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
-    profileAPI.updateProfile(name, photo)
+
+    profileAPI.updateProfile(name, avatar)
         .then((res) => {
             if(res.data){
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(updateUserNameAC(res.data.updatedUser.name))
-                dispatch(updateUserPhotoAC(res.data.updatedUser.avatar))
+                dispatch(updateUserAvatarAC(res.data.updatedUser.avatar))
             }
         })
         .catch((error: AxiosError<{ error: string }>) => {

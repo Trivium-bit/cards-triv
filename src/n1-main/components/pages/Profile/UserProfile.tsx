@@ -1,18 +1,20 @@
 import React, {useState} from 'react';
 import s from "./UserProfile.module.scss";
 import {useAppSelector} from "../../../bll/store";
-import {ResponseLoginType} from "../../../dall/login-api";
 import EditProfileModal from "../EditProfile/EditProfileModal";
 import {appUserSelector} from "../../../../Common/Selectors/Selectors";
 import anonymousUserPhoto from "./../../../../images/anonymousUserPhoto.jpg";
+import {UserType} from "../../../bll/app-reducer";
 
 const UserProfile = ( ) => {
-    const user = useAppSelector<ResponseLoginType | undefined >(appUserSelector);
-    const [localName, setLocalName] = useState<string|undefined>(user?.name);
-    const changeName = (userName: string|undefined) =>{
+    const user = useAppSelector<UserType>(appUserSelector);
+    const [localName, setLocalName] = useState<string |undefined>(user?.name);
+    const changeName = (userName: string |undefined) =>{
         setLocalName(userName);
     }
-    console.log(user?.avatar)
+
+    console.log("user?.avatar", user?.avatar)
+
     return (
         <>
             {user ? (
@@ -27,7 +29,7 @@ const UserProfile = ( ) => {
                             changeName={changeName}
                             title={'Personal Information'}
                             email={user.email}
-                            avatar={user.avatar || anonymousUserPhoto}
+                            serverAvatar={user.avatar || anonymousUserPhoto}
                             name={localName}
                         />
                     </div>

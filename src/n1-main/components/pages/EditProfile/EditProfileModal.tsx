@@ -9,10 +9,10 @@ import {updateUserTC} from "../../../bll/app-reducer";
 
 type ModalPropsType = {
     title: string
-    avatar: string
+    serverAvatar: string
     name: string |undefined
     email: string
-    changeName: ( name: string| undefined) => void
+    changeName: (name: string |undefined) => void
 }
 const UploadButton = styled('input')({
     display: 'none',
@@ -31,29 +31,35 @@ const style = {
 };
 
 
-const EditProfileModal = ({avatar, name, email, title, changeName}: ModalPropsType) => {
+const EditProfileModal = ({serverAvatar, name, email, title, changeName}: ModalPropsType) => {
 
     const [open, setOpen] = useState(false);
-    const [photo, setPhoto] = useState<any>(avatar);
+    const [LocalAvatar, setLocalAvatar] = useState<any>(serverAvatar);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false)
+    const handleClose = () => {
+        setLocalAvatar(serverAvatar)
+        setOpen(false)
+    }
     const dispatch = useAppDispatch();
 
-
     const saveUserData = () => {
-        debugger
-        const code = window.btoa(avatar)
-        dispatch(updateUserTC(name, code));
+        dispatch(updateUserTC(name, LocalAvatar));
         setOpen(false);
     }
 
-    const onMainPhotoSelected = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            setPhoto(e.target.files[0])
+    const handleChangeFileInput = (e: ChangeEvent<HTMLInputElement>) => {
+
+        const files = e.target?.files;
+        if (files) {
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                setLocalAvatar(reader.result)
+            }
+            reader.readAsDataURL(files[0]);
         }
     }
 
-    const changeLocalName = (e:ChangeEvent<HTMLInputElement>) =>{
+    const changeLocalName = (e: ChangeEvent<HTMLInputElement>) => {
         changeName(e.currentTarget.value)
     }
     return (
@@ -72,10 +78,10 @@ const EditProfileModal = ({avatar, name, email, title, changeName}: ModalPropsTy
                     <Box className={s.modalMainBox}>
                         <h3 title={s.title}>{title}</h3>
                         <Box className={s.avatarBlock}>
-                            <img className={s.avatarImg} src={photo} alt="avatar"/>
+                            <img className={s.avatarImg} src={LocalAvatar} alt="avatar"/>
                             <Box className={s.iconUpload}>
                                 <label htmlFor="icon-button-file">
-                                    <UploadButton id="icon-button-file" type="file" onChange={onMainPhotoSelected}/>
+                                    <UploadButton id="icon-button-file" type="file" onChange={handleChangeFileInput}/>
                                     <IconButton color="primary" aria-label="upload picture" component="span">
                                         <PhotoCamera/>
                                     </IconButton>
@@ -85,13 +91,15 @@ const EditProfileModal = ({avatar, name, email, title, changeName}: ModalPropsTy
                         <Box>
                             <FormControl variant="standard">
                                 <InputLabel htmlFor="component-simple">Nickname</InputLabel>
-                                <Input className={s.inputForms} id="component-simple" value={name} onChange={changeLocalName}/>
+                                <Input className={s.inputForms} id="component-simple" value={name}
+                                       onChange={changeLocalName}/>
                             </FormControl>
                         </Box>
                         <Box>
                             <FormControl variant="standard">
                                 <InputLabel htmlFor="component-simple">Nickname</InputLabel>
-                                <Input className={s.inputForms} value={email} onChange={changeLocalName} disabled={true}/>
+                                <Input className={s.inputForms} value={email} onChange={changeLocalName}
+                                       disabled={true}/>
                             </FormControl>
                         </Box>
                     </Box>
