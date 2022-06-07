@@ -9,22 +9,24 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    CircularProgress, Pagination
+    Pagination
 } from "@mui/material";
 import Button from "../../../../../Common/Components/Button";
 import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getCardsTC, CardsType} from "../../../../../state/cardsReducer";
+import {getMyCardsPacks} from "../../../../../state/cardsReducer";
 import {
-    myCardsIsLoadingSelector,
     myCardsPaginationSelector,
     myCardsSelector
 } from "../../../../../Common/Selectors/Selectors";
+import {CardPackType} from "../../../../../api/cardsAPI";
+import {useAppSelector} from "../../../../../state/store";
+
 
 //mui styles
-const StyledTableCell = styled(TableCell)(({ }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
@@ -36,7 +38,7 @@ const StyledTableCell = styled(TableCell)(({ }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
     },
@@ -55,16 +57,16 @@ const modalStyle = {
 };
 
 const MyTable = () => {
+    const myId = useAppSelector<string>(state => state.appReducer.user._id);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch<any>();
     const myCards = useSelector(myCardsSelector);
-    const myCardsIsLoading = useSelector(myCardsIsLoadingSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardsType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardsType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<CardPackType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<CardPackType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
 
@@ -74,10 +76,10 @@ const MyTable = () => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
 
-    const handleOpenDelete = (card: CardsType) => setRowToDelete(card);
+    const handleOpenDelete = (card: CardPackType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
 
-    const handleOpenAnswer = (card: CardsType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: CardPackType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
 
     const handleOpenLearn = () => setOpenLearn(true);
@@ -100,10 +102,9 @@ const MyTable = () => {
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs?page=${page}`)
     }
-
     useEffect(() => {
-        dispatch(getCardsTC(currentPage))
-    },[currentPage]);
+        dispatch(getMyCardsPacks(myId, currentPage))
+    },[currentPage, myId, dispatch]);
 
     return (
         <Box>
@@ -120,20 +121,13 @@ const MyTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {myCardsIsLoading ? (
-                            <StyledTableRow>
-                                <StyledTableCell>
-                                    <CircularProgress />
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ) : (
+                        {
                             myCards.map((card) => (
                                 <StyledTableRow key={card._id}>
                                     <StyledTableCell component="th" scope="row">
                                         <Link to={`/packs/${card._id}`}>
                                             {card.name}
                                         </Link>
-
                                     </StyledTableCell>
                                     <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
                                     <StyledTableCell align="left">{card.updated}</StyledTableCell>
@@ -147,7 +141,7 @@ const MyTable = () => {
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))
-                        )}
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>

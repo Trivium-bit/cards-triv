@@ -8,7 +8,7 @@ const PrivateRoutes = () => {
     const location = useLocation();
 
     const isLoggedIn = useAppSelector<boolean>(isLoggedInSelector);
-    console.log(isLoggedIn)
+
     if (!isLoggedIn) {
         return (
             <Navigate

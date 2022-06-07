@@ -1,6 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import {
-    Box, CircularProgress, FormControlLabel, Modal, Pagination,
+    Box, FormControlLabel, Modal, Pagination,
     Paper, Radio, RadioGroup,
     styled,
     Table,
@@ -16,11 +16,12 @@ import modalStyles from '../styles/ModalStyles.module.scss'
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
-    myCardsIsLoadingSelector,
     myCardsPaginationSelector,
     myCardsSelector
 } from "../../../../../Common/Selectors/Selectors";
-import {CardsType, getCardsTC} from "../../../../../state/cardsReducer";
+import {getAllCardsPacksTC} from "../../../../../state/cardsReducer";
+import {CardPackType} from "../../../../../api/cardsAPI";
+
 
 //types
 
@@ -61,16 +62,15 @@ const MyTable = () => {
     const location = useLocation();
     const dispatch = useDispatch<any>();
     const myCards = useSelector(myCardsSelector);
-    const myCardsIsLoading = useSelector(myCardsIsLoadingSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
-    const [openAnswer, setOpenAnswer] = useState<CardsType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<CardPackType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
 
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
 
-    const handleOpenAnswer = (card: CardsType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: CardPackType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
 
     const handleOpenLearn = () => setOpenLearn(true);
@@ -84,7 +84,7 @@ const MyTable = () => {
     }
 
     useEffect(() => {
-        dispatch(getCardsTC(currentPage))
+        dispatch(getAllCardsPacksTC(currentPage))
     },[currentPage]);
     return (
         <Box>
@@ -100,15 +100,9 @@ const MyTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {myCardsIsLoading ? (
-                            <StyledTableRow>
-                                <StyledTableCell>
-                                    <CircularProgress />
-                                </StyledTableCell>
-                            </StyledTableRow>
-                        ) : (
+                        {
                         myCards.map((card) => (
-                            <StyledTableRow key={card.name}>
+                            <StyledTableRow key={card._id}>
                                 <StyledTableCell component="th" scope="row">
                                     {card.name}
                                 </StyledTableCell>
@@ -122,7 +116,7 @@ const MyTable = () => {
                                 </StyledTableCell>
                             </StyledTableRow>
                             ))
-                        )}
+                        }
                     </TableBody>
                 </Table>
             </TableContainer>

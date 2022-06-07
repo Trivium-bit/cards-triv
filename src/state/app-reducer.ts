@@ -13,7 +13,7 @@ export type UserType = ResponseLoginType | undefined;
 const initialState = {
     error: null as NullableType<string>,
     status: 'idle' as RequestStatusType,
-    user: undefined as UserType
+    user: {} as ResponseLoginType
 }
 
 export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
@@ -25,10 +25,8 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
         case 'APP/SET-USER':
             return {...state, user: action.user}
         case "APP/UPDATE-USER-NAME":
-            // @ts-ignore
             return {...state, user: {...state.user, name:action.userName}}
         case "APP/UPDATE-USER-AVATAR":
-            // @ts-ignore
             return {...state, user: {...state.user, avatar:action.avatar}}
         default:
             return state
@@ -37,7 +35,7 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
 //actions
 export const setAppErrorAC = (error: NullableType<string>) => ({type: "APP/SET-ERROR", error}) as const;
 export const setAppStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status}) as const;
-export const setAppUserAC = (user: UserType) => ({ type: "APP/SET-USER", user}) as const;
+export const setAppUserAC = (user: ResponseLoginType) => ({ type: "APP/SET-USER", user}) as const;
 export const updateUserNameAC = (userName: string ) => ({type: "APP/UPDATE-USER-NAME", userName}) as const;
 export const updateUserAvatarAC = (avatar:string | undefined) => ({type: "APP/UPDATE-USER-AVATAR", avatar}) as const;
 

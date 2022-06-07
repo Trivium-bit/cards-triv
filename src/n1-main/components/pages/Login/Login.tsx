@@ -1,15 +1,14 @@
-import {NavLink, useNavigate, useSearchParams} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 import {PATH} from "../../AppRoutes";
 import React, {useEffect, useState} from "react";
 import styles from "./Login.module.scss";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {loginTC} from "../../../../state/auth-reducer";
-import {LoginParamsType, ResponseLoginType} from "../../../../api/loginAPI";
 import {useFormik} from "formik";
 import {Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import { appUserSelector} from "../../../../Common/Selectors/Selectors";
 import Button from "../../../../Common/Components/Button";
+import {LoginParamsType} from "../../../../api/loginAPI";
 
 
 type FormikErrorType = {
@@ -21,9 +20,10 @@ export const Login = React.memo(() => {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
+    /*const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const user = useAppSelector<ResponseLoginType | undefined>(appUserSelector);
+    const user = useAppSelector<ResponseLoginType | undefined>(appUserSelector);*/
+    const IsLoggedIn = useAppSelector<boolean>(state => state.authReducer.isLoggedIn)
 
 
     const formik = useFormik({
@@ -58,11 +58,12 @@ export const Login = React.memo(() => {
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
-    useEffect(() => {
+    /*useEffect(() => {
         if (user) {
             navigate(searchParams.get("redirectTo") || "/")
         }
-    }, [user, navigate, searchParams]) // это редирект на профайл
+    }, [user, navigate, searchParams]) // это редирект на профайл*/
+
 
     useEffect(() => {
         const listener = (event: KeyboardEvent) => {
@@ -77,6 +78,9 @@ export const Login = React.memo(() => {
         };
     }, [formik]);
 
+    if (IsLoggedIn) {
+        return <Navigate to={PATH.HOME}/>
+    }
     return (
         <div className={styles.loginWrapper}>
             <h1 className={styles.h1}>
@@ -124,7 +128,7 @@ export const Login = React.memo(() => {
                 </FormControl>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
-                            <Button title={"Login"} type="submit" className={styles.loginButton}/>
+                        <Button title={"Login"} type="submit" className={styles.loginButton}/>
                     </form>
                     <div className={styles.links}>
                         <div className={styles.question}>Don’t have an account?</div>

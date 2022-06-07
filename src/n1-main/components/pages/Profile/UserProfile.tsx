@@ -13,8 +13,6 @@ const UserProfile = ( ) => {
         setLocalName(userName);
     }
 
-    console.log("user?.avatar", user?.avatar)
-
     return (
         <>
             {user ? (
