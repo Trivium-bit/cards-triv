@@ -5,6 +5,7 @@ import EditProfileModal from "../EditProfile/EditProfileModal";
 import {appUserSelector} from "../../../../Common/Selectors/Selectors";
 import anonymousUserPhoto from "./../../../../images/anonymousUserPhoto.jpg";
 import {UserType} from "../../../../state/app-reducer";
+import {Loader} from "../../../../Common/Components/Loader";
 
 const UserProfile = ( ) => {
     const user = useAppSelector<UserType>(appUserSelector);
@@ -33,7 +34,7 @@ const UserProfile = ( ) => {
                     </div>
                 </div>
             ) : (<div>
-                ... loading
+                <Loader/>
             </div>)}
         </>
     );

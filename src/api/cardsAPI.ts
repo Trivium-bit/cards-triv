@@ -16,6 +16,9 @@ export const cardsAPI = {
     },
     getMyCardsPacks(user_id: string, page: string){
         return instance.get<ResponseCardsPackType>(`/cards/pack?page=${page}&user_id=${user_id}`);
+    },
+    deleteMyCardsPacks(id:string){
+        return instance.delete(`/cards/pack?id=${id}`);
     }
 }
 

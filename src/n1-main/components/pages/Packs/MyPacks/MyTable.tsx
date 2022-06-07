@@ -16,7 +16,7 @@ import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getMyCardsPacks} from "../../../../../state/cardsReducer";
+import {deleteCardPackTC, getMyCardsPacks} from "../../../../../state/cardsReducer";
 import {
     myCardsPaginationSelector,
     myCardsSelector
@@ -102,6 +102,14 @@ const MyTable = () => {
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs?page=${page}`)
     }
+    const handleDeletePack = () => {
+        if(rowToDelete) {
+            dispatch(deleteCardPackTC(rowToDelete._id, () => {
+                handleCloseDelete()
+                dispatch(getMyCardsPacks(myId, currentPage))
+            }))
+        }
+    }
     useEffect(() => {
         dispatch(getMyCardsPacks(myId, currentPage))
     },[currentPage, myId, dispatch]);
@@ -163,7 +171,7 @@ const MyTable = () => {
                     </Box>
                     <Box className={modalStyles.modalBtnGroup}>
                         <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button className={modalStyles.btnSave} title={'Save'}/>
+                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Delete'}/>
                     </Box>
                 </Box>
             </Modal>

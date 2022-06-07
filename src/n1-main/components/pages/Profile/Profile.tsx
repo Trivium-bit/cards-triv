@@ -1,12 +1,11 @@
 import React from "react";
 import {Box, Container, Grid} from "@mui/material";
 import UserProfile from "./UserProfile";
-
 import s from './Profile.module.scss'
 import Slider from "../../Slider/Slider";
 import PacksHeader from "../Packs/PacksHeader";
-import AllPacks from "../Packs/AllPacks/AllPacks";
 import {useAppSelector} from "../../../../state/store";
+import MyPacks from "../Packs/MyPacks/MyPacks";
 
 
 
@@ -31,7 +30,7 @@ const Profile = () => {
                         <Grid xs={9} item>
                             <Box className={s.myPacksBlock}>
                                 <PacksHeader packsOwnerName={name}/>
-                                <AllPacks/>
+                                <MyPacks/>
                             </Box>
                         </Grid>
                     </Grid>
