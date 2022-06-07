@@ -24,7 +24,6 @@ export const registerReducer = (state: InitialStateType = initialState, action: 
     }
 }
 // thunks
-
 export const registerTC = (data: RegisterParamsType) => {
     return (dispatch: AppThunkDispatch) => {
         dispatch(setAppStatusAC("loading"));
