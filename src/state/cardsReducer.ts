@@ -1,4 +1,4 @@
-import {CardPackType, cardsAPI, } from "../api/cardsAPI";
+import {CardPackType, cardsAPI,} from "../api/cardsAPI";
 import {AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
 import {handleNetworkError} from "../utils/error.utils";
@@ -76,13 +76,13 @@ export type CardsActionType = SetCardsActionType
 export const cardsReducer = (state: InitialProfileStateType = initialState, action: CardsActionType): InitialProfileStateType => {
     switch (action.type) {
         case SET_IS_LOADING_CARDS:
-            return { ...state, isLoading: action.isLoading }
+            return {...state, isLoading: action.isLoading}
         case SET_CARDS:
             return {...state, cardsPacks: action.cardsPacks, pagination: action.pagination}
         case SET_PERSONAL_CARDS_PACKS:
             return {...state, cardsPacks: action.cardsPacks.filter(cardsPack => cardsPack.user_id === action.user_id)}
         case INIT_ADD_NEW_CARD_PACK:
-            return { ...state, addNewCardPack: {...state.addNewCardPack, isLoading: action.isLoading}}
+            return {...state, addNewCardPack: {...state.addNewCardPack, isLoading: action.isLoading}}
         case ADD_NEW_CARD_PACK:
             return {
                 ...state,
@@ -108,8 +108,8 @@ export const setPersonalCardsPacksAC = (cardsPacks: CardPackType[], user_id: str
     cardsPacks,
     user_id
 } as const)
-export const setInitAddNewCardPackAC = (isLoading: boolean) => ({ type: INIT_ADD_NEW_CARD_PACK, isLoading } as const)
-export const AddNewCardPackAC = (pack: CardsType) => ({ type: ADD_NEW_CARD_PACK, pack } as const)
+export const setInitAddNewCardPackAC = (isLoading: boolean) => ({type: INIT_ADD_NEW_CARD_PACK, isLoading} as const)
+export const AddNewCardPackAC = (pack: CardsType) => ({type: ADD_NEW_CARD_PACK, pack} as const)
 // types
 export type SetCardsIsLoadingActionType = ReturnType<typeof setCardsIsLoadingAC>;
 export type SetCardsActionType = ReturnType<typeof setCardsAC>;
@@ -132,7 +132,7 @@ export const getAllCardsPacksTC = (page: string) => (dispatch: AppThunkDispatch)
 
 export const getMyCardsPacks = (user_id: string, page: string) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
-    cardsAPI.getMyCardsPacks(user_id,  page)
+    cardsAPI.getMyCardsPacks(user_id, page)
         .then((res) => {
                 dispatch(setPersonalCardsPacksAC(res.data.cardPacks, user_id));
                 dispatch(setAppStatusAC("succeeded"));
@@ -144,10 +144,10 @@ export const getMyCardsPacks = (user_id: string, page: string) => (dispatch: App
         )
 }
 //thunk add pack
-export const addNewCardPackTC = (pack: CardPackRequestType) =>(dispatch:AppThunkDispatch) =>{
+export const addNewCardPackTC = (pack: CardPackRequestType) => (dispatch: AppThunkDispatch) => {
     dispatch(setInitAddNewCardPackAC(true));
     cardsAPI.addPack(pack)
-        .then((res) =>{
+        .then((res) => {
             dispatch(AddNewCardPackAC(res.data.newCardsPack))
             dispatch(setInitAddNewCardPackAC(false));
         })

@@ -19,7 +19,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getMyCardsPacks} from "../../../../../state/cardsReducer";
 import {
     myCardsPaginationSelector,
-    myCardsSelector
+    myCardsSelector, userIdSelector
 } from "../../../../../Common/Selectors/Selectors";
 import {CardPackType} from "../../../../../api/cardsAPI";
 import {useAppSelector} from "../../../../../state/store";
@@ -57,7 +57,7 @@ const modalStyle = {
 };
 
 const MyTable = () => {
-    const myId = useAppSelector<string>(state => state.appReducer.user._id);
+    const myId = useAppSelector<string>(userIdSelector);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch<any>();
@@ -131,7 +131,7 @@ const MyTable = () => {
                                     </StyledTableCell>
                                     <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
                                     <StyledTableCell align="left">{card.updated}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.created}</StyledTableCell>
+                                    <StyledTableCell align="left">{card.user_name}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
                                             <button onClick={() => handleOpenDelete(card)} className={s.delete} >Delete</button>

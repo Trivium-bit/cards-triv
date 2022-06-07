@@ -36,3 +36,9 @@ export const myCardsSelector = (state: AppStoreType): Array<CardPackType> =>{
 export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
     return state.cardsReducer.addNewCardPack
 }
+export const userNameSelector = (state: AppStoreType): string =>{
+    return state.appReducer.user.name
+}
+export const userIdSelector = (state: AppStoreType): string =>{
+    return state.appReducer.user._id
+}
