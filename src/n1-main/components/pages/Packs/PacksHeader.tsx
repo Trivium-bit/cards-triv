@@ -1,9 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, FormControl, Input, InputAdornment, InputLabel, Modal} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
 import s from './styles/PackHeader.module.scss'
+import { useSelector} from "react-redux";
+import {addNewCardPackTC} from "../../../../state/cardsReducer";
+import {selectNewCardsPackSelector} from "../../../../Common/Selectors/Selectors";
+import {useAppDispatch} from "../../../../state/store";
 
 type PacksHeaderPropsType = {
     onSearch?:(searchQuery: string) => void
@@ -23,10 +27,22 @@ const modalStyle = {
 };
 
 const PacksHeader:React.FC<PacksHeaderPropsType> = ({onSearch, onAddNew}) => {
+    const dispatch = useAppDispatch();
+    const createNew = useSelector(selectNewCardsPackSelector)
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const handleSave = () => {
+        dispatch(addNewCardPackTC({
+            name: inputValue
+        }));
+    };
+    useEffect(() => {
+        if(!createNew.isLoading && createNew.success === true) {
+            handleClose()
+        }
+    },[createNew])
 
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
@@ -59,7 +75,7 @@ const PacksHeader:React.FC<PacksHeaderPropsType> = ({onSearch, onAddNew}) => {
                             </FormControl>
                             <Box className={modalStyles.modalBtnGroup}>
                                 <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'}/>
-                                <Button className={modalStyles.btnSave} title={'Save'}/>
+                                <Button onClick={handleSave} className={modalStyles.btnSave} disabled={createNew.isLoading} title={createNew.isLoading ? 'Loading... ' : 'Save new'}/>
                             </Box>
                         </Box>
                     </Modal>

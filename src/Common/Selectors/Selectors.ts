@@ -1,7 +1,6 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-import {CardsPaginationType} from "../../state/cardsReducer";
-import {CardPackType} from "../../api/cardsAPI";
+import {CardsPaginationType, CardsType} from "../../state/cardsReducer";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
     return state.appReducer.status
@@ -24,9 +23,15 @@ export const isLoggedInSelector = (state: AppStoreType):boolean =>{
 export const isInitializedSelector = (state: AppStoreType):boolean =>{
     return state.authReducer.isInitialized
 }
+export const myCardsIsLoadingSelector = (state: AppStoreType): boolean =>{
+    return state.cardsReducer.isLoading
+}
 export const myCardsPaginationSelector = (state: AppStoreType): CardsPaginationType =>{
     return state.cardsReducer.pagination
 }
 export const myCardsSelector = (state: AppStoreType): CardPackType[] =>{
     return state.cardsReducer.cardsPacks
+}
+export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
+    return state.cardsReducer.addNewCardPack
 }
