@@ -5,10 +5,8 @@ import {RegisterActionsType, registerReducer} from "./registerReduser";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
 import {
-    AddNewCardsPackActionType,
     CardsActionType,
     cardsReducer,
-    setInitAddNewCardsPackActionType
 } from './cardsReducer';
 
  const rootReducer = combineReducers({
@@ -21,7 +19,7 @@ import {
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 export type RootActionsType = RegisterActionsType | AuthorizationActionType
-    | CardsActionType | setInitAddNewCardsPackActionType | AddNewCardsPackActionType; //сюда нужно добавлять свои типизации акшенов через или
+    | CardsActionType //сюда нужно добавлять свои типизации акшенов через или
 export type AppThunkDispatch = ThunkDispatch<AppStoreType, null, RootActionsType>;
 export type AppStoreType = ReturnType<typeof rootReducer>;
 export const useAppSelector: TypedUseSelectorHook<AppStoreType> = useSelector;

@@ -4,9 +4,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
 import s from './styles/PackHeader.module.scss'
-import {useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import {addNewCardPackTC} from "../../../../state/cardsReducer";
 import {selectNewCardsPackSelector} from "../../../../Common/Selectors/Selectors";
+import {useAppDispatch} from "../../../../state/store";
 
 type PacksHeaderPropsType = {
     onSearch?:(searchQuery: string) => void
@@ -26,7 +27,7 @@ const modalStyle = {
 };
 
 const PacksHeader:React.FC<PacksHeaderPropsType> = ({onSearch, onAddNew}) => {
-    const dispatch = useDispatch<any>();
+    const dispatch = useAppDispatch();
     const createNew = useSelector(selectNewCardsPackSelector)
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
