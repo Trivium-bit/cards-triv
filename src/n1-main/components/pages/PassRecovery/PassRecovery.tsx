@@ -7,7 +7,6 @@ import { useFormik } from "formik";
 import { PATH } from "../../AppRoutes";
 import { forgotTC } from "../../../../state/registerReduser";
 import { useAppDispatch, useAppSelector } from "../../../../state/store";
-import { NullableType } from "../../../../state/app-reducer";
 
 type FormikErrorType = {
     email: string
@@ -17,10 +16,9 @@ export type RecoveryEmailType = {
 }
 export const PassRecovery = () => {
 
-    const error = useAppSelector<NullableType<string>>(state => state.appReducer.error);
+    const success = useAppSelector<boolean>(state => state.registerReducer.success);
     const navigate = useNavigate();
     const onClickHandler = () => {
-
         navigate(PATH.LOGIN);
     }
     const dispatch = useAppDispatch();
@@ -40,17 +38,20 @@ export const PassRecovery = () => {
         },
 
         onSubmit: (email: RecoveryEmailType) => {
-            dispatch(forgotTC(email))
-            if (!!error) {
-                navigate(PATH.CHECK_EMAIL)
-            }
+            dispatch(forgotTC(email));
         }
     })
+    useEffect(() => {
+        if (success) {
+            return navigate(PATH.CHECK_EMAIL);
+        }
+    }, [success, navigate]);
+
     useEffect(() => {
         const listener = (event: KeyboardEvent) => {
             if (event.code === "Enter" || event.code === "NumpadEnter") {
                 event.preventDefault();
-                formik.handleSubmit()
+                formik.handleSubmit();
             }
         };
         document.addEventListener("keydown", listener);
