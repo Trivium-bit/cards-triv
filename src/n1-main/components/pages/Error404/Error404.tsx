@@ -1,12 +1,12 @@
 import React from "react";
-import styles from "../../ui/Error404.module.scss";
+import styles from "./Error404.module.scss";
 import {NavLink} from "react-router-dom";
-import {PATH} from "../AppRoutes";
-import astronaut from "./../../../images/astronaut.svg";
-import earth from "./../../../images/earth.svg";
-import moon from "./../../../images/moon.svg";
-import rocket from "./../../../images/rocket.svg";
-import errorText from "./../../../images/404Text.svg";
+import {PATH} from "../../AppRoutes";
+import astronaut from "../../../../images/astronaut.svg";
+import earth from "../../../../images/earth.svg";
+import moon from "../../../../images/moon.svg";
+import rocket from "../../../../images/rocket.svg";
+import errorText from "../../../../images/404Text.svg";
 
 export const Error404 = () => {
 

@@ -1,11 +1,11 @@
-import {forgotPassAPI, registerAPI, RegisterParamsType} from "../dall/register-API";
+import {forgotPassAPI, registerAPI, RegisterParamsType} from "../api/registerAPI";
 import {AppActionsType, setAppErrorAC, setAppStatusAC} from "./app-reducer";
 import {AxiosError} from "axios";
 import {AppThunkDispatch} from "./store";
-import {customSuccessAlert} from "../../utils/customSuccessAlertUtils";
+import {customSuccessAlert} from "../utils/customSuccessAlertUtils";
 
-import {handleNetworkError} from "../../utils/error.utils";
-import {RecoveryEmailType} from "../components/pages/PassRecovery/PassRecovery";
+import {handleNetworkError} from "../utils/error.utils";
+import {RecoveryEmailType} from "../n1-main/components/pages/PassRecovery/PassRecovery";
 
 const initialState = {
     isRegistered: false,

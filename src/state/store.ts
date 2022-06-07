@@ -1,10 +1,10 @@
-import {AuthorizationActionType, authReducer} from '../../n2-features/f1-auth/a1-login/auth-reducer';
+import {AuthorizationActionType, authReducer} from './auth-reducer'
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import thunkMiddleware, {ThunkDispatch} from 'redux-thunk';
 import {RegisterActionsType, registerReducer} from "./registerReduser";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
-import {CardsActionType, cardsReducer} from "../../n2-features/f2-cards/cardsReducer";
+import {CardsActionType, cardsReducer} from './cardsReducer';
 
  const rootReducer = combineReducers({
      authReducer: authReducer,

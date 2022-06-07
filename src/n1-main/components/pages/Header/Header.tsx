@@ -4,10 +4,10 @@ import Grid from '@mui/material/Grid';
 import {Box, Container} from "@mui/material";
 import ArticleIcon from '@mui/icons-material/Article';
 import PersonIcon from '@mui/icons-material/Person';
-import { PATH } from './AppRoutes'
-import {useAppDispatch} from "../bll/store";
-import s from "../ui/Header.module.scss";
-import {logOutTC} from "../../n2-features/f1-auth/a1-login/auth-reducer";
+import { PATH } from '../../AppRoutes'
+import {useAppDispatch} from "../../../../state/store";
+import s from "./Header.module.scss";
+import {logOutTC} from "../../../../state/auth-reducer";
 
 
 function Header() {

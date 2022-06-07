@@ -16,7 +16,7 @@ import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {getCardsTC, CardsType} from "../../../../../n2-features/f2-cards/cardsReducer";
+import {getCardsTC, CardsType} from "../../../../../state/cardsReducer";
 import {
     myCardsIsLoadingSelector,
     myCardsPaginationSelector,

@@ -1,12 +1,12 @@
 import styles from "./CreateNewPassword.module.scss";
 import {useFormik} from "formik";
-import {NullableType, RequestStatusType, setAppErrorAC} from "../../../bll/app-reducer";
+import {NullableType, RequestStatusType, setAppErrorAC} from "../../../../state/app-reducer";
 import {CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import React, {useEffect, useState} from "react";
-import {useAppDispatch, useAppSelector} from "../../../bll/store";
-import {setNewPasswordAC, sendNewPasswordTC} from "../../../../n2-features/f1-auth/a1-login/auth-reducer";
-import {NewPasswordType} from "../../../dall/login-api";
+import {useAppDispatch, useAppSelector} from "../../../../state/store";
+import {setNewPasswordAC, sendNewPasswordTC} from "../../../../state/auth-reducer";
+import {NewPasswordType} from "../../../../api/loginAPI";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import Button from "../../../../Common/Components/Button";
 import {PATH} from "../../AppRoutes";

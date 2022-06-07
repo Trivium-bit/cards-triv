@@ -1,7 +1,8 @@
+import {cardsAPI} from "../api/cardsAPI";
+import {AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
-import {handleNetworkError} from "../../utils/error.utils";
-import {cardsAPI} from "../../api/cardsAPI";
-import {AppThunkDispatch} from "../../state/store";
+import {handleNetworkError} from "../utils/error.utils";
+
 const SET_CARDS = "CARDS/SET_CARDS"
 const SET_IS_LOADING_CARDS = "CARDS/IS_LOADING"
 

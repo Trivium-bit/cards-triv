@@ -1,5 +1,5 @@
-import {setAppErrorAC, setAppStatusAC} from "../n1-main/bll/app-reducer";
-import {AppThunkDispatch} from "../n1-main/bll/store";
+import {setAppErrorAC, setAppStatusAC} from "../state/app-reducer";
+import {AppThunkDispatch} from "../state/store";
 import {AxiosError} from "axios";
 
 export const handleNetworkError = (error: AxiosError<{ error: string }>, dispatch: AppThunkDispatch) =>{

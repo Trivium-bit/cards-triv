@@ -1,5 +1,5 @@
-import {AppStoreType} from "../../n1-main/bll/store";
-import {NullableType, RequestStatusType, UserType} from "../../n1-main/bll/app-reducer";
+import {AppStoreType} from "../../state/store";
+import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
 import {CardsPaginationType, CardsType} from "../../n2-features/f2-cards/cardsReducer";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{

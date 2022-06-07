@@ -1,10 +1,10 @@
 import React from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import {useAppDispatch, useAppSelector} from "../../bll/store";
-import {NullableType, setAppErrorAC} from "../../bll/app-reducer";
+import {useAppDispatch, useAppSelector} from "../../../../state/store";
+import {NullableType, setAppErrorAC} from "../../../../state/app-reducer";
 import Alert from "@mui/material/Alert";
 import {AlertTitle} from "@mui/material";
-import {appStatusErrorSelector} from "../../../Common/Selectors/Selectors";
+import {appStatusErrorSelector} from "../../../../Common/Selectors/Selectors";
 
 
 export const ErrorSnackBar = () => {

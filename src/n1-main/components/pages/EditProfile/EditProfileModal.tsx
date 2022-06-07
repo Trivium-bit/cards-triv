@@ -3,8 +3,8 @@ import {Box, Modal, Input, styled, InputLabel, FormControl, IconButton} from "@m
 import Button from "../../../../Common/Components/Button";
 import s from './EditProfileModal.module.scss'
 import {PhotoCamera} from "@mui/icons-material";
-import {useAppDispatch} from "../../../bll/store";
-import {updateUserTC} from "../../../bll/app-reducer";
+import {useAppDispatch} from "../../../../state/store";
+import {updateUserTC} from "../../../../state/app-reducer";
 
 
 type ModalPropsType = {
