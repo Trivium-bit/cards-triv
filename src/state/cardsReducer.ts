@@ -53,11 +53,6 @@ export const cardsReducer = (state: InitialProfileStateType = initialState, acti
             return {...state, cardsPacks: action.cardsPacks, pagination: action.pagination}
         case SET_PERSONAL_CARDS_PACKS:
             return {...state, cardsPacks: action.cardsPacks.filter(cardsPack => cardsPack.user_id === action.user_id)}
-        case ADD_NEW_CARD_PACK:
-            return {
-                ...state,
-                cardsPacks: [action.pack, ...state.cardsPacks]
-            }
         default:
             return state
     }
@@ -115,7 +110,6 @@ export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void
     dispatch(setAppStatusAC("loading"));
     cardsAPI.addPack(pack)
         .then((res) =>{
-            dispatch(addNewCardPackAC(res.data.newCardsPack))
             dispatch(setAppStatusAC("succeeded"));
             callback();
         })
