@@ -9,6 +9,9 @@
     color: #21268F;
     cursor: pointer;
     font-weight: 600;
+    display: flex;
+    flex-wrap: wrap;
+    max-height: 100% ;
   }
   .delete {
     border-radius: 2px;
@@ -19,4 +22,5 @@
     cursor: pointer;
     font-weight: 600;
   }
+
 }
