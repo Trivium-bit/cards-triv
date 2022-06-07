@@ -9,7 +9,7 @@ import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {useLocation} from "react-router-dom";
-import {getAllCardsPacksTC, getMyCardsPacks} from "../../../../state/cardsReducer";
+import {getAllCardsPacksTC, getMyCardsPacksTC} from "../../../../state/cardsReducer";
 
 
 const Packs = () => {
@@ -25,7 +25,7 @@ const Packs = () => {
     const handleOnAddNew = () => {
 
         if (show === "MyPacks") {
-            dispatch(getMyCardsPacks(_id, currentPage))
+            dispatch(getMyCardsPacksTC(_id, currentPage))
         } else if (show === "AllPacks") {
             dispatch(getAllCardsPacksTC(currentPage))
         }

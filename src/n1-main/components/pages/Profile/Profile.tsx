@@ -7,7 +7,8 @@ import PacksHeader from "../Packs/PacksHeader";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import MyPacks from "../Packs/MyPacks/MyPacks";
 import {useLocation} from "react-router-dom";
-import {getMyCardsPacks} from "../../../../state/cardsReducer";
+import {getMyCardsPacksTC} from "../../../../state/cardsReducer";
+
 
 
 
@@ -20,7 +21,7 @@ const Profile = () => {
     }, [location.search]);
 
     const handleOnAddNewPack = () => {
-        dispatch(getMyCardsPacks(_id, currentPage))
+        dispatch(getMyCardsPacksTC(_id, currentPage))
     }
 
     return (
