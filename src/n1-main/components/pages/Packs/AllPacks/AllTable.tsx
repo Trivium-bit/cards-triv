@@ -27,7 +27,7 @@ import {CardPackType} from "../../../../../api/cardsAPI";
 
 
 //styles mui
-const StyledTableCell = styled(TableCell)(({ }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
@@ -39,7 +39,7 @@ const StyledTableCell = styled(TableCell)(({ }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
     },
@@ -85,7 +85,7 @@ const MyTable = () => {
 
     useEffect(() => {
         dispatch(getAllCardsPacksTC(currentPage))
-    },[currentPage]);
+    },[currentPage, dispatch]);
     return (
         <Box>
             <TableContainer component={Paper}>
@@ -100,6 +100,7 @@ const MyTable = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
+
                         {
                         myCards.map((card) => (
                             <StyledTableRow key={card._id}>

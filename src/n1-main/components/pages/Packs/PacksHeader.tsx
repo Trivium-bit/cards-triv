@@ -12,6 +12,7 @@ import {useAppDispatch} from "../../../../state/store";
 type PacksHeaderPropsType = {
     onSearch?:(searchQuery: string) => void
     onAddNew?:() => void
+    packsOwnerName?: string
 }
 
 const modalStyle = {
@@ -26,13 +27,19 @@ const modalStyle = {
     borderRadius: 2,
 };
 
-const PacksHeader:React.FC<PacksHeaderPropsType> = ({onSearch, onAddNew}) => {
+const PacksHeader:React.FC<PacksHeaderPropsType> = ({onSearch, onAddNew, packsOwnerName}) => {
     const dispatch = useAppDispatch();
     const createNew = useSelector(selectNewCardsPackSelector)
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const spitName = () =>{
+        const spitedName = packsOwnerName?.split(" ");
+        if(spitedName){
+            return `${spitedName[0]}'s`
+        }
+    }
     const handleSave = () => {
         dispatch(addNewCardPackTC({
             name: inputValue
@@ -49,7 +56,10 @@ const PacksHeader:React.FC<PacksHeaderPropsType> = ({onSearch, onAddNew}) => {
     };
     return (
             <Box className={s.packHeaderBlock}>
-                <h1 className={s.title}>Packs list</h1>
+                {packsOwnerName
+                    ? <h1 className={s.title}>{`${spitName()} Pack list`}</h1>
+                : <h1 className={s.title}>Packs list</h1>
+                }
                 <Box className={s.elements}>
                     <Input
                         placeholder={"Search..."}
