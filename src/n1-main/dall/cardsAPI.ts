@@ -5,27 +5,9 @@ export const instance = axios.create({
     withCredentials: true,
 })
 
+
 export const cardsAPI = {
-    getCardsPack() {
-        return instance.get<ResponseCardsPackType>("/cards/pack");
+    getCards(page: string) {
+        return instance.get(`/cards/pack?page=${page}`);
     }
-}
-
-//types
-export type CardPackType = {
-    _id: string
-    user_id: string
-    name: string
-    cardsCount: number
-    created: string
-    updated: string
-}
-
-export type ResponseCardsPackType = {
-    cardPacks: Array<CardPackType>  
-    cardPacksTotalCount: number
-    maxCardsCount: number
-    minCardsCount: number
-    page: number
-    pageCount: number
 }

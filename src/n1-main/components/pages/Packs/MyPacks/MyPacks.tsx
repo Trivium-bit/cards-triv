@@ -1,7 +1,6 @@
 import React from 'react';
 import {Box} from "@mui/material";
 import MyTable from "./MyTable";
-import Paginator from "../../../../../Common/Components/Paginator";
 import PacksHeader from "../PacksHeader";
 import s from './MyPacks.module.scss'
 
@@ -11,9 +10,6 @@ const MyPacks = () => {
             <PacksHeader />
             <Box className={s.table}>
                 <MyTable/>
-            </Box>
-            <Box className={s.paginator}>
-                <Paginator/>
             </Box>
         </Box>
     );

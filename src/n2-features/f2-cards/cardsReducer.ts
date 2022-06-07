@@ -1,87 +1,76 @@
-import store, { AppStoreType } from './../../n1-main/bll/store';
-import {cardsAPI, ResponseCardsPackType} from "../../n1-main/dall/cardsAPI";
-import { AppThunkDispatch } from "../../n1-main/bll/store";
-import { AxiosError } from "axios";
-import { setAppStatusAC } from "../../n1-main/bll/app-reducer";
-import { handleNetworkError } from "../../utils/error.utils";
+import {cardsAPI} from "../../n1-main/dall/cardsAPI";
+import {AppThunkDispatch} from "../../n1-main/bll/store";
+import {AxiosError} from "axios";
+import {handleNetworkError} from "../../utils/error.utils";
 
-const SET_CARDS_PACK = "CARDS/SET_CARDS_PACK"
-const GET_CARDS_PACK = "CARDS/GET_CARDS_PACK"
+const SET_CARDS = "CARDS/SET_CARDS"
+const SET_IS_LOADING_CARDS = "CARDS/IS_LOADING"
 
+export type CardsType = {
+    _id: string;
+    user_id: string;
+    user_name: string;
+    private: boolean;
+    name: string;
+    path: string;
+    grade: number;
+    shots: number;
+    cardsCount: number;
+    type: string;
+    rating: number;
+    created: string;
+    updated: string;
+    more_id: string;
+    __v: number;
+}
+export type CardsPaginationType = {
+    current: number,
+    count: number
+}
+export type InitialProfileStateType =  {
+    isLoading: boolean;
+    cards: CardsType[];
+    pagination: CardsPaginationType
+}
 const initialState = {
-    cardsPack: {
-        packName: "",
-        min: 1,
-        max: 100,
-        sortPacks: "",
-        page: 1,
-        pageCount: 8,
-        user_id: ""
-    },
-    cardPacksResponse: {
-        cardPacks: [
-            {
-                _id: "",
-                user_id: "",
-                name: "",
-                cardsCount: 0,
-                created: "",
-                updated: ""
-            },
-        ],
-        cardPacksTotalCount: 0,
-        maxCardsCount: 0,
-        minCardsCount: 0,
-        page: 1,
-        pageCount: 8
+    isLoading: false,
+    cards: [],
+    pagination: {
+        count: 0,
+        current: 0
     }
 }
+export type CardsActionType = SetCardsActionType | SetCardsIsLoadingActionType
 
-export type RequestCardsPackType = {
-    packName: string
-    min: number
-    max: number
-    sortPacks: string
-    page: number
-    pageCount: number
-    user_id: string
-}
-
-type InitialStateType = typeof initialState
-
-export type CardsPackActionType = SetCardsPackActionType | GetCardsPackActionType
-export const cardsReducer = (state: InitialStateType = initialState, action: CardsPackActionType): InitialStateType => {
+export const cardsReducer = (state: InitialProfileStateType = initialState, action: CardsActionType): InitialProfileStateType => {
     switch (action.type) {
-        case "CARDS/SET_CARDS_PACK":
-            return { ...state, cardsPack: action.cardsPack }
-        case "CARDS/GET_CARDS_PACK":
-            return { ...state, cardPacksResponse: action.cardPacksResponse }
+        case SET_IS_LOADING_CARDS:
+            return { ...state, isLoading: action.isLoading }
+        case SET_CARDS:
+            return { ...state, cards: action.cards, pagination: action.pagination }
         default:
             return state
     }
 }
 
 // actions
-export const setCardsPackAC = (cardsPack: RequestCardsPackType) => ({ type: SET_CARDS_PACK, cardsPack } as const)
-export const getCardsPackAC = (cardPacksResponse: ResponseCardsPackType) => ({ type: GET_CARDS_PACK, cardPacksResponse } as const)
+export const setCardsIsLoadingAC = (isLoading: boolean) => ({ type: SET_IS_LOADING_CARDS, isLoading } as const)
+export const setCardsAC = (cards: CardsType[], pagination: CardsPaginationType) => ({ type: SET_CARDS, cards, pagination } as const)
 
 // types
-export type SetCardsPackActionType = ReturnType<typeof setCardsPackAC>
-export type GetCardsPackActionType = ReturnType<typeof getCardsPackAC>
+export type SetCardsIsLoadingActionType = ReturnType<typeof setCardsIsLoadingAC>
+export type SetCardsActionType = ReturnType<typeof setCardsAC>
 
 //thunk
-export const getCardsPuckTC = () => (dispatch: AppThunkDispatch, getState: AppStoreType) => {
-    dispatch(setAppStatusAC("loading"));
-
-
-    cardsAPI.getCardsPack()
-        .then((response) => {
-            let cardsPack = store.getState().cardsReducer.cardsPack
-            dispatch(setCardsPackAC(cardsPack));
-            dispatch(getCardsPackAC(response.data));
-            dispatch(setAppStatusAC("succeeded"));
+export const getCardsTC = (page: string) =>(dispatch:AppThunkDispatch) =>{
+    dispatch(setCardsIsLoadingAC(true));
+    cardsAPI.getCards(page)
+        .then((res) =>{
+            dispatch(setCardsAC(res.data.cardPacks, {count: res.data.pageCount, current: res.data.page}));
+            dispatch(setCardsIsLoadingAC(false));
         })
         .catch((error: AxiosError<{ error: string }>) => {
+            dispatch(setCardsIsLoadingAC(false));
             handleNetworkError(error, dispatch)
         })
 }

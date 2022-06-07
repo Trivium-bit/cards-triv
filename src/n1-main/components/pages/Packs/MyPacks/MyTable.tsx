@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import { v4 } from 'uuid';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal,
     Paper, Radio, RadioGroup,
@@ -10,24 +9,19 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    CircularProgress, Pagination
 } from "@mui/material";
 import Button from "../../../../../Common/Components/Button";
 import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
-import { useAppDispatch, useAppSelector } from '../../../../bll/store';
-import { getCardsPuckTC } from '../../../../../n2-features/f2-cards/cardsReducer';
-import { ResponseCardsPackType } from '../../../../dall/cardsAPI';
-import { carsPackSelector } from '../../../../../Common/Selectors/Selectors';
-
-
-//types
-type CardPropsType = {
-    _id: string
-    name:string
-    cards: number
-    lastUpdate: string
-    createdBy: string
-}
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getCardsTC, CardsType} from "../../../../../n2-features/f2-cards/cardsReducer";
+import {
+    myCardsIsLoadingSelector,
+    myCardsPaginationSelector,
+    myCardsSelector
+} from "../../../../../Common/Selectors/Selectors";
 
 //mui styles
 const StyledTableCell = styled(TableCell)(({ }) => ({
@@ -48,11 +42,6 @@ const StyledTableRow = styled(TableRow)(({ }) => ({
     },
 }));
 
-const cards: CardPropsType[] = [
-    {_id:v4(), name: "First pack", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 1"},
-    {_id:v4(), name: "Second pack ", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 2"},
-    {_id:v4(), name: "Pack name 3", cards: 4, lastUpdate: "21.02.21", createdBy: "marina 3"},
-]
 const modalStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -66,20 +55,29 @@ const modalStyle = {
 };
 
 const MyTable = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useDispatch<any>();
+    const myCards = useSelector(myCardsSelector);
+    const myCardsIsLoading = useSelector(myCardsIsLoadingSelector);
+    const myCardsPagination = useSelector(myCardsPaginationSelector);
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardPropsType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardPropsType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<CardsType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<CardsType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-    const cardPacksResponse = useAppSelector<ResponseCardsPackType | undefined>(carsPackSelector);
 
-    const dispatch = useAppDispatch();
+    // get page from query parameters
+    // const currentPage = new URLSearchParams(location.search)?.get("page") || "1";
+    const currentPage = useMemo(() => {
+        return new URLSearchParams(location.search)?.get("page") || "1";
+    }, [location.search]);
 
-    const handleOpenDelete = (card: CardPropsType) => setRowToDelete(card);
+    const handleOpenDelete = (card: CardsType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
 
-    const handleOpenAnswer = (card: CardPropsType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: CardsType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
 
     const handleOpenLearn = () => setOpenLearn(true);
@@ -99,11 +97,13 @@ const MyTable = () => {
         setAnswer(event.target.value);
     };
 
+    const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
+        navigate(`/packs?page=${page}`)
+    }
+
     useEffect(() => {
-       dispatch(getCardsPuckTC)
-    }, [dispatch]);
-
-
+        dispatch(getCardsTC(currentPage))
+    },[currentPage]);
 
     return (
         <Box>
@@ -113,33 +113,46 @@ const MyTable = () => {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell align="right">Cards</StyledTableCell>
-                            <StyledTableCell align="right">Last Updates</StyledTableCell>
-                            <StyledTableCell align="right">Created By</StyledTableCell>
+                            <StyledTableCell align="left">Cards</StyledTableCell>
+                            <StyledTableCell align="left">Last Updates</StyledTableCell>
+                            <StyledTableCell align="left">Created By</StyledTableCell>
                             <StyledTableCell align="center">Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {cards.map((card) => (
-                            <StyledTableRow key={card._id}>
-                                <StyledTableCell component="th" scope="row">
-                                    {card.name}
-                                </StyledTableCell>
-                                <StyledTableCell align="right">{card.cards}</StyledTableCell>
-                                <StyledTableCell align="right">{card.lastUpdate}</StyledTableCell>
-                                <StyledTableCell align="right">{card.createdBy}</StyledTableCell>
-                                <StyledTableCell align="right">
-                                    <Box className={s.buttonGroup}>
-                                        <button onClick={() => handleOpenDelete(card)} className={s.delete} >Delete</button>
-                                        <button onClick={handleOpenEdit} className={s.main}>Edit</button>
-                                        <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
-                                    </Box>
+                        {myCardsIsLoading ? (
+                            <StyledTableRow>
+                                <StyledTableCell>
+                                    <CircularProgress />
                                 </StyledTableCell>
                             </StyledTableRow>
-                        ))}
+                        ) : (
+                            myCards.map((card) => (
+                                <StyledTableRow key={card._id}>
+                                    <StyledTableCell component="th" scope="row">
+                                        <Link to={`/packs/${card._id}`}>
+                                            {card.name}
+                                        </Link>
+
+                                    </StyledTableCell>
+                                    <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
+                                    <StyledTableCell align="left">{card.updated}</StyledTableCell>
+                                    <StyledTableCell align="left">{card.created}</StyledTableCell>
+                                    <StyledTableCell align="right">
+                                        <Box className={s.buttonGroup}>
+                                            <button onClick={() => handleOpenDelete(card)} className={s.delete} >Delete</button>
+                                            <button onClick={handleOpenEdit} className={s.main}>Edit</button>
+                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
+                                        </Box>
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Pagination onChange={handleChangePagination} count={myCardsPagination.count} page={myCardsPagination.current} shape="rounded" />
 
             {/*// Delete Button Modal*/}
             <Modal
