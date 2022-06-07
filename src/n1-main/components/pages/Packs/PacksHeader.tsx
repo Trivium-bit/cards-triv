@@ -25,7 +25,7 @@ const modalStyle = {
     borderRadius: 2,
 };
 
-const PacksHeader:React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
+const PacksHeader:React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew}) => {
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
@@ -41,7 +41,10 @@ const PacksHeader:React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
         dispatch(addNewCardPackTC({
             name: inputValue
         }, () => {
-            handleClose()
+            handleClose();
+            if (onAddNew) {
+                onAddNew()
+            }
         }));
     };
 

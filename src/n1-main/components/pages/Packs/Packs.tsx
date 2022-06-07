@@ -1,18 +1,36 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {Box, Container, Grid} from "@mui/material";
 import MyPacks from "./MyPacks/MyPacks";
 import s from './styles/Packs.module.scss'
 import AllPacks from "./AllPacks/AllPacks";
 import Slider from "../../Slider/Slider";
-import {useAppSelector} from "../../../../state/store";
+import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
+import {useLocation} from "react-router-dom";
+import {getAllCardsPacksTC, getMyCardsPacks} from "../../../../state/cardsReducer";
 
 
 const Packs = () => {
+    const dispatch = useAppDispatch();
+    const { _id } = useAppSelector(state => state.appReducer.user);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const [show, setShow] = useState<string>("MyPacks")
+    const location = useLocation();
+    const currentPage = useMemo(() => {
+        return new URLSearchParams(location.search)?.get("page") || "1";
+    }, [location.search]);
+    const [show, setShow] = useState<string>("MyPacks");
+
+    const handleOnAddNew = () => {
+
+        if (show === "MyPacks") {
+            dispatch(getMyCardsPacks(_id, currentPage))
+        } else if (show === "AllPacks") {
+            dispatch(getAllCardsPacksTC(currentPage))
+        }
+
+    }
 
     return (
         <Container fixed>
@@ -43,7 +61,7 @@ const Packs = () => {
                     </Grid>
                     <Grid xs={9} item>
                         <Box className={s.myPacksBlock}>
-                            <PacksHeader/>
+                            <PacksHeader onAddNew={handleOnAddNew}/>
                             {show === "MyPacks" && <MyPacks/>}
                             {show === "AllPacks" && <AllPacks/>}
                         </Box>

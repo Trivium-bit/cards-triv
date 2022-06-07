@@ -8,7 +8,7 @@ export const instance = axios.create({
 
 export const cardsAPI = {
     getAllCardsPacks(page: string) {
-        const pageCount = 7;
+        const pageCount = 4;
         return instance.get<ResponseCardsPackType>(`/cards/pack?page=${page}&pageCount=${pageCount}`);
     },
     addPack(pack: CardPackRequestType) {

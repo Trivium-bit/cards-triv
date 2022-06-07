@@ -1,16 +1,28 @@
-import React from "react";
+import React, {useMemo} from "react";
 import {Box, Container, Grid} from "@mui/material";
 import UserProfile from "./UserProfile";
 import s from './Profile.module.scss'
 import Slider from "../../Slider/Slider";
 import PacksHeader from "../Packs/PacksHeader";
-import {useAppSelector} from "../../../../state/store";
+import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import MyPacks from "../Packs/MyPacks/MyPacks";
+import {useLocation} from "react-router-dom";
+import {getMyCardsPacks} from "../../../../state/cardsReducer";
 
 
 
 const Profile = () => {
-    const name = useAppSelector<string>(state => state.appReducer.user.name)
+    const { name, _id } = useAppSelector(state => state.appReducer.user);
+    const dispatch = useAppDispatch()
+    const location = useLocation();
+    const currentPage = useMemo(() => {
+        return new URLSearchParams(location.search)?.get("page") || "1";
+    }, [location.search]);
+
+    const handleOnAddNewPack = () => {
+        dispatch(getMyCardsPacks(_id, currentPage))
+    }
+
     return (
         <div className={s.profileBlock}>
             <Container fixed >
@@ -29,7 +41,7 @@ const Profile = () => {
                         </Grid>
                         <Grid xs={9} item>
                             <Box className={s.myPacksBlock}>
-                                <PacksHeader packsOwnerName={name}/>
+                                <PacksHeader onAddNew={handleOnAddNewPack} packsOwnerName={name}/>
                                 <MyPacks/>
                             </Box>
                         </Grid>
