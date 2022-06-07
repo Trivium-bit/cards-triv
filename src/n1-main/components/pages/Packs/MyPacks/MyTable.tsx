@@ -16,13 +16,16 @@ import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCardPackTC, getMyCardsPacks} from "../../../../../state/cardsReducer";
+import {deleteCardPackTC, getMyCardsPacksTC} from "../../../../../state/cardsReducer";
 import {
+    appStatusSelector,
     myCardsPaginationSelector,
-    myCardsSelector, userIdSelector
+    myCardsSelector
 } from "../../../../../Common/Selectors/Selectors";
-import {CardPackType} from "../../../../../api/cardsAPI";
+
 import {useAppSelector} from "../../../../../state/store";
+import {CardsResponseType} from "../../../../../api/cardsAPI";
+import {RequestStatusType} from "../../../../../state/app-reducer";
 
 
 //mui styles
@@ -57,7 +60,8 @@ const modalStyle = {
 };
 
 const MyTable = () => {
-    const myId = useAppSelector<string>(userIdSelector);
+    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
+    const myId = useAppSelector<string>(state => state.appReducer.user._id);
     const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch<any>();
@@ -65,8 +69,8 @@ const MyTable = () => {
     const myCardsPagination = useSelector(myCardsPaginationSelector);
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardPackType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardPackType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<CardsResponseType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
 
@@ -76,10 +80,10 @@ const MyTable = () => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
 
-    const handleOpenDelete = (card: CardPackType) => setRowToDelete(card);
+    const handleOpenDelete = (card: CardsResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
 
-    const handleOpenAnswer = (card: CardPackType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: CardsResponseType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
 
     const handleOpenLearn = () => setOpenLearn(true);
@@ -102,16 +106,16 @@ const MyTable = () => {
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs?page=${page}`)
     }
-    const handleDeletePack = () => {
+   const handleDeletePack = () => {
         if(rowToDelete) {
             dispatch(deleteCardPackTC(rowToDelete._id, () => {
                 handleCloseDelete()
-                dispatch(getMyCardsPacks(myId, currentPage))
+                dispatch(getMyCardsPacksTC(myId, currentPage))
             }))
         }
     }
     useEffect(() => {
-        dispatch(getMyCardsPacks(myId, currentPage))
+        dispatch(getMyCardsPacksTC(myId, currentPage))
     },[currentPage, myId, dispatch]);
 
     return (
@@ -170,8 +174,8 @@ const MyTable = () => {
                         </span>
                     </Box>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Delete'}/>
+                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Delete'} disabled={appStatus ==="loading"}/>
                     </Box>
                 </Box>
             </Modal>
