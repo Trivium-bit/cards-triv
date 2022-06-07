@@ -8,14 +8,15 @@ export const instance = axios.create({
 
 export const cardsAPI = {
     getAllCardsPacks(page: string) {
-        const pageCount = 4;
+        const pageCount = 8;
         return instance.get<ResponseCardsPackType>(`/cards/pack?page=${page}&pageCount=${pageCount}`);
     },
     addPack(pack: CardPackRequestType) {
         return instance.post("/cards/pack", {cardsPack: pack})
     },
     getMyCardsPacks(user_id: string, page: string){
-        return instance.get<ResponseCardsPackType>(`/cards/pack?page=${page}&user_id=${user_id}`);
+        const pageCount = 8;
+        return instance.get<ResponseCardsPackType>(`/cards/pack?page=${page}&user_id=${user_id}&pageCount=${pageCount}`);
     },
     deleteMyCardsPacks(id:string){
         return instance.delete(`/cards/pack?id=${id}`);
