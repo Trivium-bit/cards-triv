@@ -113,6 +113,3 @@ export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
             dispatch(setInitializedAC(true));
         })
 }
-
-
-

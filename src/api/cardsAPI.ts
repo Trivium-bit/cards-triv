@@ -19,6 +19,7 @@ export const cardsAPI = {
     }
 }
 
+
 //types
 export type CardPackType = {
     _id: string

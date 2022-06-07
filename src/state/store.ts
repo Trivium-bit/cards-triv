@@ -9,12 +9,12 @@ import {
     cardsReducer,
 } from './cardsReducer';
 
- const rootReducer = combineReducers({
-     authReducer: authReducer,
-     registerReducer: registerReducer,
-     appReducer: appReducer,
-     cardsReducer: cardsReducer
- })
+const rootReducer = combineReducers({
+    authReducer: authReducer,
+    registerReducer: registerReducer,
+    appReducer: appReducer,
+    cardsReducer: cardsReducer
+})
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
@@ -27,5 +27,5 @@ export const useAppDispatch: () => AppThunkDispatch = useDispatch;
 
 export default store
 
- // @ts-ignore
- window.store = store
+// @ts-ignore
+window.store = store
