@@ -52,18 +52,13 @@ export const forgotTC = (email: RecoveryEmailType) => {
         forgotPassAPI.forgotPass(email,)
             .then((res) => {
                 const success = res.data.success
-                
                 localStorage.setItem("email", JSON.stringify(email.email));
                 const valueAsString = localStorage.getItem("email");
                 if (valueAsString) {
                     dispatch(setAppStatusAC("succeeded"));
                     dispatch(getEmailAC(valueAsString));
                     dispatch(verifEmailAC(success))
-                    if (success === true) {
-                        return success
-                    }
                 }
-
             })
             .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch)
@@ -71,7 +66,7 @@ export const forgotTC = (email: RecoveryEmailType) => {
     }
 }
 // types
-type isRegisteredActionType = ReturnType<typeof registerAC> | AppActionsType | ReturnType<typeof getEmailAC>   |  ReturnType<typeof verifEmailAC>
+type isRegisteredActionType = ReturnType<typeof registerAC> | AppActionsType | ReturnType<typeof getEmailAC> | ReturnType<typeof verifEmailAC>
 export type RegisterActionsType = isRegisteredActionType;
 
 // actions

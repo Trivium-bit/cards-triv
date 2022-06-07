@@ -1,11 +1,11 @@
 import styles from "./PasswordRecovery.module.scss";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
 import Button from "../../../../Common/Components/Button";
 import { useFormik } from "formik";
 import { PATH } from "../../AppRoutes";
-import { forgotTC } from "../../../../state/registerReduser";
+import { forgotTC, verifEmailAC } from "../../../../state/registerReduser";
 import { useAppDispatch, useAppSelector } from "../../../../state/store";
 
 type FormikErrorType = {
@@ -43,7 +43,7 @@ export const PassRecovery = () => {
     })
     useEffect(() => {
         if (success) {
-            return navigate(PATH.CHECK_EMAIL);
+            return navigate(PATH.CHECK_EMAIL)
         }
     }, [success, navigate]);
 
