@@ -16,12 +16,15 @@ import modalStyles from '../styles/ModalStyles.module.scss'
 import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
+    appStatusSelector,
     myCardsPaginationSelector,
-    myCardsSelector, userIdSelector
+    myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
-import {getAllCardsPacksTC} from "../../../../../state/cardsReducer";
-import {CardPackType} from "../../../../../api/cardsAPI";
+import {deleteCardPackTC, getAllCardsPacksTC} from "../../../../../state/cardsReducer";
+
 import {useAppSelector} from "../../../../../state/store";
+import {CardsResponseType} from "../../../../../api/cardsAPI";
+import {RequestStatusType} from "../../../../../state/app-reducer";
 
 
 //types
@@ -59,6 +62,7 @@ const modalStyle = {
 
 //table
 const AllTable = () => {
+    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
     const navigate = useNavigate();
     const location = useLocation();
@@ -67,8 +71,8 @@ const AllTable = () => {
     const myCardsPagination = useSelector(myCardsPaginationSelector);
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardPackType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardPackType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<CardsResponseType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
 
@@ -85,9 +89,9 @@ const AllTable = () => {
     const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAnswer(event.target.value);
     };
-    const handleOpenDelete = (card: CardPackType) => setRowToDelete(card);
+    const handleOpenDelete = (card: CardsResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
-    const handleOpenAnswer = (card: CardPackType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: CardsResponseType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
     const handleOpenLearn = () => setOpenLearn(true);
     const handleCloseLearn = () => {
@@ -98,7 +102,14 @@ const AllTable = () => {
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs?page=${page}`)
     }
-
+    const handleDeletePack = () => {
+        if(rowToDelete) {
+            dispatch(deleteCardPackTC(rowToDelete._id, () => {
+                handleCloseDelete()
+                dispatch(getAllCardsPacksTC(currentPage))
+            }))
+        }
+    }
     useEffect(() => {
         dispatch(getAllCardsPacksTC(currentPage))
     }, [currentPage, dispatch]);
@@ -174,7 +185,7 @@ const AllTable = () => {
                 onClose={handleCloseDelete}
             >
                 <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                    <h1 className={modalStyles.modalTitle}>Delete Pack</h1>
+                    <h1 onClick={handleDeletePack} className={modalStyles.modalTitle}>Delete Pack</h1>
                     <Box>
                         <span className={modalStyles.modalText}>Do you really want to remove
                             <b> {rowToDelete?.name}</b>?
@@ -182,8 +193,8 @@ const AllTable = () => {
                         </span>
                     </Box>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button className={modalStyles.btnSave} title={'Save'}/>
+                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Save'} disabled={appStatus ==="loading"}/>
                     </Box>
                 </Box>
             </Modal>
