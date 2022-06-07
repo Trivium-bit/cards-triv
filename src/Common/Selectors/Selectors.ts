@@ -1,6 +1,6 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-import {CardsPaginationType, CardsType} from "../../n2-features/f2-cards/cardsReducer";
+import {AddNewCardPackType, CardsPaginationType, CardsType} from "../../state/cardsReducer";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
     return state.appReducer.status
@@ -31,4 +31,7 @@ export const myCardsPaginationSelector = (state: AppStoreType): CardsPaginationT
 }
 export const myCardsSelector = (state: AppStoreType): CardsType[] =>{
     return state.cardsReducer.cards
+}
+export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
+    return state.cardsReducer.addNewCardPack
 }

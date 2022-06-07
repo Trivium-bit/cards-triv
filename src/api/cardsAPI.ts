@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {CardPackRequestType} from "../state/cardsReducer";
 
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
@@ -9,5 +10,8 @@ export const instance = axios.create({
 export const cardsAPI = {
     getCards(page: string) {
         return instance.get(`/cards/pack?page=${page}`);
+    },
+    addPack(pack: CardPackRequestType) {
+        return instance.post("/cards/pack", {cardsPack: pack})
     }
 }
