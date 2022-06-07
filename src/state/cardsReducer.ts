@@ -1,56 +1,121 @@
+import {CardPackType, cardsAPI, } from "../api/cardsAPI";
 import {AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
-import {setAppStatusAC} from "./app-reducer";
-import {cardApi, PackCardType} from "../api/cardAPI";
 import {handleNetworkError} from "../utils/error.utils";
+import {setAppStatusAC} from "./app-reducer";
 
-const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
+const SET_CARDS = "CARDS/SET_CARDS";
+const SET_IS_LOADING_CARDS = "CARDS/IS_LOADING";
+const SET_PERSONAL_CARDS_PACKS = "CARDS/SET_PERSONAL_CARDS_PACKS";
+const INIT_ADD_NEW_CARD_PACK = "CARDS/INIT_ADD_NEW_CARD_PACK"
+const ADD_NEW_CARD_PACK = "CARDS/ADD_NEW_CARD_PACK"
 
 
-const initialState: InitialCardsStateType = {
-    cards: [],
+export type CardPackRequestType = {
+    name: string
+    path?: string
+    grade?: number
+    shots?: number
+    rating?: number
+    deckCover?: string
+    private?: boolean
+    type?: string
 }
-export type InitialCardsStateType = {
-    cards: PackCardType[]
+
+export type CardsPaginationType = {
+    current: number,
+    count: number
 }
+export type InitialProfileStateType = {
+    isLoading: boolean;
+    cardsPacks: CardPackType[];
+    pagination: CardsPaginationType;
+}
+const initialState: InitialProfileStateType = {
+    isLoading: false,
+    cardsPacks: [],
+    pagination: {
+        count: 0,
+        current: 0
+    }
+}
+export type CardsActionType = SetCardsActionType
+    | SetCardsIsLoadingActionType
+    | SetPersonalCardsPacksActionType
+    | AddNewCardsPackActionType
 
-//main AC type
-export type CardActionType = getPackCardsActionType
 
-//reducer
-export const cardsReducer = (state: InitialCardsStateType = initialState, action: CardActionType): InitialCardsStateType => {
+export const cardsReducer = (state: InitialProfileStateType = initialState, action: CardsActionType): InitialProfileStateType => {
     switch (action.type) {
-        case SET_PACK_CARDS:
-            return {...state, cards: action.cards}
+        case SET_IS_LOADING_CARDS:
+            return { ...state, isLoading: action.isLoading }
+        case SET_CARDS:
+            return {...state, cardsPacks: action.cardsPacks, pagination: action.pagination}
+        case SET_PERSONAL_CARDS_PACKS:
+            return {...state, cardsPacks: action.cardsPacks.filter(cardsPack => cardsPack.user_id === action.user_id)}
+        case ADD_NEW_CARD_PACK:
+            return {
+                ...state,
+                cardsPacks: [action.pack, ...state.cardsPacks]
+            }
         default:
             return state
     }
 }
-//AC
-export const setPackCardsAC = (cards:PackCardType[]) => ({type: SET_PACK_CARDS, cards} as const)
 
+// actions
+export const setCardsIsLoadingAC = (isLoading: boolean) => ({type: SET_IS_LOADING_CARDS, isLoading} as const)
+export const setCardsAC = (cardsPacks: CardPackType[], pagination: CardsPaginationType) => ({
+    type: SET_CARDS,
+    cardsPacks,
+    pagination
+} as const)
+export const setPersonalCardsPacksAC = (cardsPacks: CardPackType[], user_id: string) => ({
+    type: SET_PERSONAL_CARDS_PACKS,
+    cardsPacks,
+    user_id
+} as const)
 
-//AC TYPES
-export type getPackCardsActionType = ReturnType<typeof setPackCardsAC>;
+export const addNewCardPackAC = (pack: CardPackType) => ({ type: ADD_NEW_CARD_PACK, pack } as const)
 
-//get card thunk
-export const getCardsTC = (id: string) =>(dispatch:AppThunkDispatch) => {
+// actions types
+export type SetCardsIsLoadingActionType = ReturnType<typeof setCardsIsLoadingAC>;
+export type SetCardsActionType = ReturnType<typeof setCardsAC>;
+export type SetPersonalCardsPacksActionType = ReturnType<typeof setPersonalCardsPacksAC>;
+export type AddNewCardsPackActionType = ReturnType<typeof addNewCardPackAC>;
+
+//thunk
+export const getAllCardsPacksTC = (page: string) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
-    cardApi.getAllCards(id)
-        .then((res) =>{
+    cardsAPI.getAllCardsPacks(page)
+        .then((res) => {
+            dispatch(setCardsAC(res.data.cardPacks, {count: res.data.pageCount, current: res.data.page}));
             dispatch(setAppStatusAC("succeeded"));
-            dispatch(setPackCardsAC(res.data.cards));
         })
         .catch((error: AxiosError<{ error: string }>) => {
-            dispatch(setAppStatusAC("failed"));
             handleNetworkError(error, dispatch)
         })
 }
-//add card thunk
-export const addNewCardTC = (id: string, card: PackCardType,callback: () => void) =>(dispatch:AppThunkDispatch) => {
+
+export const getMyCardsPacks = (user_id: string, page: string) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
-    cardApi.addNewCard(id, card)
-        .then(() =>{
+    cardsAPI.getMyCardsPacks(user_id,  page)
+        .then((res) => {
+                dispatch(setPersonalCardsPacksAC(res.data.cardPacks, user_id));
+                dispatch(setAppStatusAC("succeeded"));
+            }
+        )
+        .catch((error: AxiosError<{ error: string }>) => {
+                handleNetworkError(error, dispatch);
+            }
+        )
+}
+//thunk add pack
+export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void) =>(dispatch:AppThunkDispatch) =>{
+    dispatch(setAppStatusAC("loading"));
+    cardsAPI.addPack(pack)
+        .then((res) =>{
+            dispatch(addNewCardPackAC(res.data.newCardsPack))
             dispatch(setAppStatusAC("succeeded"));
             callback();
         })
@@ -59,11 +124,11 @@ export const addNewCardTC = (id: string, card: PackCardType,callback: () => void
             handleNetworkError(error, dispatch)
         })
 }
-//thunk delete card
-export const deleteCardTC = (id: string, callback: () => void) =>(dispatch:AppThunkDispatch) => {
+//thunk delete pack
+export const deleteCardPackTC = (id: string, callback: () => void) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
-    cardApi.deleteMyCard(id)
-        .then(() =>{
+    cardsAPI.deleteMyCardsPacks(id)
+        .then((res) =>{
             dispatch(setAppStatusAC("succeeded"));
             callback()
         })
