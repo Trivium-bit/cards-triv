@@ -9,7 +9,7 @@ import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {useLocation} from "react-router-dom";
-import {getAllCardsPacksTC, getMyCardsPacksTC} from "../../../../state/cardsReducer";
+import {getAllCardsPacksTC, getMyCardsPacksTC} from "../../../../state/cardPacksReducer";
 
 
 const Packs = () => {

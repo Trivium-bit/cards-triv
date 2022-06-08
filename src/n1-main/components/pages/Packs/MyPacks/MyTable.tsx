@@ -16,7 +16,7 @@ import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCardPackTC, getMyCardsPacksTC} from "../../../../../state/cardsReducer";
+import {deleteCardPackTC, getMyCardsPacksTC} from "../../../../../state/cardPacksReducer";
 import {
     appStatusSelector,
     myCardsPaginationSelector,

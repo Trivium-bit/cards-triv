@@ -4,7 +4,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
 import s from './styles/PackHeader.module.scss'
-import {addNewCardPackTC} from "../../../../state/cardsReducer";
+import {addNewCardPackTC} from "../../../../state/cardPacksReducer";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
@@ -47,6 +47,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
+
     const handleSave = () => {
         dispatch(addNewCardPackTC({
                 name: inputValue

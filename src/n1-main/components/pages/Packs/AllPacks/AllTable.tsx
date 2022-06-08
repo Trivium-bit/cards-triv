@@ -20,7 +20,7 @@ import {
     myCardsPaginationSelector,
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
-import {deleteCardPackTC, getAllCardsPacksTC} from "../../../../../state/cardsReducer";
+import {deleteCardPackTC, getAllCardsPacksTC} from "../../../../../state/cardPacksReducer";
 
 import {useAppSelector} from "../../../../../state/store";
 import {CardsResponseType} from "../../../../../api/cardsAPI";
