@@ -1,30 +1,63 @@
 import axios from 'axios'
-import {CardPackRequestType} from "../state/cardsReducer";
+import {CardPackRequestType} from "../state/cardPacksReducer";
 
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
     withCredentials: true,
 })
+export type GetCardsType = {
+    packName?: string // english - default value
+    min?: number
+    max?: number
+    sortPacks?: string // 0updated - default value,
+    page?: number
+    pageCount?: number
+    user_id?: string
+}
+
+/*export const PacksAPI = {
+    getPacks: (args: GetCardsType) => {
+        return instance
+            .get<GetCardsPackResponseType>('/cards/pack', {
+                params: args,
+            })
+            .then((res) => res.data)
+    },
+    addPack: (args: SetCardsPackType) => {
+        return instance.post('/cards/pack', args).catch(() => clearState())
+    },
+    deletePack: (args: DeleteCardsPackType) => {
+        return instance
+            .delete(`cards/pack`, { params: args })
+            .catch(() => clearState())
+    },
+    updatePack: (args: UpdateCardsPackType) => {
+        return instance.put('/cards/pack', args).catch(() => clearState())
+    },
+}*/
+
+
 export const pageCount = 8;
 export const cardsAPI = {
-    getAllCardsPacks(currentPage: string) {
-        return instance.get<ResponseCardsPackType>(`/cards/pack?page=${currentPage}&pageCount=${pageCount}`);
+    getCardsPacks(args: GetCardsType) {
+        return instance.get<ResponseCardsPackType>(`/cards/pack`,{
+            params: {...args, pageCount}
+        });
     },
     addPack(pack: CardPackRequestType) {
         return instance.post<ResponseAddPackType>("/cards/pack", {cardsPack: pack})
     },
-    getMyCardsPacks(user_id: string, currentPage: string) {
-        return instance.get<ResponseCardsPackType>(`/cards/pack?page=${currentPage}&user_id=${user_id}&pageCount=${pageCount}`);
-    },
     deleteMyCardsPacks(id: string) {
         return instance.delete<ResponseDeletePackType>(`/cards/pack?id=${id}`);
-    }
+    },
+
+
 
 }
 
 
 //types
-export type CardsResponseType = {
+export type PacksResponseType = {
     _id: string;
     user_id: string;
     user_name: string;
@@ -43,7 +76,7 @@ export type CardsResponseType = {
 }
 
 export type ResponseCardsPackType = {
-    cardPacks: Array<CardsResponseType>
+    cardPacks: Array<PacksResponseType>
     cardPacksTotalCount: number
     maxCardsCount: number
     minCardsCount: number
@@ -51,8 +84,8 @@ export type ResponseCardsPackType = {
     pageCount: number
 }
 export type ResponseAddPackType = {
-    newCardsPack:CardsResponseType
+    newCardsPack:PacksResponseType
 }
 export type ResponseDeletePackType = {
-    deletedCardsPack:CardsResponseType
+    deletedCardsPack:PacksResponseType
 }

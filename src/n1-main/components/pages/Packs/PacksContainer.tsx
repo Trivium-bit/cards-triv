@@ -1,19 +1,38 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {Box, Container, Grid} from "@mui/material";
-import MyPacks from "./MyPacks/MyPacks";
 import s from './styles/Packs.module.scss'
-import AllPacks from "./AllPacks/AllPacks";
+import Packs from "./AllPacks/Packs";
 import Slider from "../../Slider/Slider";
-import {useAppSelector} from "../../../../state/store";
+import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
+import {findPackTC, setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
+import useDebounce from "../../../../utils/useDebounce";
 
 
-const Packs = () => {
+const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const [show, setShow] = useState<string>("MyPacks")
+    const dispatch = useAppDispatch()
+    const isMyTable = useAppSelector<boolean>(state => state.cardsReducer.isMyTable);
+    const localPackName = useAppSelector<string>(state => state.cardsReducer.localPackName);
+    // Состояние и сеттер состояния для поискового запроса
 
+    const handlerOpenAllTable = () => {
+        dispatch(setIsMyTableAC(false))
+        dispatch(setLocalCardPackNameAC(""))
+    }
+    const handlerOpenMyTable = () => {
+        dispatch(setIsMyTableAC(true))
+        dispatch(setLocalCardPackNameAC(""))
+    }
+    const debouncedSearchTerm = useDebounce(localPackName, 1000);
+
+    useEffect(
+        () => {
+            typeof debouncedSearchTerm === 'string' && dispatch(findPackTC(debouncedSearchTerm))
+        }, [debouncedSearchTerm, dispatch]
+    );
     return (
         <Container fixed>
             <Box className={s.packsContainer}>
@@ -23,14 +42,14 @@ const Packs = () => {
                             <Box className={s.showPacks}>
                                 <span className={s.title}>Show packs cards</span>
                                 <Box className={s.btnGroup}>
-                                    <button className={show === "MyPacks" ? s.buttonActive : s.btn}
+                                    <button className={isMyTable ? s.buttonActive : s.btn}
                                             disabled={appStatus === "loading"}
-                                            onClick={() => setShow("MyPacks")}
+                                            onClick={handlerOpenMyTable}
                                     >My
                                     </button>
-                                    <button className={show === "AllPacks" ? s.buttonActive : s.btn}
+                                    <button className={!isMyTable ? s.buttonActive : s.btn}
                                             disabled={appStatus === "loading"}
-                                            onClick={() => setShow("AllPacks")}
+                                            onClick={handlerOpenAllTable}
                                     >All
                                     </button>
                                 </Box>
@@ -44,8 +63,7 @@ const Packs = () => {
                     <Grid xs={9} item>
                         <Box className={s.myPacksBlock}>
                             <PacksHeader/>
-                            {show === "MyPacks" && <MyPacks/>}
-                            {show === "AllPacks" && <AllPacks/>}
+                            <Packs/>
                         </Box>
                     </Grid>
                 </Grid>
@@ -54,4 +72,4 @@ const Packs = () => {
     );
 };
 
-export default Packs;
+export default PacksContainer;

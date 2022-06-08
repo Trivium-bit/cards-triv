@@ -6,14 +6,14 @@ import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
 import {
     CardsActionType,
-    cardsReducer,
-} from './cardsReducer';
+    cardPacksReducer,
+} from './cardPacksReducer';
 
 const rootReducer = combineReducers({
     authReducer: authReducer,
     registerReducer: registerReducer,
     appReducer: appReducer,
-    cardsReducer: cardsReducer
+    cardsReducer: cardPacksReducer
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));

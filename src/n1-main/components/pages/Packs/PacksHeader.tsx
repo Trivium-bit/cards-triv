@@ -1,14 +1,16 @@
-import React, {useMemo, useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import {Box, FormControl, Input, InputAdornment, InputLabel, Modal} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
 import s from './styles/PackHeader.module.scss'
-import {addNewCardPackTC} from "../../../../state/cardsReducer";
+import {addNewCardPackTC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
-import {useLocation} from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
+
+
 
 type PacksHeaderPropsType = {
     onSearch?: (searchQuery: string) => void
@@ -29,14 +31,18 @@ const modalStyle = {
 };
 
 const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew}) => {
+    const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const myId = useAppSelector<string>(state => state.appReducer.user._id);
-    const location = useLocation();
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const localPackName = useAppSelector<string>(state => state.cardsReducer.localPackName);
+
+    const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
+        dispatch(setLocalCardPackNameAC(e.currentTarget.value))
+    }
     const spitName = () => {
         const spitedName = packsOwnerName?.split(" ");
         if (spitedName) {
@@ -44,9 +50,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
         }
     }
 
-    const currentPage = useMemo(() => {
-        return new URLSearchParams(location.search)?.get("page") || "1";
-    }, [location.search]);
+    const currentPage = Number( searchParams.get("page")) || 1;
     const handleSave = () => {
         dispatch(addNewCardPackTC({
                 name: inputValue
@@ -55,7 +59,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
                 if (onAddNew) {
                     onAddNew()
                 }
-            },currentPage, myId
+            },currentPage
             )
         );
     };
@@ -70,7 +74,8 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
                 : <h1 className={s.title}>Packs list</h1>
             }
             <Box className={s.elements}>
-                <Input
+                <Input onChange={onChangeHandler}
+                       value={localPackName}
                     placeholder={"Search..."}
                     startAdornment={
                         <InputAdornment position="start">
@@ -92,7 +97,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
                         <FormControl variant="standard">
                             <InputLabel htmlFor="component-simple">Name Pack</InputLabel>
                             <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
-                                   onChange={handleChangeNewPack}/>
+                                   onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
                         </FormControl>
                         <Box className={modalStyles.modalBtnGroup}>
                             <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>

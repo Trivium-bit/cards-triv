@@ -1,4 +1,6 @@
-import React, {useEffect, useMemo, useState} from 'react';
+
+import React from 'react';
+/*import React, {useEffect, useMemo, useState} from 'react';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal,
     Paper, Radio, RadioGroup,
@@ -14,9 +16,9 @@ import {
 import Button from "../../../../../Common/Components/Button";
 import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteCardPackTC, getMyCardsPacksTC} from "../../../../../state/cardsReducer";
+import {deleteCardPackTC, findPackTC, getMyCardsPacksTC} from "../../../../../state/cardPacksReducer";
 import {
     appStatusSelector,
     myCardsPaginationSelector,
@@ -24,7 +26,7 @@ import {
 } from "../../../../../Common/Selectors/Selectors";
 
 import {useAppSelector} from "../../../../../state/store";
-import {CardsResponseType} from "../../../../../api/cardsAPI";
+import {PacksResponseType} from "../../../../../api/cardsAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
 
 
@@ -62,28 +64,23 @@ const modalStyle = {
 const MyTable = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(state => state.appReducer.user._id);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useDispatch<any>();
     const myCards = useSelector(myCardsSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardsResponseType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
 
-    // get page from query parameters
-    // const currentPage = new URLSearchParams(location.search)?.get("page") || "1";
-    const currentPage = useMemo(() => {
-        return new URLSearchParams(location.search)?.get("page") || "1";
-    }, [location.search]);
+    const currentPage = Number(searchParams.get("page")) || 1
 
-    const handleOpenDelete = (card: CardsResponseType) => setRowToDelete(card);
+    const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
 
-    const handleOpenAnswer = (card: CardsResponseType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
 
     const handleOpenLearn = () => setOpenLearn(true);
@@ -104,10 +101,11 @@ const MyTable = () => {
     };
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
-        navigate(`/packs?page=${page}`)
+        searchParams.set('page', page.toString())
+        setSearchParams(searchParams)
     }
-   const handleDeletePack = () => {
-        if(rowToDelete) {
+    const handleDeletePack = () => {
+        if (rowToDelete) {
             dispatch(deleteCardPackTC(rowToDelete._id, () => {
                 handleCloseDelete()
                 dispatch(getMyCardsPacksTC(myId, currentPage))
@@ -116,13 +114,13 @@ const MyTable = () => {
     }
     useEffect(() => {
         dispatch(getMyCardsPacksTC(myId, currentPage))
-    },[currentPage, myId, dispatch]);
+    }, [currentPage, myId, dispatch]);
 
     return (
         <Box>
-            {/*//my table*/}
+            {/!*!//my table*!/}
             <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <Table sx={{minWidth: 700}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
@@ -146,9 +144,11 @@ const MyTable = () => {
                                     <StyledTableCell align="left">{card.user_name}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
-                                            <button onClick={() => handleOpenDelete(card)} className={s.delete} >Delete</button>
+                                            <button onClick={() => handleOpenDelete(card)} className={s.delete}>Delete
+                                            </button>
                                             <button onClick={handleOpenEdit} className={s.main}>Edit</button>
-                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
+                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
+                                            </button>
                                         </Box>
                                     </StyledTableCell>
                                 </StyledTableRow>
@@ -158,14 +158,15 @@ const MyTable = () => {
                 </Table>
             </TableContainer>
 
-            <Pagination onChange={handleChangePagination} count={myCardsPagination.count} page={myCardsPagination.current} shape="rounded" />
+            <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
+                        page={myCardsPagination.current} shape="rounded"/>
 
-            {/*// Delete Button Modal*/}
+            {/!*!// Delete Button Modal*!/}
             <Modal
                 open={!!rowToDelete}
                 onClose={handleCloseDelete}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>Delete Pack</h1>
                     <Box>
                         <span className={modalStyles.modalText}>Do you really want to remove
@@ -174,18 +175,20 @@ const MyTable = () => {
                         </span>
                     </Box>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Delete'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}
+                                disabled={appStatus === "loading"}/>
+                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Delete'}
+                                disabled={appStatus === "loading"}/>
                     </Box>
                 </Box>
             </Modal>
 
-            {/*// Show Answer Modal*/}
+            {/!*!// Show Answer Modal*!/}
             <Modal
                 open={!!openAnswer}
                 onClose={handleCloseAnswer}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>{openAnswer?.name}</h1>
                     <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
                     <Box className={modalStyles.modalBtnGroup}>
@@ -196,12 +199,12 @@ const MyTable = () => {
             </Modal>
 
 
-            {/*Learn Modal*/}
+            {/!*Learn Modal*!/}
             <Modal
                 open={openLearn}
                 onClose={handleCloseLearn}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>Learn {openAnswer?.name}</h1>
                     <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
                     <p className={modalStyles.modalText}><b>Answer:</b>“This is how "This" works in JavaScript”</p>
@@ -211,9 +214,9 @@ const MyTable = () => {
                         defaultValue="female"
                         name="radio-buttons-group"
                     >
-                        <FormControlLabel value="Did you know" control={<Radio />} label="Did you know" />
-                        <FormControlLabel value="Forgot" control={<Radio />} label="Forgot" />
-                        <FormControlLabel value="Confused" control={<Radio />} label="Confused" />
+                        <FormControlLabel value="Did you know" control={<Radio/>} label="Did you know"/>
+                        <FormControlLabel value="Forgot" control={<Radio/>} label="Forgot"/>
+                        <FormControlLabel value="Confused" control={<Radio/>} label="Confused"/>
                     </RadioGroup>
                     <Box className={modalStyles.modalBtnGroup}>
                         <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'}/>
@@ -222,23 +225,25 @@ const MyTable = () => {
                 </Box>
             </Modal>
 
-            {/*Edit Modal*/}
+            {/!*Edit Modal*!/}
             <Modal
                 open={openEdit}
                 onClose={handleCloseEdit}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>Card Info</h1>
                     <Box>
                         <FormControl variant="standard">
                             <InputLabel htmlFor="component-simple">Question</InputLabel>
-                            <Input  className={modalStyles.inputsForm} id="component-simple" value={question} onChange={handleChangeQuestion} />
+                            <Input className={modalStyles.inputsForm} id="component-simple" value={question}
+                                   onChange={handleChangeQuestion}/>
                         </FormControl>
                     </Box>
                     <Box>
                         <FormControl variant="standard">
                             <InputLabel htmlFor="component-simple">Answer</InputLabel>
-                            <Input className={modalStyles.inputsForm} id="component-simple" value={answer} onChange={handleChangeAnswer} />
+                            <Input className={modalStyles.inputsForm} id="component-simple" value={answer}
+                                   onChange={handleChangeAnswer}/>
                         </FormControl>
                         <Box className={modalStyles.modalBtnGroup}>
                             <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'}/>
@@ -251,4 +256,4 @@ const MyTable = () => {
     );
 };
 
-export default MyTable;
+export default MyTable;*/

@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal, Pagination,
     Paper, Radio, RadioGroup,
@@ -13,17 +13,17 @@ import {
 import Button from "../../../../../Common/Components/Button";
 import s from './AllTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
-import {useLocation, useNavigate} from "react-router-dom";
+import {useSearchParams, NavLink} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {
     appStatusSelector,
     myCardsPaginationSelector,
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
-import {deleteCardPackTC, getAllCardsPacksTC} from "../../../../../state/cardsReducer";
+import {deleteCardPackTC, getAllCardsPacksTC} from "../../../../../state/cardPacksReducer";
 
 import {useAppSelector} from "../../../../../state/store";
-import {CardsResponseType} from "../../../../../api/cardsAPI";
+import {PacksResponseType} from "../../../../../api/cardsAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
 
 
@@ -64,24 +64,24 @@ const modalStyle = {
 const AllTable = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useDispatch<any>();
     const myCards = useSelector(myCardsSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
+    const isMyTable = useAppSelector<boolean>(state => state.cardsReducer.isMyTable);
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardsResponseType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const localPackName = useAppSelector<string>(state => state.cardsReducer.localPackName);
 
     const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
 
-    const currentPage = useMemo(() => {
-        return new URLSearchParams(location.search)?.get("page") || "1";
-    }, [location.search]);
+    const currentPage = Number(searchParams.get("page")) || 1
+
 
     const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuestion(event.target.value);
@@ -89,9 +89,9 @@ const AllTable = () => {
     const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAnswer(event.target.value);
     };
-    const handleOpenDelete = (card: CardsResponseType) => setRowToDelete(card);
+    const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
-    const handleOpenAnswer = (card: CardsResponseType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
     const handleOpenLearn = () => setOpenLearn(true);
     const handleCloseLearn = () => {
@@ -100,19 +100,20 @@ const AllTable = () => {
     };
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
-        navigate(`/packs?page=${page}`)
+        searchParams.set('page', page.toString())
+        setSearchParams(searchParams)
     }
     const handleDeletePack = () => {
-        if(rowToDelete) {
+        if (rowToDelete) {
             dispatch(deleteCardPackTC(rowToDelete._id, () => {
                 handleCloseDelete()
-                dispatch(getAllCardsPacksTC(currentPage))
+                dispatch(getAllCardsPacksTC(isMyTable, currentPage))
             }))
         }
     }
     useEffect(() => {
-        dispatch(getAllCardsPacksTC(currentPage))
-    }, [currentPage, dispatch]);
+        dispatch(getAllCardsPacksTC(isMyTable, currentPage))
+    }, [currentPage, dispatch, isMyTable]);
     return (
         <Box className={s.wrapper}>
             <TableContainer component={Paper}>
@@ -128,10 +129,17 @@ const AllTable = () => {
                     </TableHead>
                     <TableBody className={s.tableBody}>
                         {
-                            myCards.map((card => card.user_id !== myId
-                                ?
-                                <StyledTableRow key={card._id}>
-                                    <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
+                            myCards.map((card => <StyledTableRow key={card._id}>
+                                    {card.user_id === myId
+                                        ?
+                                        <StyledTableCell component="th" scope="row">
+                                            <NavLink to={`/packs/${card._id}`}>
+                                                {card.name}
+                                            </NavLink>
+                                        </StyledTableCell>
+                                        :
+                                        <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
+                                    }
                                     <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
                                     <StyledTableCell align="left">{card.updated}</StyledTableCell>
                                     <StyledTableCell align="left">{card.user_name}</StyledTableCell>
@@ -139,24 +147,17 @@ const AllTable = () => {
                                         <Box className={s.buttonGroup}>
                                             <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
                                             </button>
+                                            {card.user_id === myId && (<>
+                                                    <button onClick={() => handleOpenDelete(card)}
+                                                            className={s.delete}>Delete
+                                                    </button>
+                                                    <button onClick={handleOpenEdit} className={s.main}>Edit</button>
+                                                </>
+                                            )}
                                         </Box>
                                     </StyledTableCell>
                                 </StyledTableRow>
-                                :
-                                <StyledTableRow key={card._id}>
-                                    <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.updated}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.user_name}</StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        <Box className={s.buttonGroup}>
-                                            <button onClick={() => handleOpenDelete(card)} className={s.delete}>Delete</button>
-                                            <button onClick={handleOpenEdit} className={s.main}>Edit</button>
-                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
-                                        </Box>
-                                    </StyledTableCell>
-                                </StyledTableRow>))
-
+                            ))
                         }
                     </TableBody>
                 </Table>
@@ -193,8 +194,10 @@ const AllTable = () => {
                         </span>
                     </Box>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Save'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}
+                                disabled={appStatus === "loading"}/>
+                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Save'}
+                                disabled={appStatus === "loading"}/>
                     </Box>
                 </Box>
             </Modal>
@@ -259,3 +262,37 @@ const AllTable = () => {
 };
 
 export default AllTable;
+
+/*
+{
+    myCards.map((card => card.user_id !== myId
+        ?
+        <StyledTableRow key={card._id}>
+            <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
+            <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
+            <StyledTableCell align="left">{card.updated}</StyledTableCell>
+            <StyledTableCell align="left">{card.user_name}</StyledTableCell>
+            <StyledTableCell align="right">
+                <Box className={s.buttonGroup}>
+                    <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
+                    </button>
+
+                </Box>
+            </StyledTableCell>
+        </StyledTableRow>
+        :
+        <StyledTableRow key={card._id}>
+            <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
+            <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
+            <StyledTableCell align="left">{card.updated}</StyledTableCell>
+            <StyledTableCell align="left">{card.user_name}</StyledTableCell>
+            <StyledTableCell align="right">
+                <Box className={s.buttonGroup}>
+                    <button onClick={() => handleOpenDelete(card)} className={s.delete}>Delete</button>
+                    <button onClick={handleOpenEdit} className={s.main}>Edit</button>
+                    <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
+                </Box>
+            </StyledTableCell>
+        </StyledTableRow>))
+
+}*/
