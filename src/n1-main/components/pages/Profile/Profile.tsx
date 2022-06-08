@@ -7,7 +7,7 @@ import PacksHeader from "../Packs/PacksHeader";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import MyPacks from "../Packs/MyPacks/MyPacks";
 import {useLocation} from "react-router-dom";
-import {getMyCardsPacksTC} from "../../../../state/cardsReducer";
+import {getMyCardsPacksTC} from "../../../../state/cardPacksReducer";
 
 
 

@@ -1,6 +1,6 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-import {AddNewCardPackType, CardsPaginationType} from "../../state/cardsReducer";
+import {AddNewCardPackType, CardPackRequestType, CardsPaginationType} from "../../state/cardPacksReducer";
 import {CardsResponseType} from "../../api/cardsAPI";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{

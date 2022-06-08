@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal,
     Paper, Radio, RadioGroup,
@@ -14,18 +14,18 @@ import {
 import Button from "../../../../../Common/Components/Button";
 import s from './MyTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
-import {Link, useLocation, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {deleteCardPackTC, getMyCardsPacksTC} from "../../../../../state/cardsReducer";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCardPackTC, editMyCardsPacksTC, getMyCardsPacksTC } from "../../../../../state/cardPacksReducer";
 import {
     appStatusSelector,
     myCardsPaginationSelector,
     myCardsSelector
 } from "../../../../../Common/Selectors/Selectors";
 
-import {useAppSelector} from "../../../../../state/store";
-import {CardsResponseType} from "../../../../../api/cardsAPI";
-import {RequestStatusType} from "../../../../../state/app-reducer";
+import { useAppSelector } from "../../../../../state/store";
+import { CardsResponseType } from "../../../../../api/cardsAPI";
+import { RequestStatusType } from "../../../../../state/app-reducer";
 
 
 //mui styles
@@ -70,6 +70,7 @@ const MyTable = () => {
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
     const [rowToDelete, setRowToDelete] = useState<CardsResponseType | undefined>(undefined);
+    const [rowToEdit, setRowToEdit] = useState<CardsResponseType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
@@ -92,8 +93,8 @@ const MyTable = () => {
         setOpenLearn(false);
     };
 
-    const handleOpenEdit = () => setOpenEdit(true);
-    const handleCloseEdit = () => setOpenEdit(false);
+    const handleOpenEdit = (card: CardsResponseType) => setRowToEdit(card);
+    const handleCloseEdit = () => setRowToEdit(undefined);
 
 
     const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -106,17 +107,25 @@ const MyTable = () => {
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs?page=${page}`)
     }
-   const handleDeletePack = () => {
-        if(rowToDelete) {
+    const handleDeletePack = () => {
+        if (rowToDelete) {
             dispatch(deleteCardPackTC(rowToDelete._id, () => {
                 handleCloseDelete()
                 dispatch(getMyCardsPacksTC(myId, currentPage))
             }))
         }
     }
+    const handleEditPack = () => {
+        if (rowToEdit) {
+            dispatch(editMyCardsPacksTC(rowToEdit._id, rowToEdit.name, () => {
+                handleCloseEdit()
+                dispatch(getMyCardsPacksTC(myId, currentPage))
+            }))
+        }
+    }
     useEffect(() => {
         dispatch(getMyCardsPacksTC(myId, currentPage))
-    },[currentPage, myId, dispatch]);
+    }, [currentPage, myId, dispatch]);
 
     return (
         <Box>
@@ -147,7 +156,7 @@ const MyTable = () => {
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
                                             <button onClick={() => handleOpenDelete(card)} className={s.delete} >Delete</button>
-                                            <button onClick={handleOpenEdit} className={s.main}>Edit</button>
+                                            <button onClick={() => handleOpenEdit(card)} className={s.main}>Edit</button>
                                             <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
                                         </Box>
                                     </StyledTableCell>
@@ -165,7 +174,7 @@ const MyTable = () => {
                 open={!!rowToDelete}
                 onClose={handleCloseDelete}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>Delete Pack</h1>
                     <Box>
                         <span className={modalStyles.modalText}>Do you really want to remove
@@ -174,8 +183,8 @@ const MyTable = () => {
                         </span>
                     </Box>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Delete'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus === "loading"} />
+                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Delete'} disabled={appStatus === "loading"} />
                     </Box>
                 </Box>
             </Modal>
@@ -185,23 +194,22 @@ const MyTable = () => {
                 open={!!openAnswer}
                 onClose={handleCloseAnswer}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>{openAnswer?.name}</h1>
                     <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseAnswer} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button onClick={handleOpenLearn} className={modalStyles.btnSave} title={'Show Answer'}/>
+                        <Button onClick={handleCloseAnswer} className={modalStyles.btnCancel} title={'Cancel'} />
+                        <Button onClick={handleOpenLearn} className={modalStyles.btnSave} title={'Show Answer'} />
                     </Box>
                 </Box>
             </Modal>
-
 
             {/*Learn Modal*/}
             <Modal
                 open={openLearn}
                 onClose={handleCloseLearn}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>Learn {openAnswer?.name}</h1>
                     <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
                     <p className={modalStyles.modalText}><b>Answer:</b>“This is how "This" works in JavaScript”</p>
@@ -216,38 +224,41 @@ const MyTable = () => {
                         <FormControlLabel value="Confused" control={<Radio />} label="Confused" />
                     </RadioGroup>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button className={modalStyles.btnSave} title={'Next'}/>
+                        <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'} />
+                        <Button className={modalStyles.btnSave} title={'Next'} />
                     </Box>
                 </Box>
             </Modal>
 
             {/*Edit Modal*/}
             <Modal
-                open={openEdit}
+                open={!!rowToEdit}
                 onClose={handleCloseEdit}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock }>
+                <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>Card Info</h1>
                     <Box>
                         <FormControl variant="standard">
                             <InputLabel htmlFor="component-simple">Question</InputLabel>
-                            <Input  className={modalStyles.inputsForm} id="component-simple" value={question} onChange={handleChangeQuestion} />
+                            <Input className={modalStyles.inputsForm} id="component-simple" value={question} onChange={handleChangeQuestion} />
                         </FormControl>
                     </Box>
                     <Box>
                         <FormControl variant="standard">
                             <InputLabel htmlFor="component-simple">Answer</InputLabel>
                             <Input className={modalStyles.inputsForm} id="component-simple" value={answer} onChange={handleChangeAnswer} />
+                            
                         </FormControl>
+                        
                         <Box className={modalStyles.modalBtnGroup}>
-                            <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'}/>
-                            <Button className={modalStyles.btnSave} title={'Save'}/>
+                            <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'} />
+                            <Button onClick={handleEditPack} className={modalStyles.btnSave} title={'Save'} />
                         </Box>
                     </Box>
                 </Box>
             </Modal>
         </Box>
+        
     );
 };
 

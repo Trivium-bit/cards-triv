@@ -20,7 +20,7 @@ import {
     myCardsPaginationSelector,
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
-import {deleteCardPackTC, getAllCardsPacksTC} from "../../../../../state/cardsReducer";
+import {deleteCardPackTC, editMyCardsPacksTC, getAllCardsPacksTC} from "../../../../../state/cardPacksReducer";
 
 import {useAppSelector} from "../../../../../state/store";
 import {CardsResponseType} from "../../../../../api/cardsAPI";
@@ -72,12 +72,13 @@ const AllTable = () => {
     const [question, setQuestion] = useState("My question is bla?");
     const [answer, setAnswer] = useState("My answer is bla bla");
     const [rowToDelete, setRowToDelete] = useState<CardsResponseType | undefined>(undefined);
+    const [rowToEdit, setRowToEdit] = useState<CardsResponseType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
 
-    const handleOpenEdit = () => setOpenEdit(true);
-    const handleCloseEdit = () => setOpenEdit(false);
+    const handleOpenEdit = (card: CardsResponseType) => setRowToEdit(card);
+    const handleCloseEdit = () => setRowToEdit(undefined);
 
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
@@ -106,6 +107,14 @@ const AllTable = () => {
         if(rowToDelete) {
             dispatch(deleteCardPackTC(rowToDelete._id, () => {
                 handleCloseDelete()
+                dispatch(getAllCardsPacksTC(currentPage))
+            }))
+        }
+    }
+    const handleEditPack = () => {
+        if (rowToEdit) {
+            dispatch(editMyCardsPacksTC(rowToEdit._id, rowToEdit.name, () => {
+                handleCloseEdit()
                 dispatch(getAllCardsPacksTC(currentPage))
             }))
         }
@@ -151,7 +160,7 @@ const AllTable = () => {
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
                                             <button onClick={() => handleOpenDelete(card)} className={s.delete}>Delete</button>
-                                            <button onClick={handleOpenEdit} className={s.main}>Edit</button>
+                                            <button onClick={() => handleOpenEdit(card)} className={s.main}>Edit</button>
                                             <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
                                         </Box>
                                     </StyledTableCell>
@@ -248,7 +257,7 @@ const AllTable = () => {
                     </RadioGroup>
                     <Box className={modalStyles.modalBtnGroup}>
                         <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button className={modalStyles.btnSave} title={'Next'}/>
+                        <Button onClick={handleEditPack} className={modalStyles.btnSave} title={'Next'}/>
                     </Box>
                 </Box>
             </Modal>

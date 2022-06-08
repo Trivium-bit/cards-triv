@@ -7,7 +7,7 @@ import {appReducer} from "./app-reducer";
 import {
     CardsActionType,
     cardsReducer,
-} from './cardsReducer';
+} from './cardPacksReducer';
 
 const rootReducer = combineReducers({
     authReducer: authReducer,

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {CardPackRequestType} from "../state/cardsReducer";
+import { CardPackRequestType } from "../state/cardPacksReducer";
 
 export const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
@@ -11,15 +11,17 @@ export const cardsAPI = {
         return instance.get<ResponseCardsPackType>(`/cards/pack?page=${currentPage}&pageCount=${pageCount}`);
     },
     addPack(pack: CardPackRequestType) {
-        return instance.post<ResponseAddPackType>("/cards/pack", {cardsPack: pack})
+        return instance.post<ResponseAddPackType>("/cards/pack", { cardsPack: pack });
     },
     getMyCardsPacks(user_id: string, currentPage: string) {
         return instance.get<ResponseCardsPackType>(`/cards/pack?page=${currentPage}&user_id=${user_id}&pageCount=${pageCount}`);
     },
     deleteMyCardsPacks(id: string) {
         return instance.delete<ResponseDeletePackType>(`/cards/pack?id=${id}`);
+    },
+    editMyCardsPacks(_id: string, name: string) {
+        return instance.put<ResponseCardsPackType>('/cards/pack', { cardsPack: { _id, name } });
     }
-
 }
 
 
@@ -51,8 +53,8 @@ export type ResponseCardsPackType = {
     pageCount: number
 }
 export type ResponseAddPackType = {
-    newCardsPack:CardsResponseType
+    newCardsPack: CardsResponseType
 }
 export type ResponseDeletePackType = {
-    deletedCardsPack:CardsResponseType
+    deletedCardsPack: CardsResponseType
 }
