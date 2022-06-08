@@ -75,12 +75,11 @@ const AllTable = () => {
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-    const localPackName = useAppSelector<string>(state => state.cardsReducer.localPackName);
 
     const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
 
-    const currentPage = Number(searchParams.get("page")) || 1
+    const currentPage = Number(searchParams.get("page")) || 1;
 
 
     const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +111,7 @@ const AllTable = () => {
         }
     }
     useEffect(() => {
-        dispatch(getAllCardsPacksTC(isMyTable, currentPage))
+         dispatch(getAllCardsPacksTC(isMyTable, currentPage))
     }, [currentPage, dispatch, isMyTable]);
     return (
         <Box className={s.wrapper}>
@@ -141,7 +140,7 @@ const AllTable = () => {
                                         <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
                                     }
                                     <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.updated}</StyledTableCell>
+                                    <StyledTableCell align="left">{card.updated.substring(0, 10).replace( /-/g, " " )}</StyledTableCell>
                                     <StyledTableCell align="left">{card.user_name}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>

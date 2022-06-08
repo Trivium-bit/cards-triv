@@ -7,31 +7,45 @@ import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
-import {findPackTC, setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
+import {
+    findPackTC,
+    setIsMyTableAC,
+    setLocalCardPackNameAC,
+    sortPacksByNumberTC
+} from "../../../../state/cardPacksReducer";
 import useDebounce from "../../../../utils/useDebounce";
+import {useSearchParams} from "react-router-dom";
 
 
 const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
+    const arrOfInitialSliderValues = useAppSelector<number[]>(state => state.cardsReducer.sliderValues);
     const dispatch = useAppDispatch()
     const isMyTable = useAppSelector<boolean>(state => state.cardsReducer.isMyTable);
     const localPackName = useAppSelector<string>(state => state.cardsReducer.localPackName);
+    const debounceDelay = 1000;
     // Состояние и сеттер состояния для поискового запроса
-
+    const [searchParams, setSearchParams] = useSearchParams()
+    const currentPage = Number( searchParams.get("page")) || 1;
     const handlerOpenAllTable = () => {
+        setSearchParams({ page: "1" })
         dispatch(setIsMyTableAC(false))
         dispatch(setLocalCardPackNameAC(""))
     }
     const handlerOpenMyTable = () => {
+        setSearchParams({ page: "1" })
         dispatch(setIsMyTableAC(true))
         dispatch(setLocalCardPackNameAC(""))
     }
-    const debouncedSearchTerm = useDebounce(localPackName, 1000);
+
+    const debouncedSearchTerm = useDebounce(localPackName, debounceDelay);
+    const debouncedFilteredTerm = useDebounce(arrOfInitialSliderValues, debounceDelay);
 
     useEffect(
         () => {
-            typeof debouncedSearchTerm === 'string' && dispatch(findPackTC(debouncedSearchTerm))
-        }, [debouncedSearchTerm, dispatch]
+            typeof debouncedSearchTerm === 'string' && debouncedSearchTerm !== "" && dispatch(findPackTC(debouncedSearchTerm))
+            typeof debouncedFilteredTerm === 'object' && dispatch(sortPacksByNumberTC(debouncedFilteredTerm, currentPage))
+        }, [debouncedSearchTerm, debouncedFilteredTerm, dispatch]
     );
     return (
         <Container fixed>
