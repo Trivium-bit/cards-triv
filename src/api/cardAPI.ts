@@ -17,7 +17,7 @@ export const cardApi = {
             }});
     },
     deleteMyCard(id:string) {
-        return instance.delete(`/cards/card?${id}`);
+        return instance.delete(`/cards/card?id=${id}`);
     }
 }
 

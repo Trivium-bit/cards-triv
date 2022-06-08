@@ -4,7 +4,7 @@ import {
     Box,
     Container, FormControl,
     Input,
-    InputAdornment, InputLabel, Modal,
+    InputAdornment, InputLabel, Modal, Pagination,
     Paper, Rating,
     styled, Table, TableBody,
     TableCell,
@@ -18,8 +18,11 @@ import s from './styles/CardDetails.module.scss'
 import styles from './MyPacks/MyTable.module.scss'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {useSelector} from "react-redux";
-import {appStatusSelector, getCardsSelector} from "../../../../Common/Selectors/Selectors";
-import {addNewCardTC, getCardsTC} from "../../../../state/cardsReducer";
+import {
+    appStatusSelector,
+    getCardsSelector
+} from "../../../../Common/Selectors/Selectors";
+import {addNewCardTC, deleteCardTC, getCardsTC} from "../../../../state/cardsReducer";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
@@ -87,9 +90,11 @@ const CardDetails = () => {
     const handleChangeAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
         setInputAnswerValue(e.target.value)
     }
-    const handleCardDelete = () => {
-
-
+    const handleCardDelete = (id: any) => {
+        console.log(id)
+        dispatch(deleteCardTC(id, () => {
+            dispatch(getCardsTC(packId || ''))
+        }))
     }
 
     return (
@@ -145,7 +150,7 @@ const CardDetails = () => {
                                             </StyledTableCell>
                                             <StyledTableCell align="right">
                                                 <div className={styles.buttonGroup}>
-                                                    <button className={styles.delete} onClick={handleCardDelete}>Delete</button>
+                                                    <button className={styles.delete} onClick={() => handleCardDelete(card._id)}>Delete</button>
                                                     <button className={styles.main}>Learn</button>
                                                 </div>
                                             </StyledTableCell>
@@ -191,6 +196,7 @@ const CardDetails = () => {
                         </Box>
                     </Modal>
                 </Box>
+                <Pagination shape="rounded" />
             </Box>
         </Container>
     );

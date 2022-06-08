@@ -4,9 +4,7 @@ import {setAppStatusAC} from "./app-reducer";
 import {cardApi, PackCardType} from "../api/cardAPI";
 import {handleNetworkError} from "../utils/error.utils";
 
-
 const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
-
 
 
 const initialState: InitialCardsStateType = {
@@ -52,7 +50,7 @@ export const getCardsTC = (id: string) =>(dispatch:AppThunkDispatch) => {
 export const addNewCardTC = (id: string, card: PackCardType,callback: () => void) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardApi.addNewCard(id, card)
-        .then((res) =>{
+        .then(() =>{
             dispatch(setAppStatusAC("succeeded"));
             callback();
         })
@@ -65,7 +63,7 @@ export const addNewCardTC = (id: string, card: PackCardType,callback: () => void
 export const deleteCardTC = (id: string, callback: () => void) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardApi.deleteMyCard(id)
-        .then((res) =>{
+        .then(() =>{
             dispatch(setAppStatusAC("succeeded"));
             callback()
         })
