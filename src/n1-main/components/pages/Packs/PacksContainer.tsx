@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Box, Container, Grid} from "@mui/material";
 import s from './styles/Packs.module.scss'
 import Packs from "./AllPacks/Packs";
@@ -7,24 +7,18 @@ import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
-
-
 import {useSearchParams} from "react-router-dom";
-import {useDebounce} from "../../../../utils/useDebounce";
-import {getCardsPacksTC, setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
+import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
+
 
 
 const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const min = useAppSelector<number>(state => state.cardPacksReducer.min);
-    const max = useAppSelector<number>(state => state.cardPacksReducer.max);
     const dispatch = useAppDispatch()
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
-    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
-    const debounceDelay = 1000;
-    // Состояние и сеттер состояния для поискового запроса
+
     const [searchParams, setSearchParams] = useSearchParams()
-    const currentPage = Number( searchParams.get("page")) || 1;
+
     const handlerOpenAllTable = () => {
         setSearchParams({ page: "1" })
         dispatch(setIsMyTableAC(false))
@@ -36,12 +30,6 @@ const PacksContainer = () => {
         dispatch(setLocalCardPackNameAC(""));
     }
 
-    const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значние со строки поиска имени пэка задержки дебаунса
-    const [minQuery, maxQuery] = useDebounce(debounceDelay,min, max ); //это значения со слайдера после задержки дебаунса
-
-    useEffect(() => {
-        dispatch(getCardsPacksTC(isMyTable, currentPage, debouncePackName,minQuery, maxQuery ))
-        }, [currentPage, dispatch, isMyTable, debouncePackName, minQuery, maxQuery]);
 
 
     return (
