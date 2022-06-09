@@ -23,7 +23,7 @@ function App() {
     const currentPage = Number( searchParams.get("page")) || 1;
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
-    const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значние со строки поиска имени пэка задержки дебаунса
+    const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значение со строки поиска имени пэка задержки дебаунса
     const [minQuery, maxQuery] = useDebounce(debounceDelay,min, max ); //это значения со слайдера после задержки дебаунса
 
     useEffect(() => {
