@@ -22,6 +22,7 @@ const initialState: InitialCardsStateType = {
         current: 0
     }
 }
+
 //reducer
 export const cardsReducer = (state: InitialCardsStateType = initialState, action: CardActionType): InitialCardsStateType => {
     switch (action.type) {
