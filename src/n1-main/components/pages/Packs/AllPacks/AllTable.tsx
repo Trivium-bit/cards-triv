@@ -141,7 +141,7 @@ const AllTable = React.memo(() => {
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
                             <StyledTableCell align="left">Cards</StyledTableCell>
-                            <StyledTableCell style= {{cursor:"pointer"}} align="left" onClick={changeSortValue}>Last Updates
+                            <StyledTableCell className={s.arrowBlock} align="left" onClick={changeSortValue}>Last Updates
                                 {
                                     sortPacks === "0updated"
                                     ? <ArrowDropDownIcon/>
