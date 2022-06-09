@@ -24,7 +24,7 @@ const PacksContainer = () => {
     const max = useAppSelector<number>(state => state.cardsPacksReducer.max);
     const dispatch = useAppDispatch()
     const isMyTable = useAppSelector<boolean>(state => state.cardsPacksReducer.isMyTable);
-    const localPackName = useAppSelector<string>(state => state.cardsPacksReducer.localPackName);
+    const localPackName = useAppSelector<string>(state => state.cardsPacksReducer.searchPackName);
     const debounceDelay = 1000;
     // Состояние и сеттер состояния для поискового запроса
     const [searchParams, setSearchParams] = useSearchParams()

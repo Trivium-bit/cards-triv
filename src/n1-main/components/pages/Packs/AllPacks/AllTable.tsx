@@ -14,15 +14,19 @@ import Button from "../../../../../Common/Components/Button";
 import s from './AllTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
 import {useSearchParams, NavLink} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {
     appStatusSelector,
     myCardsPaginationSelector,
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
-import {deleteCardPackTC, getCardsPacksTC} from "../../../../../state/cardPacksReducer";
+import {
+    deleteCardPackTC,
+    editCardPackAC,
+    editMyCardsPacksTC,
+} from "../../../../../state/cardPacksReducer";
 
-import {useAppSelector} from "../../../../../state/store";
+import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardsAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
 
@@ -65,23 +69,23 @@ const AllTable = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
     const [searchParams, setSearchParams] = useSearchParams()
-    const dispatch = useDispatch<any>();
-    const myCards = useSelector(myCardsSelector);
+    const dispatch = useAppDispatch();
+    const myCards = useAppSelector(myCardsSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
-    const isMyTable = useAppSelector<boolean>(state => state.cardsPacksReducer.isMyTable);
 
+    const updatedCardPackName = useAppSelector<string>(state => state.cardsPacksReducer.newCardPackName);
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
+    const [rowToUpdate, setRowToUpdate] = useState<PacksResponseType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
-    const [openEdit, setOpenEdit] = useState(false);
-    const [inputValue, setInputValue] = useState('');
 
-    const handleOpenEdit = () => setOpenEdit(true);
-    const handleCloseEdit = () => setOpenEdit(false);
+
+    const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
+    const handleCloseEdit = () => setRowToUpdate(undefined);
     const currentPage = Number(searchParams.get("page")) || 1;
 
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
+        dispatch(editCardPackAC((event.target.value)));
     };
 
     const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
@@ -93,20 +97,23 @@ const AllTable = () => {
         setOpenAnswer(undefined);
         setOpenLearn(false);
     };
-    const handleSave = () => {
-        dispatch()
+    const updatePackName = () => {
+         if(rowToUpdate){
+             dispatch(editMyCardsPacksTC(rowToUpdate._id, updatedCardPackName, currentPage))
+             handleCloseEdit();
+         }
+
     };
-    const handleClose = () => setOpenEdit(false);
+
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
         setSearchParams(searchParams)
+
     }
     const handleDeletePack = () => {
         if (rowToDelete) {
-            dispatch(deleteCardPackTC(rowToDelete._id, () => {
-                handleCloseDelete()
-                dispatch(getCardsPacksTC(isMyTable, currentPage))
-            }))
+            dispatch(deleteCardPackTC(rowToDelete._id, currentPage))
+            handleCloseDelete();
         }
     }
 
@@ -137,7 +144,7 @@ const AllTable = () => {
                                         <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
                                     }
                                     <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.updated.substring(0, 10).replace( /-/g, " " )}</StyledTableCell>
+                                    <StyledTableCell align="left">{card.updated.substring(0, 10).replace( /-/g, "." )}</StyledTableCell>
                                     <StyledTableCell align="left">{card.user_name}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
@@ -146,7 +153,7 @@ const AllTable = () => {
                                                     <button onClick={() => handleOpenDelete(card)}
                                                             className={s.delete}>Delete
                                                     </button>
-                                                    <button onClick={handleOpenEdit} className={s.main}>Edit</button>
+                                                    <button onClick={() => handleOpenEdit(card)} className={s.main}>Edit</button>
                                                 </>
                                             )}
                                             <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
@@ -201,19 +208,19 @@ const AllTable = () => {
 
             {/*Edit Modal*/}
             <Modal
-                open={openEdit}
+                open={!!rowToUpdate}
                 onClose={handleCloseEdit}
             >
                 <Box sx={modalStyle} className={modalStyles.modalBlock}>
                     <h1 className={modalStyles.modalTitle}>Enter new card pack name</h1>
                     <FormControl variant="standard">
                         <InputLabel htmlFor="component-simple">Enter new card pack name</InputLabel>
-                        <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
+                        <Input className={modalStyles.inputsForm} id="component-simple" value={updatedCardPackName}
                                onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
                     </FormControl>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                        <Button onClick={handleSave} className={modalStyles.btnSave} title={'Save new name'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={updatePackName} className={modalStyles.btnSave} title={'Save new name'} disabled={appStatus ==="loading"}/>
                     </Box>
                 </Box>
             </Modal>

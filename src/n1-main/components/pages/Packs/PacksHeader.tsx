@@ -38,7 +38,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const localPackName = useAppSelector<string>(state => state.cardsPacksReducer.localPackName);
+    const localPackName = useAppSelector<string>(state => state.cardsPacksReducer.searchPackName);
 
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         dispatch(setLocalCardPackNameAC(e.currentTarget.value))
