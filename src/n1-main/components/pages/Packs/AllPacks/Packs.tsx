@@ -4,7 +4,7 @@ import AllTable from "./AllTable";
 import s from './AllPacks.module.scss'
 
 
-const AllPacks = () => {
+const Packs = () => {
 
     return (
         <Box className={s.table}>
@@ -13,4 +13,4 @@ const AllPacks = () => {
     );
 };
 
-export default AllPacks;
+export default Packs;

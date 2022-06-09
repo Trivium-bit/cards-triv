@@ -2,7 +2,7 @@ import React from "react";
 import {Navigate, Route, Routes } from 'react-router-dom'
 import {PassRecovery} from "./pages/PassRecovery/PassRecovery";
 import Profile from "./pages/Profile/Profile";
-import Packs from './pages/Packs/Packs';
+import PacksContainer from './pages/Packs/PacksContainer';
 import PrivateRoutes from "./PrivateRoutes";
 import Home from "./pages/Home";
 import CreateNewPassword from './pages/CreateNewPassword/CreateNewPassword';
@@ -38,7 +38,7 @@ function AppRoutes() {
         <Route path={PATH.CREATE_NEW_PASSWORD} element={<CreateNewPassword />} />
         <Route path={PATH.CHECK_EMAIL} element={<CheckEmail/>} />
         <Route element={<PrivateRoutes />}>
-          <Route path={PATH.PACKS} element={<Packs />} />
+          <Route path={PATH.PACKS} element={<PacksContainer />} />
           <Route path={PATH.PACKS_DETAILS} element={<CardDetails />} />
           <Route path={PATH.PROFILE} element={<Profile />} />
         </Route>
