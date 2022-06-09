@@ -30,9 +30,9 @@ import {
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
-import {useDebounce} from "../../../../../utils/useDebounce";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import {useDebounce} from "use-debounce";
 //types
 
 
@@ -74,8 +74,6 @@ const AllTable = React.memo(() => {
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
-    //const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значние со строки поиска имени пэка задержки дебаунса
-    //const [minQuery, maxQuery] = useDebounce(debounceDelay,min, max ); //это значения со слайдера после задержки дебаунса
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
     const [searchParams, setSearchParams] = useSearchParams()
@@ -88,7 +86,9 @@ const AllTable = React.memo(() => {
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
-
+    const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
+    const [debounceMin] = useDebounce(min, debounceDelay);
+    const [debounceMax] = useDebounce(max, debounceDelay);
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
     const handleCloseEdit = () => setRowToUpdate(undefined);
     const currentPage = Number(searchParams.get("page")) || 1;
@@ -96,7 +96,7 @@ const AllTable = React.memo(() => {
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editCardPackAC((event.target.value)));
     };
-    console.log("AllTable rendered")
+
     const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
     const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
@@ -114,10 +114,9 @@ const AllTable = React.memo(() => {
 
     };
     const changeSortValue = () =>{
-
         dispatch(changeSortPacksAC( sortPacks === '0updated' ? '1updated' : '0updated'))
-
     }
+
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
         setSearchParams(searchParams)
@@ -131,8 +130,8 @@ const AllTable = React.memo(() => {
     }
 
     useEffect(() => {
-        dispatch(getCardsPacksTC(isMyTable, currentPage, localPackName,min, max, sortPacks ))
-    }, [currentPage, dispatch, isMyTable, localPackName, min, max, sortPacks]);
+        dispatch(getCardsPacksTC(isMyTable, currentPage, debounceLocalPackName,debounceMin, debounceMax, sortPacks ))
+    }, [currentPage, dispatch, isMyTable, debounceLocalPackName, debounceMin, debounceMax, sortPacks]);
 
     return (
         <Box className={s.wrapper}>
@@ -142,9 +141,9 @@ const AllTable = React.memo(() => {
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
                             <StyledTableCell align="left">Cards</StyledTableCell>
-                            <StyledTableCell align="left" onClick={changeSortValue}>Last Updates
+                            <StyledTableCell style= {{cursor:"pointer"}} align="left" onClick={changeSortValue}>Last Updates
                                 {
-                                    sortPacks === "0"
+                                    sortPacks === "0updated"
                                     ? <ArrowDropDownIcon/>
                                     :<ArrowDropUpIcon/>
                                 }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../../Common/Components/Button";
 import { useFormik } from "formik";
 import { PATH } from "../../AppRoutes";
-import { forgotTC, verifEmailAC } from "../../../../state/registerReduser";
+import { forgotTC} from "../../../../state/registerReduser";
 import { useAppDispatch, useAppSelector } from "../../../../state/store";
 
 type FormikErrorType = {
