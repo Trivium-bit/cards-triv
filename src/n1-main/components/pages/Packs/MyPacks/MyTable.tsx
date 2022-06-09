@@ -26,7 +26,7 @@ import {
 } from "../../../../../Common/Selectors/Selectors";
 
 import {useAppSelector} from "../../../../../state/store";
-import {PacksResponseType} from "../../../../../api/cardsAPI";
+import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
 
 

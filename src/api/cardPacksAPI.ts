@@ -35,7 +35,7 @@ export type GetCardsType = {
 
 
 
-export const cardsAPI = {
+export const cardPacksAPI = {
     getCardsPacks(args: GetCardsType) {
         return instance.get<ResponseCardsPackType>(`/cards/pack`,{
             params: {...args}

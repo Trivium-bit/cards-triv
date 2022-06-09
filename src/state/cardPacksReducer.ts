@@ -2,7 +2,7 @@ import {AppStoreType, AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
 import {handleNetworkError} from "../utils/error.utils";
 import {setAppStatusAC} from "./app-reducer";
-import {cardsAPI, PacksResponseType} from "../api/cardsAPI";
+import {cardPacksAPI, PacksResponseType} from "../api/cardPacksAPI";
 
 const SET_CARDS = "CARDS/SET_CARDS";
 const SET_IS_LOADING_CARDS = "CARDS/IS_LOADING";
@@ -73,7 +73,7 @@ const initialState: InitialProfileStateType = {
     sortPacks: "",
     packName: ""
 }
-export type CardsActionType = SetCardsActionType
+export type CardsPacksActionType = SetCardsActionType
     /*| SetCardsIsLoadingActionType*/
     | setInitAddNewCardsPackActionType
     | AddNewCardsPackActionType
@@ -82,7 +82,7 @@ export type CardsActionType = SetCardsActionType
     | SetPacksCardCountType
     | EditCardsPackActionType
 
-export const cardPacksReducer = (state: InitialProfileStateType = initialState, action: CardsActionType): InitialProfileStateType => {
+export const cardPacksReducer = (state: InitialProfileStateType = initialState, action: CardsPacksActionType): InitialProfileStateType => {
     switch (action.type) {
         /*case SET_IS_LOADING_CARDS:
             return {...state, isLoading: action.isLoading}*/
@@ -150,7 +150,7 @@ export const getCardsPacksTC = (isMyTable: boolean, page: number, packName?: str
     const {pageCount, isMyTable} = getState().cardsPacksReducer;
     dispatch(setAppStatusAC("loading"));
 
-    cardsAPI.getCardsPacks(isMyTable ? {page, user_id, pageCount, packName, min, max} : {
+    cardPacksAPI.getCardsPacks(isMyTable ? {page, user_id, pageCount, packName, min, max} : {
         page,
         pageCount,
         packName,
@@ -173,7 +173,7 @@ export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void
     const isMyTable = getState().cardsPacksReducer.isMyTable;
 
     dispatch(setAppStatusAC("loading"));
-    cardsAPI.addPack(pack)
+    cardPacksAPI.addPack(pack)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
             callback();
@@ -188,7 +188,7 @@ export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void
 export const deleteCardPackTC = (id: string, page:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const {isMyTable} = getState().cardsPacksReducer;
     dispatch(setAppStatusAC("loading"));
-    cardsAPI.deleteMyCardsPacks(id)
+    cardPacksAPI.deleteMyCardsPacks(id)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
             dispatch(getCardsPacksTC(isMyTable, page))
@@ -201,7 +201,7 @@ export const deleteCardPackTC = (id: string, page:number) => (dispatch: AppThunk
 export const editMyCardsPacksTC = (_id: string, name: string, page:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const {isMyTable} = getState().cardsPacksReducer;
     dispatch(setAppStatusAC("loading"));
-    cardsAPI.editMyCardsPacks(_id, name)
+    cardPacksAPI.editMyCardsPacks(_id, name)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
             dispatch(getCardsPacksTC(isMyTable, page))

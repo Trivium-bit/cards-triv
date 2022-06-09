@@ -27,7 +27,7 @@ import {
 } from "../../../../../state/cardPacksReducer";
 
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
-import {PacksResponseType} from "../../../../../api/cardsAPI";
+import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
 
 

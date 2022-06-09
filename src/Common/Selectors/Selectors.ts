@@ -1,7 +1,8 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
 import {AddNewCardPackType, PacksPaginationType} from "../../state/cardPacksReducer";
-import {PacksResponseType} from "../../api/cardsAPI";
+import {PacksResponseType} from "../../api/cardPacksAPI";
+import {PackCardType} from "../../api/cardAPI";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
     return state.appReducer.status
@@ -41,4 +42,7 @@ export const userNameSelector = (state: AppStoreType): string =>{
 }
 export const userIdSelector = (state: AppStoreType): string =>{
     return state.appReducer.user._id
+}
+export const getCardsSelector = (state: AppStoreType): PackCardType[] =>{
+    return state.cardsReducer.cards
 }
