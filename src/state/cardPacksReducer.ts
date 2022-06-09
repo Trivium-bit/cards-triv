@@ -1,4 +1,3 @@
-
 import { AppThunkDispatch } from "./store";
 import { AxiosError } from "axios";
 import { handleNetworkError } from "../utils/error.utils";
@@ -11,8 +10,6 @@ const SET_PERSONAL_CARDS_PACKS = "CARDS/SET_PERSONAL_CARDS_PACKS";
 const INIT_ADD_NEW_CARD_PACK = "CARDS/INIT_ADD_NEW_CARD_PACK"
 const ADD_NEW_CARD_PACK = "CARDS/ADD_NEW_CARD_PACK"
 const EDIT_CARD_PACK = "CARDS/EDIT_CARD_PACK"
-
-
 
 export type CardPackRequestType = {
     name: string
@@ -64,7 +61,7 @@ export type CardsActionType = SetCardsActionType
     | EditCardsPackActionType
 
 
-export const cardsReducer = (state: InitialProfileStateType = initialState, action: CardsActionType): InitialProfileStateType => {
+export const cardPacksReducer = (state: InitialProfileStateType = initialState, action: CardsActionType): InitialProfileStateType => {
     switch (action.type) {
         case SET_IS_LOADING_CARDS:
             return { ...state, isLoading: action.isLoading }
@@ -139,21 +136,21 @@ export const getMyCardsPacksTC = (user_id: string, currentPage: string) => (disp
     dispatch(setAppStatusAC("loading"));
     cardsAPI.getMyCardsPacks(user_id, currentPage)
         .then((res) => {
-            const countPagesNumber = () => {
-                return Math.ceil(res.data.cardPacksTotalCount / res.data.pageCount)
-            }
+                const countPagesNumber = () => {
+                    return Math.ceil(res.data.cardPacksTotalCount / res.data.pageCount)
+                }
 
-            dispatch(setPersonalCardsPacksAC(res.data.cardPacks, user_id, {
-                count: countPagesNumber(),
-                current: res.data.page
-            },
-            ));
-            dispatch(setAppStatusAC("succeeded"));
-        }
+                dispatch(setPersonalCardsPacksAC(res.data.cardPacks, user_id, {
+                        count: countPagesNumber(),
+                        current: res.data.page
+                    },
+                ));
+                dispatch(setAppStatusAC("succeeded"));
+            }
         )
         .catch((error: AxiosError<{ error: string }>) => {
-            handleNetworkError(error, dispatch);
-        }
+                handleNetworkError(error, dispatch);
+            }
         )
 }
 //thunk add pack

@@ -1,7 +1,8 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-import {AddNewCardPackType, CardPackRequestType, CardsPaginationType} from "../../state/cardPacksReducer";
+import {AddNewCardPackType, CardsPaginationType} from "../../state/cardPacksReducer";
 import {CardsResponseType} from "../../api/cardsAPI";
+import {CardType} from "../../api/cardAPI";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
     return state.appReducer.status
@@ -25,20 +26,23 @@ export const isInitializedSelector = (state: AppStoreType):boolean =>{
     return state.authReducer.isInitialized
 }
 export const myCardsIsLoadingSelector = (state: AppStoreType): boolean =>{
-    return state.cardsReducer.isLoading
+    return state.cardPacksReducer.isLoading
 }
 export const myCardsPaginationSelector = (state: AppStoreType): CardsPaginationType =>{
-    return state.cardsReducer.pagination
+    return state.cardPacksReducer.pagination
 }
 export const myCardsSelector = (state: AppStoreType): Array<CardsResponseType> =>{
-    return state.cardsReducer.cardsPacks
+    return state.cardPacksReducer.cardsPacks
 }
 export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
-    return state.cardsReducer.addNewCardPack
+    return state.cardPacksReducer.addNewCardPack
 }
 export const userNameSelector = (state: AppStoreType): string =>{
     return state.appReducer.user.name
 }
-export const userIdSelector = (state: AppStoreType): string =>{
+export const userIdSelector = (state: AppStoreType): string => {
     return state.appReducer.user._id
+}
+export const getCardsSelector = (state: AppStoreType): CardType[] =>{
+    return state.cardsReducer.cards
 }

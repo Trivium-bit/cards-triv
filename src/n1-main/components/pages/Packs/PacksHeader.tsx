@@ -47,6 +47,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
+
     const handleSave = () => {
         dispatch(addNewCardPackTC({
                 name: inputValue

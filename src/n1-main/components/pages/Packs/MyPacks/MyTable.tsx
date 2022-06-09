@@ -73,7 +73,6 @@ const MyTable = () => {
     const [rowToEdit, setRowToEdit] = useState<CardsResponseType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
-    const [openEdit, setOpenEdit] = useState(false);
 
     // get page from query parameters
     // const currentPage = new URLSearchParams(location.search)?.get("page") || "1";
@@ -247,9 +246,9 @@ const MyTable = () => {
                         <FormControl variant="standard">
                             <InputLabel htmlFor="component-simple">Answer</InputLabel>
                             <Input className={modalStyles.inputsForm} id="component-simple" value={answer} onChange={handleChangeAnswer} />
-                            
+
                         </FormControl>
-                        
+
                         <Box className={modalStyles.modalBtnGroup}>
                             <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'} />
                             <Button onClick={handleEditPack} className={modalStyles.btnSave} title={'Save'} />
@@ -258,7 +257,7 @@ const MyTable = () => {
                 </Box>
             </Modal>
         </Box>
-        
+
     );
 };
 

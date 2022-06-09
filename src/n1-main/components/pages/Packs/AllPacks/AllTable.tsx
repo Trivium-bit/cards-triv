@@ -21,14 +21,9 @@ import {
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
 import {deleteCardPackTC, editMyCardsPacksTC, getAllCardsPacksTC} from "../../../../../state/cardPacksReducer";
-
 import {useAppSelector} from "../../../../../state/store";
 import {CardsResponseType} from "../../../../../api/cardsAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
-
-
-//types
-
 
 //styles mui
 const StyledTableCell = styled(TableCell)(() => ({
