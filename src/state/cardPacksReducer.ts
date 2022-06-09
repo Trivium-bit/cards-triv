@@ -177,7 +177,7 @@ export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
             callback();
-            dispatch(getCardsPacksTC(isMyTable, currentPage))
+            dispatch(getCardsPacksTC(isMyTable, currentPage));
 
         })
         .catch((error: AxiosError<{ error: string }>) => {
