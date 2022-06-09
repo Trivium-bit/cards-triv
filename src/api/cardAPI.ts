@@ -1,9 +1,9 @@
 import {instance} from "./instance";
 
-
+export const pageCount = 8;
 export const cardApi = {
-    getAllCards(id: string) {
-        return instance.get(`/cards/card?cardsPack_id=${id}`);
+    getAllCards(id: string, currentPage: string) {
+        return instance.get(`/cards/card?cardsPack_id=${id}&page=${currentPage}&pageCount=${pageCount}`);
     },
     addNewCard(id: string,card: PackCardType) {
         return instance.post(`/cards/card`, {card: {

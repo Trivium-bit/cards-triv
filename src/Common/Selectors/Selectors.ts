@@ -3,6 +3,7 @@ import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer
 import {AddNewCardPackType, PacksPaginationType} from "../../state/cardPacksReducer";
 import {PacksResponseType} from "../../api/cardPacksAPI";
 import {PackCardType} from "../../api/cardAPI";
+import {PaginationCardType} from "../../state/cardsReducer";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
     return state.appReducer.status
@@ -45,4 +46,7 @@ export const userIdSelector = (state: AppStoreType): string =>{
 }
 export const getCardsSelector = (state: AppStoreType): PackCardType[] =>{
     return state.cardsReducer.cards
+}
+export const cardPaginationSelector = (state: AppStoreType): PaginationCardType =>{
+    return state.cardsReducer.pagination
 }
