@@ -1,10 +1,7 @@
-import axios from 'axios'
 import {CardPackRequestType} from "../state/cardPacksReducer";
+import {instance} from "./instance";
 
-export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-    withCredentials: true,
-})
+
 export type GetCardsType = {
     packName?: string // english - default value
     min?: number
@@ -37,11 +34,11 @@ export type GetCardsType = {
 }*/
 
 
-export const pageCount = 8;
+
 export const cardsAPI = {
     getCardsPacks(args: GetCardsType) {
         return instance.get<ResponseCardsPackType>(`/cards/pack`,{
-            params: {...args, pageCount}
+            params: {...args}
         });
     },
     addPack(pack: CardPackRequestType) {
@@ -50,6 +47,9 @@ export const cardsAPI = {
     deleteMyCardsPacks(id: string) {
         return instance.delete<ResponseDeletePackType>(`/cards/pack?id=${id}`);
     },
+    editMyCardsPacks(_id: string, name: string) {
+        return instance.put<ResponseUpdatePackType>('/cards/pack', { cardsPack: { _id, name } });
+    }
 
 
 
@@ -88,4 +88,7 @@ export type ResponseAddPackType = {
 }
 export type ResponseDeletePackType = {
     deletedCardsPack:PacksResponseType
+}
+export type ResponseUpdatePackType = {
+    updatedCardsPack:PacksResponseType
 }

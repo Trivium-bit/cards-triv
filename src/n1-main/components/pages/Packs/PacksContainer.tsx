@@ -8,21 +8,23 @@ import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {
-    findPackTC,
+    getCardsPacksTC,
     setIsMyTableAC,
     setLocalCardPackNameAC,
-    sortPacksByNumberTC
+
 } from "../../../../state/cardPacksReducer";
-import useDebounce from "../../../../utils/useDebounce";
+
 import {useSearchParams} from "react-router-dom";
+import {useDebounce} from "../../../../utils/useDebounce";
 
 
 const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const arrOfInitialSliderValues = useAppSelector<number[]>(state => state.cardsReducer.sliderValues);
+    const min = useAppSelector<number>(state => state.cardsPacksReducer.min);
+    const max = useAppSelector<number>(state => state.cardsPacksReducer.max);
     const dispatch = useAppDispatch()
-    const isMyTable = useAppSelector<boolean>(state => state.cardsReducer.isMyTable);
-    const localPackName = useAppSelector<string>(state => state.cardsReducer.localPackName);
+    const isMyTable = useAppSelector<boolean>(state => state.cardsPacksReducer.isMyTable);
+    const localPackName = useAppSelector<string>(state => state.cardsPacksReducer.localPackName);
     const debounceDelay = 1000;
     // Состояние и сеттер состояния для поискового запроса
     const [searchParams, setSearchParams] = useSearchParams()
@@ -30,24 +32,25 @@ const PacksContainer = () => {
     const handlerOpenAllTable = () => {
         setSearchParams({ page: "1" })
         dispatch(setIsMyTableAC(false))
-        dispatch(setLocalCardPackNameAC(""))
+        dispatch(setLocalCardPackNameAC(""));
     }
     const handlerOpenMyTable = () => {
         setSearchParams({ page: "1" })
         dispatch(setIsMyTableAC(true))
-        dispatch(setLocalCardPackNameAC(""))
+        dispatch(setLocalCardPackNameAC(""));
     }
 
-    const debouncedSearchTerm = useDebounce(localPackName, debounceDelay);
-    const debouncedFilteredTerm = useDebounce(arrOfInitialSliderValues, debounceDelay);
+    const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значние со строки поиска имени пэка задержки дебаунса
+    const [minQuery, maxQuery] = useDebounce(debounceDelay,min, max ); //это значения со слайдера после задержки дебаунса
 
-    useEffect(
-        () => {
-            typeof debouncedSearchTerm === 'string' && debouncedSearchTerm !== "" && dispatch(findPackTC(debouncedSearchTerm))
-            typeof debouncedFilteredTerm === 'object' && dispatch(sortPacksByNumberTC(debouncedFilteredTerm, currentPage))
-        }, [debouncedSearchTerm, debouncedFilteredTerm, dispatch]
-    );
+    useEffect(() => {
+        dispatch(getCardsPacksTC(isMyTable, currentPage, debouncePackName,minQuery, maxQuery ))
+        }, [currentPage, dispatch, isMyTable, debouncePackName, minQuery, maxQuery]);
+
+
     return (
+
+
         <Container fixed>
             <Box className={s.packsContainer}>
                 <Grid container>

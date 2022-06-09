@@ -1,10 +1,6 @@
-import axios from 'axios'
 import {RecoveryEmailType} from "../n1-main/components/pages/PassRecovery/PassRecovery";
+import {instance} from "./instance";
 
-export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-    withCredentials: true,
-})
 export type RegisterParamsType = {
     email: string
     password: string

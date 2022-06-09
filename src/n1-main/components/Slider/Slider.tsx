@@ -5,11 +5,13 @@ import {setPacksCardsCountAC} from "../../../state/cardPacksReducer";
 
 
 const SliderBar = () => {
-
-    const arrOfInitialSliderValues = useAppSelector<number[]>(state => state.cardsReducer.sliderValues);
+    const min = useAppSelector<number>(state => state.cardsPacksReducer.min);
+    const max = useAppSelector<number>(state => state.cardsPacksReducer.max);
+    const arrOfInitialSliderValues = [min, max];
     const dispatch = useAppDispatch();
     const handleChange = (event: Event, newValue: number | number[]) => {
-        dispatch(setPacksCardsCountAC(newValue as number[]));
+        // @ts-ignore
+        dispatch(setPacksCardsCountAC(newValue[0], newValue[1] as number));
     };
     return (
         <Box sx={{ width: 250, marginTop: "3rem"}}>

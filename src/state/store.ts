@@ -13,7 +13,7 @@ const rootReducer = combineReducers({
     authReducer: authReducer,
     registerReducer: registerReducer,
     appReducer: appReducer,
-    cardsReducer: cardPacksReducer
+    cardsPacksReducer: cardPacksReducer
 })
 
 export const store = legacy_createStore(rootReducer, applyMiddleware(thunkMiddleware));

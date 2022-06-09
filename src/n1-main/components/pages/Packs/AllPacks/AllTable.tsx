@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal, Pagination,
     Paper, Radio, RadioGroup,
@@ -20,7 +20,7 @@ import {
     myCardsPaginationSelector,
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
-import {deleteCardPackTC, getAllCardsPacksTC} from "../../../../../state/cardPacksReducer";
+import {deleteCardPackTC, getCardsPacksTC} from "../../../../../state/cardPacksReducer";
 
 import {useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardsAPI";
@@ -68,26 +68,22 @@ const AllTable = () => {
     const dispatch = useDispatch<any>();
     const myCards = useSelector(myCardsSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
-    const isMyTable = useAppSelector<boolean>(state => state.cardsReducer.isMyTable);
-    const [question, setQuestion] = useState("My question is bla?");
-    const [answer, setAnswer] = useState("My answer is bla bla");
+    const isMyTable = useAppSelector<boolean>(state => state.cardsPacksReducer.isMyTable);
+
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
+    const [inputValue, setInputValue] = useState('');
 
     const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
-
     const currentPage = Number(searchParams.get("page")) || 1;
 
+    const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInputValue(event.target.value);
+    };
 
-    const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setQuestion(event.target.value);
-    };
-    const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAnswer(event.target.value);
-    };
     const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
     const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
@@ -97,7 +93,10 @@ const AllTable = () => {
         setOpenAnswer(undefined);
         setOpenLearn(false);
     };
-
+    const handleSave = () => {
+        dispatch()
+    };
+    const handleClose = () => setOpenEdit(false);
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
         setSearchParams(searchParams)
@@ -106,13 +105,11 @@ const AllTable = () => {
         if (rowToDelete) {
             dispatch(deleteCardPackTC(rowToDelete._id, () => {
                 handleCloseDelete()
-                dispatch(getAllCardsPacksTC(isMyTable, currentPage))
+                dispatch(getCardsPacksTC(isMyTable, currentPage))
             }))
         }
     }
-    useEffect(() => {
-         dispatch(getAllCardsPacksTC(isMyTable, currentPage))
-    }, [currentPage, dispatch, isMyTable]);
+
     return (
         <Box className={s.wrapper}>
             <TableContainer component={Paper}>
@@ -144,15 +141,16 @@ const AllTable = () => {
                                     <StyledTableCell align="left">{card.user_name}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
-                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
-                                            </button>
-                                            {card.user_id === myId && (<>
+                                            {card.user_id === myId && (
+                                                <>
                                                     <button onClick={() => handleOpenDelete(card)}
                                                             className={s.delete}>Delete
                                                     </button>
                                                     <button onClick={handleOpenEdit} className={s.main}>Edit</button>
                                                 </>
                                             )}
+                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
+                                            </button>
                                         </Box>
                                     </StyledTableCell>
                                 </StyledTableRow>
@@ -207,24 +205,15 @@ const AllTable = () => {
                 onClose={handleCloseEdit}
             >
                 <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                    <h1 className={modalStyles.modalTitle}>Card Info</h1>
-                    <Box>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="component-simple">Question</InputLabel>
-                            <Input className={modalStyles.inputsForm} id="component-simple" value={question}
-                                   onChange={handleChangeQuestion}/>
-                        </FormControl>
-                    </Box>
-                    <Box>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="component-simple">Answer</InputLabel>
-                            <Input className={modalStyles.inputsForm} id="component-simple" value={answer}
-                                   onChange={handleChangeAnswer}/>
-                        </FormControl>
-                        <Box className={modalStyles.modalBtnGroup}>
-                            <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'}/>
-                            <Button className={modalStyles.btnSave} title={'Save'}/>
-                        </Box>
+                    <h1 className={modalStyles.modalTitle}>Enter new card pack name</h1>
+                    <FormControl variant="standard">
+                        <InputLabel htmlFor="component-simple">Enter new card pack name</InputLabel>
+                        <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
+                               onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
+                    </FormControl>
+                    <Box className={modalStyles.modalBtnGroup}>
+                        <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleSave} className={modalStyles.btnSave} title={'Save new name'} disabled={appStatus ==="loading"}/>
                     </Box>
                 </Box>
             </Modal>
@@ -262,36 +251,41 @@ const AllTable = () => {
 
 export default AllTable;
 
+
+
 /*
-{
-    myCards.map((card => card.user_id !== myId
-        ?
-        <StyledTableRow key={card._id}>
-            <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
-            <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-            <StyledTableCell align="left">{card.updated}</StyledTableCell>
-            <StyledTableCell align="left">{card.user_name}</StyledTableCell>
-            <StyledTableCell align="right">
-                <Box className={s.buttonGroup}>
-                    <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
-                    </button>
-
-                </Box>
-            </StyledTableCell>
-        </StyledTableRow>
-        :
-        <StyledTableRow key={card._id}>
-            <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
-            <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-            <StyledTableCell align="left">{card.updated}</StyledTableCell>
-            <StyledTableCell align="left">{card.user_name}</StyledTableCell>
-            <StyledTableCell align="right">
-                <Box className={s.buttonGroup}>
-                    <button onClick={() => handleOpenDelete(card)} className={s.delete}>Delete</button>
-                    <button onClick={handleOpenEdit} className={s.main}>Edit</button>
-                    <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
-                </Box>
-            </StyledTableCell>
-        </StyledTableRow>))
-
-}*/
+const [question, setQuestion] = useState("My question is bla?");
+    const [answer, setAnswer] = useState("My answer is bla bla");
+ const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setQuestion(event.target.value);
+    };
+    const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAnswer(event.target.value);
+    };
+{/!*Edit Modal*!/}
+<Modal
+    open={openEdit}
+    onClose={handleCloseEdit}
+>
+    <Box sx={modalStyle} className={modalStyles.modalBlock}>
+        <h1 className={modalStyles.modalTitle}>Card Info</h1>
+        <Box>
+            <FormControl variant="standard">
+                <InputLabel htmlFor="component-simple">Question</InputLabel>
+                <Input className={modalStyles.inputsForm} id="component-simple" value={question}
+                       onChange={handleChangeQuestion}/>
+            </FormControl>
+        </Box>
+        <Box>
+            <FormControl variant="standard">
+                <InputLabel htmlFor="component-simple">Answer</InputLabel>
+                <Input className={modalStyles.inputsForm} id="component-simple" value={answer}
+                       onChange={handleChangeAnswer}/>
+            </FormControl>
+            <Box className={modalStyles.modalBtnGroup}>
+                <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'}/>
+                <Button className={modalStyles.btnSave} title={'Save'}/>
+            </Box>
+        </Box>
+    </Box>
+</Modal>*/
