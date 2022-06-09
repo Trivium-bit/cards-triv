@@ -7,24 +7,20 @@ import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
-import {
-    getCardsPacksTC,
-    setIsMyTableAC,
-    setLocalCardPackNameAC,
 
-} from "../../../../state/cardPacksReducer";
 
 import {useSearchParams} from "react-router-dom";
 import {useDebounce} from "../../../../utils/useDebounce";
+import {getCardsPacksTC, setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 
 
 const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const min = useAppSelector<number>(state => state.cardsPacksReducer.min);
-    const max = useAppSelector<number>(state => state.cardsPacksReducer.max);
+    const min = useAppSelector<number>(state => state.cardPacksReducer.min);
+    const max = useAppSelector<number>(state => state.cardPacksReducer.max);
     const dispatch = useAppDispatch()
-    const isMyTable = useAppSelector<boolean>(state => state.cardsPacksReducer.isMyTable);
-    const localPackName = useAppSelector<string>(state => state.cardsPacksReducer.searchPackName);
+    const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
     const debounceDelay = 1000;
     // Состояние и сеттер состояния для поискового запроса
     const [searchParams, setSearchParams] = useSearchParams()

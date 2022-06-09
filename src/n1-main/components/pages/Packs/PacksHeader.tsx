@@ -38,7 +38,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const localPackName = useAppSelector<string>(state => state.cardsPacksReducer.searchPackName);
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
 
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         dispatch(setLocalCardPackNameAC(e.currentTarget.value))
@@ -76,18 +76,18 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
             <Box className={s.elements}>
                 <Input onChange={onChangeHandler}
                        value={localPackName}
-                    placeholder={"Search..."}
-                    startAdornment={
-                        <InputAdornment position="start">
-                            <SearchIcon/>
-                        </InputAdornment>
-                    }
+                       placeholder={"Search..."}
+                       startAdornment={
+                           <InputAdornment position="start">
+                               <SearchIcon/>
+                           </InputAdornment>
+                       }
                 />
                 <Button
                     onClick={handleOpen}
                     className={s.addBtn}
                     title={'Add New Pack'}
-                    />
+                />
                 <Modal
                     open={open}
                     onClose={handleClose}

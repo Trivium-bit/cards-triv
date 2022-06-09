@@ -5,8 +5,8 @@ import {setPacksCardsCountAC} from "../../../state/cardPacksReducer";
 
 
 const SliderBar = () => {
-    const min = useAppSelector<number>(state => state.cardsPacksReducer.min);
-    const max = useAppSelector<number>(state => state.cardsPacksReducer.max);
+    const min = useAppSelector<number>(state => state.cardPacksReducer.min);
+    const max = useAppSelector<number>(state => state.cardPacksReducer.max);
     const arrOfInitialSliderValues = [min, max];
     const dispatch = useAppDispatch();
     const handleChange = (event: Event, newValue: number | number[]) => {

@@ -26,16 +26,16 @@ export const isInitializedSelector = (state: AppStoreType):boolean =>{
     return state.authReducer.isInitialized
 }
 export const myCardsIsLoadingSelector = (state: AppStoreType): boolean =>{
-    return state.cardsPacksReducer.isLoading
+    return state.cardPacksReducer.isLoading
 }
 export const myCardsPaginationSelector = (state: AppStoreType): PacksPaginationType =>{
-    return state.cardsPacksReducer.pagination
+    return state.cardPacksReducer.pagination
 }
 export const myCardsSelector = (state: AppStoreType): Array<PacksResponseType> =>{
-    return state.cardsPacksReducer.cardsPacks
+    return state.cardPacksReducer.cardsPacks
 }
 export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
-    return state.cardsPacksReducer.addNewCardPack
+    return state.cardPacksReducer.addNewCardPack
 }
 export const userNameSelector = (state: AppStoreType): string =>{
     return state.appReducer.user.name

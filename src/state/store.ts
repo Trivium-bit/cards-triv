@@ -5,16 +5,17 @@ import {RegisterActionsType, registerReducer} from "./registerReduser";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {appReducer} from "./app-reducer";
 import {
-    CardsPacksActionType,
     cardPacksReducer,
+    CardsPacksActionType,
 } from './cardPacksReducer';
 import {CardActionType, cardsReducer} from "./cardsReducer";
+
 
 const rootReducer = combineReducers({
     authReducer: authReducer,
     registerReducer: registerReducer,
     appReducer: appReducer,
-    cardsPacksReducer: cardPacksReducer,
+    cardPacksReducer: cardPacksReducer,
     cardsReducer: cardsReducer
 })
 

@@ -73,7 +73,7 @@ const AllTable = () => {
     const myCards = useAppSelector(myCardsSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
 
-    const updatedCardPackName = useAppSelector<string>(state => state.cardsPacksReducer.newCardPackName);
+    const updatedCardPackName = useAppSelector<string>(state => state.cardPacksReducer.newCardPackName);
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<PacksResponseType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
@@ -98,10 +98,10 @@ const AllTable = () => {
         setOpenLearn(false);
     };
     const updatePackName = () => {
-         if(rowToUpdate){
-             dispatch(editMyCardsPacksTC(rowToUpdate._id, updatedCardPackName, currentPage))
-             handleCloseEdit();
-         }
+        if(rowToUpdate){
+            dispatch(editMyCardsPacksTC(rowToUpdate._id, updatedCardPackName, currentPage))
+            handleCloseEdit();
+        }
 
     };
 
@@ -257,42 +257,3 @@ const AllTable = () => {
 };
 
 export default AllTable;
-
-
-
-/*
-const [question, setQuestion] = useState("My question is bla?");
-    const [answer, setAnswer] = useState("My answer is bla bla");
- const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setQuestion(event.target.value);
-    };
-    const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAnswer(event.target.value);
-    };
-{/!*Edit Modal*!/}
-<Modal
-    open={openEdit}
-    onClose={handleCloseEdit}
->
-    <Box sx={modalStyle} className={modalStyles.modalBlock}>
-        <h1 className={modalStyles.modalTitle}>Card Info</h1>
-        <Box>
-            <FormControl variant="standard">
-                <InputLabel htmlFor="component-simple">Question</InputLabel>
-                <Input className={modalStyles.inputsForm} id="component-simple" value={question}
-                       onChange={handleChangeQuestion}/>
-            </FormControl>
-        </Box>
-        <Box>
-            <FormControl variant="standard">
-                <InputLabel htmlFor="component-simple">Answer</InputLabel>
-                <Input className={modalStyles.inputsForm} id="component-simple" value={answer}
-                       onChange={handleChangeAnswer}/>
-            </FormControl>
-            <Box className={modalStyles.modalBtnGroup}>
-                <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'}/>
-                <Button className={modalStyles.btnSave} title={'Save'}/>
-            </Box>
-        </Box>
-    </Box>
-</Modal>*/

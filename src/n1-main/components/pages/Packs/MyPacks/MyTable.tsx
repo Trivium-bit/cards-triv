@@ -1,4 +1,3 @@
-
 import React from 'react';
 /*import React, {useEffect, useMemo, useState} from 'react';
 import {
@@ -24,12 +23,9 @@ import {
     myCardsPaginationSelector,
     myCardsSelector
 } from "../../../../../Common/Selectors/Selectors";
-
 import {useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
-
-
 //mui styles
 const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
@@ -42,13 +38,11 @@ const StyledTableCell = styled(TableCell)(() => ({
         fontSize: 13,
     },
 }));
-
 const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
     },
 }));
-
 const modalStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -60,7 +54,6 @@ const modalStyle = {
     p: 4,
     borderRadius: 2,
 };
-
 const MyTable = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(state => state.appReducer.user._id);
@@ -74,32 +67,24 @@ const MyTable = () => {
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
-
     const currentPage = Number(searchParams.get("page")) || 1
-
     const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
-
     const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
-
     const handleOpenLearn = () => setOpenLearn(true);
     const handleCloseLearn = () => {
         setOpenAnswer(undefined);
         setOpenLearn(false);
     };
-
     const handleOpenEdit = () => setOpenEdit(true);
     const handleCloseEdit = () => setOpenEdit(false);
-
-
     const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
         setQuestion(event.target.value);
     };
     const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
         setAnswer(event.target.value);
     };
-
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
         setSearchParams(searchParams)
@@ -115,7 +100,6 @@ const MyTable = () => {
     useEffect(() => {
         dispatch(getMyCardsPacksTC(myId, currentPage))
     }, [currentPage, myId, dispatch]);
-
     return (
         <Box>
             {/!*!//my table*!/}
@@ -157,10 +141,8 @@ const MyTable = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-
             <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
                         page={myCardsPagination.current} shape="rounded"/>
-
             {/!*!// Delete Button Modal*!/}
             <Modal
                 open={!!rowToDelete}
@@ -182,7 +164,6 @@ const MyTable = () => {
                     </Box>
                 </Box>
             </Modal>
-
             {/!*!// Show Answer Modal*!/}
             <Modal
                 open={!!openAnswer}
@@ -197,8 +178,6 @@ const MyTable = () => {
                     </Box>
                 </Box>
             </Modal>
-
-
             {/!*Learn Modal*!/}
             <Modal
                 open={openLearn}
@@ -224,7 +203,6 @@ const MyTable = () => {
                     </Box>
                 </Box>
             </Modal>
-
             {/!*Edit Modal*!/}
             <Modal
                 open={openEdit}
@@ -255,5 +233,4 @@ const MyTable = () => {
         </Box>
     );
 };
-
 export default MyTable;*/

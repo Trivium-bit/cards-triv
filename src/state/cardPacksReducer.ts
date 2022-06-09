@@ -147,7 +147,7 @@ export type EditCardsPackActionType = ReturnType<typeof editCardPackAC>;
 //thunks
 export const getCardsPacksTC = (isMyTable: boolean, page: number, packName?: string, min?: number, max?: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const user_id = getState().appReducer.user._id;
-    const {pageCount, isMyTable} = getState().cardsPacksReducer;
+    const {pageCount, isMyTable} = getState().cardPacksReducer;
     dispatch(setAppStatusAC("loading"));
 
     cardPacksAPI.getCardsPacks(isMyTable ? {page, user_id, pageCount, packName, min, max} : {
@@ -170,7 +170,7 @@ export const getCardsPacksTC = (isMyTable: boolean, page: number, packName?: str
 }
 
 export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void, currentPage: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
-    const isMyTable = getState().cardsPacksReducer.isMyTable;
+    const isMyTable = getState().cardPacksReducer.isMyTable;
 
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.addPack(pack)
@@ -186,7 +186,7 @@ export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void
 }
 
 export const deleteCardPackTC = (id: string, page:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
-    const {isMyTable} = getState().cardsPacksReducer;
+    const {isMyTable} = getState().cardPacksReducer;
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.deleteMyCardsPacks(id)
         .then(() => {
@@ -199,7 +199,7 @@ export const deleteCardPackTC = (id: string, page:number) => (dispatch: AppThunk
 }
 
 export const editMyCardsPacksTC = (_id: string, name: string, page:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
-    const {isMyTable} = getState().cardsPacksReducer;
+    const {isMyTable} = getState().cardPacksReducer;
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.editMyCardsPacks(_id, name)
         .then(() => {
@@ -211,6 +211,3 @@ export const editMyCardsPacksTC = (_id: string, name: string, page:number) => (d
             handleNetworkError(error, dispatch)
         })
 }
-
-
-

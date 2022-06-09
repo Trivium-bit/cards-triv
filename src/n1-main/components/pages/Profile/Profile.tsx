@@ -5,8 +5,8 @@ import s from './Profile.module.scss'
 import Slider from "../../Slider/Slider";
 import PacksHeader from "../Packs/PacksHeader";
 import {useAppSelector} from "../../../../state/store";
-import MyPacks from "../Packs/MyPacks/MyPacks";
 import {userNameSelector} from "../../../../Common/Selectors/Selectors";
+import Packs from "../Packs/AllPacks/Packs";
 
 
 
@@ -20,7 +20,7 @@ const Profile = () => {
                         <Grid xs={3} item>
                             <Grid container direction="column" className={s.profileColumn}>
                                 <Box className={s.profile}>
-                                   <UserProfile />
+                                    <UserProfile />
                                 </Box>
                                 <Box className={s.utils}>
                                     <p className={s.utilsTitle}>Number of Cards</p>
@@ -31,7 +31,7 @@ const Profile = () => {
                         <Grid xs={9} item>
                             <Box className={s.myPacksBlock}>
                                 <PacksHeader packsOwnerName={userName}/>
-                                <MyPacks/>
+                                <Packs/>
                             </Box>
                         </Grid>
                     </Grid>
