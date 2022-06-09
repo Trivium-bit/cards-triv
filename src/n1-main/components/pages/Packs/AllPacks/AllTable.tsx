@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useState} from 'react';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal, Pagination,
     Paper, Radio, RadioGroup,
@@ -13,17 +13,26 @@ import {
 import Button from "../../../../../Common/Components/Button";
 import s from './AllTable.module.scss'
 import modalStyles from '../styles/ModalStyles.module.scss'
-import {useLocation, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {useSearchParams, NavLink} from "react-router-dom";
+import {useSelector} from "react-redux";
 import {
     appStatusSelector,
     myCardsPaginationSelector,
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
-import {deleteCardPackTC, editMyCardsPacksTC, getAllCardsPacksTC} from "../../../../../state/cardPacksReducer";
-import {useAppSelector} from "../../../../../state/store";
-import {CardsResponseType} from "../../../../../api/cardsAPI";
+import {
+    deleteCardPackTC,
+    editCardPackAC,
+    editMyCardsPacksTC,
+} from "../../../../../state/cardPacksReducer";
+
+import {useAppDispatch, useAppSelector} from "../../../../../state/store";
+import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
+
+
+//types
+
 
 //styles mui
 const StyledTableCell = styled(TableCell)(() => ({
@@ -59,64 +68,55 @@ const modalStyle = {
 const AllTable = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
-    const navigate = useNavigate();
-    const location = useLocation();
-    const dispatch = useDispatch<any>();
-    const myCards = useSelector(myCardsSelector);
+    const [searchParams, setSearchParams] = useSearchParams()
+    const dispatch = useAppDispatch();
+    const myCards = useAppSelector(myCardsSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
-    const [question, setQuestion] = useState("My question is bla?");
-    const [answer, setAnswer] = useState("My answer is bla bla");
-    const [rowToDelete, setRowToDelete] = useState<CardsResponseType | undefined>(undefined);
-    const [rowToEdit, setRowToEdit] = useState<CardsResponseType | undefined>(undefined);
-    const [openAnswer, setOpenAnswer] = useState<CardsResponseType | undefined>(undefined);
+
+    const updatedCardPackName = useAppSelector<string>(state => state.cardPacksReducer.newCardPackName);
+    const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
+    const [rowToUpdate, setRowToUpdate] = useState<PacksResponseType | undefined>(undefined);
+    const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
-    const [openEdit, setOpenEdit] = useState(false);
 
-    const handleOpenEdit = (card: CardsResponseType) => setRowToEdit(card);
-    const handleCloseEdit = () => setRowToEdit(undefined);
 
-    const currentPage = useMemo(() => {
-        return new URLSearchParams(location.search)?.get("page") || "1";
-    }, [location.search]);
+    const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
+    const handleCloseEdit = () => setRowToUpdate(undefined);
+    const currentPage = Number(searchParams.get("page")) || 1;
 
-    const handleChangeQuestion = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setQuestion(event.target.value);
+    const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
+        dispatch(editCardPackAC((event.target.value)));
     };
-    const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setAnswer(event.target.value);
-    };
-    const handleOpenDelete = (card: CardsResponseType) => setRowToDelete(card);
+
+    const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
-    const handleOpenAnswer = (card: CardsResponseType) => setOpenAnswer(card);
+    const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
     const handleOpenLearn = () => setOpenLearn(true);
     const handleCloseLearn = () => {
         setOpenAnswer(undefined);
         setOpenLearn(false);
     };
+    const updatePackName = () => {
+        if(rowToUpdate){
+            dispatch(editMyCardsPacksTC(rowToUpdate._id, updatedCardPackName, currentPage))
+            handleCloseEdit();
+        }
+
+    };
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
-        navigate(`/packs?page=${page}`)
+        searchParams.set('page', page.toString())
+        setSearchParams(searchParams)
+
     }
     const handleDeletePack = () => {
-        if(rowToDelete) {
-            dispatch(deleteCardPackTC(rowToDelete._id, () => {
-                handleCloseDelete()
-                dispatch(getAllCardsPacksTC(currentPage))
-            }))
+        if (rowToDelete) {
+            dispatch(deleteCardPackTC(rowToDelete._id, currentPage))
+            handleCloseDelete();
         }
     }
-    const handleEditPack = () => {
-        if (rowToEdit) {
-            dispatch(editMyCardsPacksTC(rowToEdit._id, rowToEdit.name, () => {
-                handleCloseEdit()
-                dispatch(getAllCardsPacksTC(currentPage))
-            }))
-        }
-    }
-    useEffect(() => {
-        dispatch(getAllCardsPacksTC(currentPage))
-    }, [currentPage, dispatch]);
+
     return (
         <Box className={s.wrapper}>
             <TableContainer component={Paper}>
@@ -132,35 +132,36 @@ const AllTable = () => {
                     </TableHead>
                     <TableBody className={s.tableBody}>
                         {
-                            myCards.map((card => card.user_id !== myId
-                                ?
-                                <StyledTableRow key={card._id}>
-                                    <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
+                            myCards.map((card => <StyledTableRow key={card._id}>
+                                    {card.user_id === myId
+                                        ?
+                                        <StyledTableCell component="th" scope="row">
+                                            <NavLink to={`/packs/${card._id}`}>
+                                                {card.name}
+                                            </NavLink>
+                                        </StyledTableCell>
+                                        :
+                                        <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
+                                    }
                                     <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.updated}</StyledTableCell>
+                                    <StyledTableCell align="left">{card.updated.substring(0, 10).replace( /-/g, "." )}</StyledTableCell>
                                     <StyledTableCell align="left">{card.user_name}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
+                                            {card.user_id === myId && (
+                                                <>
+                                                    <button onClick={() => handleOpenDelete(card)}
+                                                            className={s.delete}>Delete
+                                                    </button>
+                                                    <button onClick={() => handleOpenEdit(card)} className={s.main}>Edit</button>
+                                                </>
+                                            )}
                                             <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
                                             </button>
                                         </Box>
                                     </StyledTableCell>
                                 </StyledTableRow>
-                                :
-                                <StyledTableRow key={card._id}>
-                                    <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.updated}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.user_name}</StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        <Box className={s.buttonGroup}>
-                                            <button onClick={() => handleOpenDelete(card)} className={s.delete}>Delete</button>
-                                            <button onClick={() => handleOpenEdit(card)} className={s.main}>Edit</button>
-                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn</button>
-                                        </Box>
-                                    </StyledTableCell>
-                                </StyledTableRow>))
-
+                            ))
                         }
                     </TableBody>
                 </Table>
@@ -197,36 +198,29 @@ const AllTable = () => {
                         </span>
                     </Box>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Save'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}
+                                disabled={appStatus === "loading"}/>
+                        <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Save'}
+                                disabled={appStatus === "loading"}/>
                     </Box>
                 </Box>
             </Modal>
 
             {/*Edit Modal*/}
             <Modal
-                open={openEdit}
+                open={!!rowToUpdate}
                 onClose={handleCloseEdit}
             >
                 <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                    <h1 className={modalStyles.modalTitle}>Card Info</h1>
-                    <Box>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="component-simple">Question</InputLabel>
-                            <Input className={modalStyles.inputsForm} id="component-simple" value={question}
-                                   onChange={handleChangeQuestion}/>
-                        </FormControl>
-                    </Box>
-                    <Box>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="component-simple">Answer</InputLabel>
-                            <Input className={modalStyles.inputsForm} id="component-simple" value={answer}
-                                   onChange={handleChangeAnswer}/>
-                        </FormControl>
-                        <Box className={modalStyles.modalBtnGroup}>
-                            <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'}/>
-                            <Button className={modalStyles.btnSave} title={'Save'}/>
-                        </Box>
+                    <h1 className={modalStyles.modalTitle}>Enter new card pack name</h1>
+                    <FormControl variant="standard">
+                        <InputLabel htmlFor="component-simple">Enter new card pack name</InputLabel>
+                        <Input className={modalStyles.inputsForm} id="component-simple" value={updatedCardPackName}
+                               onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
+                    </FormControl>
+                    <Box className={modalStyles.modalBtnGroup}>
+                        <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={updatePackName} className={modalStyles.btnSave} title={'Save new name'} disabled={appStatus ==="loading"}/>
                     </Box>
                 </Box>
             </Modal>
@@ -252,7 +246,7 @@ const AllTable = () => {
                     </RadioGroup>
                     <Box className={modalStyles.modalBtnGroup}>
                         <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button onClick={handleEditPack} className={modalStyles.btnSave} title={'Next'}/>
+                        <Button className={modalStyles.btnSave} title={'Next'}/>
                     </Box>
                 </Box>
             </Modal>

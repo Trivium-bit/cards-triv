@@ -1,8 +1,8 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-import {AddNewCardPackType, CardsPaginationType} from "../../state/cardPacksReducer";
-import {CardsResponseType} from "../../api/cardsAPI";
-import {CardType} from "../../api/cardAPI";
+import {AddNewCardPackType, PacksPaginationType} from "../../state/cardPacksReducer";
+import {PacksResponseType} from "../../api/cardPacksAPI";
+import {PackCardType} from "../../api/cardAPI";
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
     return state.appReducer.status
@@ -28,10 +28,10 @@ export const isInitializedSelector = (state: AppStoreType):boolean =>{
 export const myCardsIsLoadingSelector = (state: AppStoreType): boolean =>{
     return state.cardPacksReducer.isLoading
 }
-export const myCardsPaginationSelector = (state: AppStoreType): CardsPaginationType =>{
+export const myCardsPaginationSelector = (state: AppStoreType): PacksPaginationType =>{
     return state.cardPacksReducer.pagination
 }
-export const myCardsSelector = (state: AppStoreType): Array<CardsResponseType> =>{
+export const myCardsSelector = (state: AppStoreType): Array<PacksResponseType> =>{
     return state.cardPacksReducer.cardsPacks
 }
 export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
@@ -40,9 +40,9 @@ export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackT
 export const userNameSelector = (state: AppStoreType): string =>{
     return state.appReducer.user.name
 }
-export const userIdSelector = (state: AppStoreType): string => {
+export const userIdSelector = (state: AppStoreType): string =>{
     return state.appReducer.user._id
 }
-export const getCardsSelector = (state: AppStoreType): CardType[] =>{
+export const getCardsSelector = (state: AppStoreType): PackCardType[] =>{
     return state.cardsReducer.cards
 }
