@@ -31,7 +31,7 @@ function AppRoutes() {
   return (
     <div>
       <Routes>
-        <Route path={PATH.HOME} element={<Home />} />
+        <Route path={PATH.HOME} element={<Home/>} />
         <Route path={PATH.LOGIN} element={<Login />} />
         <Route path={PATH.REGISTER} element={<Register />} />
         <Route path={PATH.PASS_RECOVERY} element={<PassRecovery />} />

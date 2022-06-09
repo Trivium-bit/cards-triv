@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Box, FormControl, FormControlLabel, Input, InputLabel, Modal, Pagination,
     Paper, Radio, RadioGroup,
@@ -23,12 +23,13 @@ import {
 import {
     deleteCardPackTC,
     editCardPackAC,
-    editMyCardsPacksTC,
+    editMyCardsPacksTC, getCardsPacksTC,
 } from "../../../../../state/cardPacksReducer";
 
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
+import {useDebounce} from "../../../../../utils/useDebounce";
 
 
 //types
@@ -66,6 +67,14 @@ const modalStyle = {
 
 //table
 const AllTable = () => {
+
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
+    const debounceDelay = 1000;
+    const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
+    const min = useAppSelector<number>(state => state.cardPacksReducer.min);
+    const max = useAppSelector<number>(state => state.cardPacksReducer.max);
+    const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значние со строки поиска имени пэка задержки дебаунса
+    const [minQuery, maxQuery] = useDebounce(debounceDelay,min, max ); //это значения со слайдера после задержки дебаунса
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
     const [searchParams, setSearchParams] = useSearchParams()
@@ -116,6 +125,10 @@ const AllTable = () => {
             handleCloseDelete();
         }
     }
+
+    useEffect(() => {
+        dispatch(getCardsPacksTC(isMyTable, currentPage, debouncePackName,minQuery, maxQuery ))
+    }, [currentPage, dispatch, isMyTable, debouncePackName, minQuery, maxQuery]);
 
     return (
         <Box className={s.wrapper}>
