@@ -207,7 +207,6 @@ export const editMyCardsPacksTC = (_id: string, name: string, page:number) => (d
             dispatch(getCardsPacksTC(isMyTable, page))
         })
         .catch((error: AxiosError<{ error: string }>) => {
-            dispatch(setAppStatusAC("failed"));
             handleNetworkError(error, dispatch)
         })
 }
