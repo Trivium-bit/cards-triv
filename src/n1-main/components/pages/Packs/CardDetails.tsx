@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import React, {useEffect, useMemo, useState} from 'react';
+import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {
     Box,
     Container, FormControl,
@@ -19,7 +19,7 @@ import styles from './MyPacks/MyTable.module.scss'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {useSelector} from "react-redux";
 import {
-    appStatusSelector,
+    appStatusSelector, cardPaginationSelector,
     getCardsSelector
 } from "../../../../Common/Selectors/Selectors";
 import {addNewCardTC, deleteCardTC, getCardsTC} from "../../../../state/cardsReducer";
@@ -62,8 +62,10 @@ const modalStyle = {
 const CardDetails = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
+    const location = useLocation();
     const {packId} = useParams();
     const cards = useSelector(getCardsSelector);
+    const cardPagination = useSelector(cardPaginationSelector);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
     const [inputQuestionValue, setInputQuestionValue] = useState('');
@@ -71,9 +73,17 @@ const CardDetails = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const currentPage = useMemo(() => {
+        return new URLSearchParams(location.search)?.get("page") || "1";
+    }, [location.search]);
+
     useEffect(() => {
-        dispatch(getCardsTC(packId || ''))
-    }, [])
+        dispatch(getCardsTC(packId || '', currentPage))
+    }, [currentPage])
+
+    const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
+        navigate(`/packs/${packId}?page=${page}`)
+    }
 
     const handleAddCard =() => {
     dispatch(addNewCardTC( packId || '',{
@@ -81,7 +91,7 @@ const CardDetails = () => {
         answer: inputAnswerValue
     }, () => {
         handleClose();
-        dispatch(getCardsTC(packId || ''))
+        dispatch(getCardsTC(packId || '', currentPage))
     }))
     }
     const handleChangeQuestion =(e:React.ChangeEvent<HTMLInputElement>) => {
@@ -91,9 +101,8 @@ const CardDetails = () => {
         setInputAnswerValue(e.target.value)
     }
     const handleCardDelete = (id: any) => {
-        console.log(id)
         dispatch(deleteCardTC(id, () => {
-            dispatch(getCardsTC(packId || ''))
+            dispatch(getCardsTC(packId || '', currentPage))
         }))
     }
 
@@ -159,7 +168,8 @@ const CardDetails = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    )}
+                        )}
+                    <Pagination onChange={handleChangePagination} count={cardPagination.count}  page={cardPagination.current} shape="rounded" />
                     {
                         cards.length === 0 && (
                             <div className={s.emptyPack}>
@@ -196,7 +206,6 @@ const CardDetails = () => {
                         </Box>
                     </Modal>
                 </Box>
-                <Pagination shape="rounded" />
             </Box>
         </Container>
     );

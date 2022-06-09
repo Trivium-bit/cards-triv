@@ -6,40 +6,50 @@ import {handleNetworkError} from "../utils/error.utils";
 
 const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
 
-
-const initialState: InitialCardsStateType = {
-    cards: [],
+export type PaginationCardType = {
+    current: number,
+    count: number
 }
+
 export type InitialCardsStateType = {
     cards: PackCardType[]
+    pagination: PaginationCardType
 }
-
-//main AC type
-export type CardActionType = getPackCardsActionType
-
+const initialState: InitialCardsStateType = {
+    cards: [],
+    pagination: {
+        count: 0,
+        current: 0
+    }
+}
 //reducer
 export const cardsReducer = (state: InitialCardsStateType = initialState, action: CardActionType): InitialCardsStateType => {
     switch (action.type) {
         case SET_PACK_CARDS:
-            return {...state, cards: action.cards}
+            return {...state, cards: action.cards, pagination: action.pagination}
         default:
             return state
     }
 }
 //AC
-export const setPackCardsAC = (cards:PackCardType[]) => ({type: SET_PACK_CARDS, cards} as const)
-
+export const setPackCardsAC = (cards:PackCardType[],pagination: PaginationCardType) => ({type: SET_PACK_CARDS, cards, pagination} as const)
 
 //AC TYPES
 export type getPackCardsActionType = ReturnType<typeof setPackCardsAC>;
 
+//main AC type
+export type CardActionType = getPackCardsActionType
+
 //get card thunk
-export const getCardsTC = (id: string) =>(dispatch:AppThunkDispatch) => {
+export const getCardsTC = (id: string, currentPage: string) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
-    cardApi.getAllCards(id)
+    cardApi.getAllCards(id, currentPage)
         .then((res) =>{
+            dispatch(setPackCardsAC(res.data.cards, {
+                count: Math.ceil(res.data.cardsTotalCount / res.data.pageCount),
+                current:res.data.page
+            }));
             dispatch(setAppStatusAC("succeeded"));
-            dispatch(setPackCardsAC(res.data.cards));
         })
         .catch((error: AxiosError<{ error: string }>) => {
             dispatch(setAppStatusAC("failed"));
@@ -65,7 +75,20 @@ export const deleteCardTC = (id: string, callback: () => void) =>(dispatch:AppTh
     cardApi.deleteMyCard(id)
         .then(() =>{
             dispatch(setAppStatusAC("succeeded"));
-            callback()
+            callback();
+        })
+        .catch((error: AxiosError<{ error: string }>) => {
+            dispatch(setAppStatusAC("failed"));
+            handleNetworkError(error, dispatch)
+        })
+}
+//thunk edit card
+export const editCardTC = (callback: () => void) =>(dispatch:AppThunkDispatch) => {
+    dispatch(setAppStatusAC("loading"));
+    cardApi.editMyCard()
+        .then(() =>{
+            dispatch(setAppStatusAC("succeeded"));
+            callback();
         })
         .catch((error: AxiosError<{ error: string }>) => {
             dispatch(setAppStatusAC("failed"));

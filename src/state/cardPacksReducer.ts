@@ -148,7 +148,6 @@ export const getMyCardsPacksTC = (user_id: string, currentPage: string) => (disp
         )
 }
 //thunk add pack
-
 export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void, currentPage:string, user_id:string) =>(dispatch:AppThunkDispatch) =>{
     dispatch(setAppStatusAC("loading"));
     cardsAPI.addPack(pack)
