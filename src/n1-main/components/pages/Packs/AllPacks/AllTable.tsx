@@ -21,6 +21,7 @@ import {
     myCardsSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
 import {
+    changeSortPacksAC,
     deleteCardPackTC,
     editCardPackAC,
     editMyCardsPacksTC, getCardsPacksTC,
@@ -30,8 +31,8 @@ import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
 import {useDebounce} from "../../../../../utils/useDebounce";
-
-
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 //types
 
 
@@ -66,28 +67,27 @@ const modalStyle = {
 };
 
 //table
-const AllTable = () => {
+const AllTable = React.memo(() => {
 
     const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
     const debounceDelay = 1000;
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
-    const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значние со строки поиска имени пэка задержки дебаунса
-    const [minQuery, maxQuery] = useDebounce(debounceDelay,min, max ); //это значения со слайдера после задержки дебаунса
+    //const debouncePackName = useDebounce(debounceDelay,localPackName ).toString();//это значние со строки поиска имени пэка задержки дебаунса
+    //const [minQuery, maxQuery] = useDebounce(debounceDelay,min, max ); //это значения со слайдера после задержки дебаунса
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
     const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useAppDispatch();
     const myCards = useAppSelector(myCardsSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
-
     const updatedCardPackName = useAppSelector<string>(state => state.cardPacksReducer.newCardPackName);
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<PacksResponseType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
-
+    const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
 
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
     const handleCloseEdit = () => setRowToUpdate(undefined);
@@ -96,7 +96,7 @@ const AllTable = () => {
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editCardPackAC((event.target.value)));
     };
-
+    console.log("AllTable rendered")
     const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
     const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
@@ -113,7 +113,11 @@ const AllTable = () => {
         }
 
     };
+    const changeSortValue = () =>{
 
+        dispatch(changeSortPacksAC( sortPacks === '0updated' ? '1updated' : '0updated'))
+
+    }
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
         setSearchParams(searchParams)
@@ -127,8 +131,8 @@ const AllTable = () => {
     }
 
     useEffect(() => {
-        dispatch(getCardsPacksTC(isMyTable, currentPage, debouncePackName,minQuery, maxQuery ))
-    }, [currentPage, dispatch, isMyTable, debouncePackName, minQuery, maxQuery]);
+        dispatch(getCardsPacksTC(isMyTable, currentPage, localPackName,min, max, sortPacks ))
+    }, [currentPage, dispatch, isMyTable, localPackName, min, max, sortPacks]);
 
     return (
         <Box className={s.wrapper}>
@@ -138,7 +142,13 @@ const AllTable = () => {
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
                             <StyledTableCell align="left">Cards</StyledTableCell>
-                            <StyledTableCell align="left">Last Updates</StyledTableCell>
+                            <StyledTableCell align="left" onClick={changeSortValue}>Last Updates
+                                {
+                                    sortPacks === "0"
+                                    ? <ArrowDropDownIcon/>
+                                    :<ArrowDropUpIcon/>
+                                }
+                            </StyledTableCell>
                             <StyledTableCell align="left">Created By</StyledTableCell>
                             <StyledTableCell align="center">Actions</StyledTableCell>
                         </TableRow>
@@ -267,6 +277,6 @@ const AllTable = () => {
 
 
     );
-};
+});
 
 export default AllTable;

@@ -12,7 +12,8 @@ const ADD_NEW_CARD_PACK = "CARDS/ADD_NEW_CARD_PACK";
 const SET_LOCAL_CARD_PACK_NAME = "CARDS/SET_LOCAL_CARD_PACK_NAME";
 const SET_IS_MY_TABLE = "CARDS/SET_IS_MY_TABLE";
 const SET_PACK_CARD_COUNT = "CARDS/SET_PACK_CARD_COUNT";
-const EDIT_CARD_PACK_NAME = "CARDS/EDIT_CARD_PACK_NAME"
+const EDIT_CARD_PACK_NAME = "CARDS/EDIT_CARD_PACK_NAME";
+const SET_CARDS_PACKS_SORT_VALUE = "SET_CARDS_PACKS_SORT_VALUE";
 
 export type CardPackRequestType = {
     name: string
@@ -44,11 +45,12 @@ export type InitialProfileStateType = {
     isMyTable: boolean,
     pageCount: number,
     page: number,
-    sortPacks: string,
     packName: string,
     min: number,
     max: number,
-    newCardPackName: string
+    newCardPackName: string,
+    sortPacks: string,
+
 }
 const initialState: InitialProfileStateType = {
     isLoading: false,
@@ -70,8 +72,9 @@ const initialState: InitialProfileStateType = {
     isMyTable: true,
     pageCount: 8,
     page: 0,
-    sortPacks: "",
-    packName: ""
+    packName: "",
+    sortPacks: "0updated",
+
 }
 export type CardsPacksActionType = SetCardsActionType
     /*| SetCardsIsLoadingActionType*/
@@ -81,6 +84,7 @@ export type CardsPacksActionType = SetCardsActionType
     | SetIsMyTableType
     | SetPacksCardCountType
     | EditCardsPackActionType
+    | SortCardsPackByDateActionType
 
 export const cardPacksReducer = (state: InitialProfileStateType = initialState, action: CardsPacksActionType): InitialProfileStateType => {
     switch (action.type) {
@@ -106,6 +110,8 @@ export const cardPacksReducer = (state: InitialProfileStateType = initialState, 
             return {...state, min: action.min, max: action.max}
         case EDIT_CARD_PACK_NAME:
             return {...state, newCardPackName: action.newPackName}
+        case SET_CARDS_PACKS_SORT_VALUE:
+            return {...state, sortPacks:action.sortPacks}
         default:
             return state
     }
@@ -133,6 +139,7 @@ export const setLocalCardPackNameAC = (searchPackName: string) => ({
 export const setIsMyTableAC = (isMyTable: boolean) => ({type: SET_IS_MY_TABLE, isMyTable} as const);
 export const setPacksCardsCountAC = (min: number, max: number) => ({type: SET_PACK_CARD_COUNT, min, max} as const);
 export const editCardPackAC = (newPackName: string) => ({type: EDIT_CARD_PACK_NAME, newPackName} as const)
+export const changeSortPacksAC = (sortPacks: string,) => ({type: SET_CARDS_PACKS_SORT_VALUE, sortPacks} as const)
 
 // types
 /*export type SetCardsIsLoadingActionType = ReturnType<typeof setCardsIsLoadingAC>;*/
@@ -143,19 +150,21 @@ export type SetLocalCardPackNameType = ReturnType<typeof setLocalCardPackNameAC>
 export type SetIsMyTableType = ReturnType<typeof setIsMyTableAC>;
 export type SetPacksCardCountType = ReturnType<typeof setPacksCardsCountAC>;
 export type EditCardsPackActionType = ReturnType<typeof editCardPackAC>;
+export type SortCardsPackByDateActionType = ReturnType<typeof changeSortPacksAC>;
 
 //thunks
-export const getCardsPacksTC = (isMyTable: boolean, page: number, packName?: string, min?: number, max?: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
+export const getCardsPacksTC = (isMyTable: boolean, page: number, packName?: string, min?: number, max?: number, sortPacks?:string) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const user_id = getState().appReducer.user._id;
     const {pageCount, isMyTable} = getState().cardPacksReducer;
     dispatch(setAppStatusAC("loading"));
 
-    cardPacksAPI.getCardsPacks(isMyTable ? {page, user_id, pageCount, packName, min, max} : {
+    cardPacksAPI.getCardsPacks(isMyTable ? {page, user_id, pageCount, packName, min, max, sortPacks} : {
         page,
         pageCount,
         packName,
         min,
-        max
+        max,
+        sortPacks
     })
         .then((res) => {
             const countPagesNumber = () => {
