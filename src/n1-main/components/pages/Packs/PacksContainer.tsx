@@ -1,38 +1,40 @@
-import React, {useMemo, useState} from 'react';
+import React from 'react';
 import {Box, Container, Grid} from "@mui/material";
-import MyPacks from "./MyPacks/MyPacks";
 import s from './styles/Packs.module.scss'
-import AllPacks from "./AllPacks/AllPacks";
+import Packs from "./AllPacks/Packs";
 import Slider from "../../Slider/Slider";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
-import {useLocation} from "react-router-dom";
-import {getAllCardsPacksTC, getMyCardsPacksTC} from "../../../../state/cardPacksReducer";
+import {useSearchParams} from "react-router-dom";
+import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 
 
-const Packs = () => {
-    const dispatch = useAppDispatch();
-    const { _id } = useAppSelector(state => state.appReducer.user);
+
+const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const location = useLocation();
-    const currentPage = useMemo(() => {
-        return new URLSearchParams(location.search)?.get("page") || "1";
-    }, [location.search]);
-    const [show, setShow] = useState<string>("MyPacks");
+    const dispatch = useAppDispatch()
+    const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
 
-    const handleOnAddNew = () => {
+    const [searchParams, setSearchParams] = useSearchParams()
 
-        if (show === "MyPacks") {
-            dispatch(getMyCardsPacksTC(_id, currentPage))
-        } else if (show === "AllPacks") {
-            dispatch(getAllCardsPacksTC(currentPage))
-        }
-
+    const handlerOpenAllTable = () => {
+        setSearchParams({ page: "1" })
+        dispatch(setIsMyTableAC(false))
+        dispatch(setLocalCardPackNameAC(""));
+    }
+    const handlerOpenMyTable = () => {
+        setSearchParams({ page: "1" })
+        dispatch(setIsMyTableAC(true))
+        dispatch(setLocalCardPackNameAC(""));
     }
 
+
+
     return (
+
+
         <Container fixed>
             <Box className={s.packsContainer}>
                 <Grid container>
@@ -41,14 +43,14 @@ const Packs = () => {
                             <Box className={s.showPacks}>
                                 <span className={s.title}>Show packs cards</span>
                                 <Box className={s.btnGroup}>
-                                    <button className={show === "MyPacks" ? s.buttonActive : s.btn}
+                                    <button className={isMyTable ? s.buttonActive : s.btn}
                                             disabled={appStatus === "loading"}
-                                            onClick={() => setShow("MyPacks")}
+                                            onClick={handlerOpenMyTable}
                                     >My
                                     </button>
-                                    <button className={show === "AllPacks" ? s.buttonActive : s.btn}
+                                    <button className={!isMyTable ? s.buttonActive : s.btn}
                                             disabled={appStatus === "loading"}
-                                            onClick={() => setShow("AllPacks")}
+                                            onClick={handlerOpenAllTable}
                                     >All
                                     </button>
                                 </Box>
@@ -61,9 +63,8 @@ const Packs = () => {
                     </Grid>
                     <Grid xs={9} item>
                         <Box className={s.myPacksBlock}>
-                            <PacksHeader onAddNew={handleOnAddNew}/>
-                            {show === "MyPacks" && <MyPacks/>}
-                            {show === "AllPacks" && <AllPacks/>}
+                            <PacksHeader/>
+                            <Packs/>
                         </Box>
                     </Grid>
                 </Grid>
@@ -72,4 +73,4 @@ const Packs = () => {
     );
 };
 
-export default Packs;
+export default PacksContainer;

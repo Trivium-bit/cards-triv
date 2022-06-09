@@ -82,16 +82,3 @@ export const deleteCardTC = (id: string, callback: () => void) =>(dispatch:AppTh
             handleNetworkError(error, dispatch)
         })
 }
-//thunk edit card
-export const editCardTC = (callback: () => void) =>(dispatch:AppThunkDispatch) => {
-    dispatch(setAppStatusAC("loading"));
-    cardApi.editMyCard()
-        .then(() =>{
-            dispatch(setAppStatusAC("succeeded"));
-            callback();
-        })
-        .catch((error: AxiosError<{ error: string }>) => {
-            dispatch(setAppStatusAC("failed"));
-            handleNetworkError(error, dispatch)
-        })
-}

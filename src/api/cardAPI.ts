@@ -1,10 +1,5 @@
-import axios from "axios";
+import {instance} from "./instance";
 
-
-export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-    withCredentials: true,
-})
 export const pageCount = 8;
 export const cardApi = {
     getAllCards(id: string, currentPage: string) {
@@ -18,22 +13,9 @@ export const cardApi = {
     },
     deleteMyCard(id:string) {
         return instance.delete(`/cards/card?id=${id}`);
-    },
-    editMyCard() {
-        return instance.delete(`/cards/card`);
     }
 }
 
-export type PackCardsType = {
-    cardAnswer?: string
-    cardQuestion?: string
-    cardsPack_id?:string
-    min?: number
-    max?: number
-    sortCards?:string
-    page?: number
-    pageCount?:number
-}
 export type PackCardType = {
     answer: string
     question: string

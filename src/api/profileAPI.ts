@@ -1,10 +1,6 @@
-import axios from 'axios'
 import {ResponseLoginType} from "./loginAPI";
+import {instance} from "./instance";
 
-export const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-    withCredentials: true,
-})
 
 export type UserProfileType = {
     token: string
@@ -17,7 +13,6 @@ export const profileAPI = {
     },
     updateProfile(name: string |undefined, avatar: string |undefined) {
         return instance.put<UserProfileType>("auth/me", {name, avatar}
-
         );
     }
 
