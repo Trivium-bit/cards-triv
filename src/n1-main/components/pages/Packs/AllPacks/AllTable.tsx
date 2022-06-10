@@ -121,7 +121,7 @@ const AllTable = React.memo(() => {
 
     };
     const changeSortValue = () => {
-        dispatch(changeSortPacksAC(sortPacks === '0updated' ? '1updated' : '0updated'))
+        dispatch(changeSortPacksAC(sortPacks === '0updated' ? '1updated' : '0updated'));
     }
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
