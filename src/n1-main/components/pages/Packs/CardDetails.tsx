@@ -134,7 +134,7 @@ const CardDetails = () => {
             }
 
             if (newCardPayload.question === "") {
-                errors.question = "Please type your answer"
+                errors.question = "Please type your question"
             }
 
             setAddErrors(errors);
