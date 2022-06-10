@@ -5,7 +5,6 @@ import {cardApi, PackCardType} from "../api/cardAPI";
 import {handleNetworkError} from "../utils/error.utils";
 
 const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
-const EDIT_CARD = "PACK_CARDS/EDIT_CARD"
 
 export type PaginationCardType = {
     current: number,
@@ -15,8 +14,6 @@ export type PaginationCardType = {
 export type InitialCardsStateType = {
     cards: PackCardType[]
     pagination: PaginationCardType
-    answer: string
-    question: string
 }
 const initialState: InitialCardsStateType = {
     cards: [],
@@ -24,10 +21,6 @@ const initialState: InitialCardsStateType = {
         count: 0,
         current: 0
     },
-    answer: '',
-    question: ''
-
-
 }
 
 //reducer
@@ -35,22 +28,18 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
     switch (action.type) {
         case SET_PACK_CARDS:
             return {...state, cards: action.cards, pagination: action.pagination}
-        case EDIT_CARD:
-            return {...state, answer: action.answer, question: action.question}
         default:
             return state
     }
 }
 //AC
 export const setPackCardsAC = (cards:PackCardType[],pagination: PaginationCardType) => ({type: SET_PACK_CARDS, cards, pagination} as const)
-export const EditCarAC = (answer:string,question: string) => ({type: EDIT_CARD, answer, question} as const)
 
 //AC TYPES
 export type getPackCardsActionType = ReturnType<typeof setPackCardsAC>;
-export type editCardActionType = ReturnType<typeof EditCarAC>;
 
 //main AC type
-export type CardActionType = getPackCardsActionType | editCardActionType
+export type CardActionType = getPackCardsActionType
 
 
 //get card thunk
