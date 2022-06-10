@@ -33,6 +33,10 @@ type NewCardPayloadType = {
     answer: string;
     question: string;
 }
+type EditCardPayloadType = {
+    answer: string;
+    question: string;
+}
 type ErrorStateType = {
     answer?: string;
     question?: string;
@@ -84,8 +88,10 @@ const CardDetails = () => {
         answer: "",
         question: ""
     });
-    const [inputEditQuestionValue, setInputEditQuestionValue] = useState('');
-    const [inputEditAnswerValue, setInputEditAnswerValue] = useState('');
+    const [editCardPayload, setEditCardPayload] = useState<EditCardPayloadType>({
+        answer: "",
+        question: ""
+    });
     const [addErrors, setAddErrors] = useState<ErrorStateType>({});
 
     const handleOpen = () => setOpen(true);
@@ -143,10 +149,12 @@ const CardDetails = () => {
         setAddErrors(errors => ({...errors, answer: undefined}))
     }
     const handleChangeEditQuestion =(e:React.ChangeEvent<HTMLInputElement>) => {
-        setInputEditQuestionValue(e.target.value)
+        setEditCardPayload(payload => ({...payload, question: e.target.value}))
+        setAddErrors(errors => ({...errors, question: undefined}))
     }
     const handleChangeEditAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
-        setInputEditAnswerValue(e.target.value)
+        setEditCardPayload(payload => ({...payload, answer: e.target.value}))
+        setAddErrors(errors => ({...errors, answer: undefined}))
     }
 
     const handleCardDelete = (id: any) => {
@@ -155,10 +163,10 @@ const CardDetails = () => {
         }))
     }
     const updateCard = () => {
-        if(editOpen && editOpen._id) {
+        if(editOpen && editOpen._id)  {
             dispatch(editCardTC(editOpen._id,
-                inputEditQuestionValue,
-                inputEditAnswerValue ,
+                editCardPayload.answer,
+                editCardPayload.question,
                 () => {
                 handleEditClose();
                 dispatch(getCardsTC(packId || '', currentPage))
