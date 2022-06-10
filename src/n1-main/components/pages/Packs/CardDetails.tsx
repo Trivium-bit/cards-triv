@@ -22,10 +22,11 @@ import {
     appStatusSelector, cardPaginationSelector,
     getCardsSelector
 } from "../../../../Common/Selectors/Selectors";
-import {addNewCardTC, deleteCardTC, getCardsTC} from "../../../../state/cardsReducer";
+import {addNewCardTC, deleteCardTC, editCardTC, getCardsTC} from "../../../../state/cardsReducer";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
+import {PackCardType} from "../../../../api/cardAPI";
 
 
 //mui table styles
@@ -68,10 +69,17 @@ const CardDetails = () => {
     const cardPagination = useSelector(cardPaginationSelector);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState<PackCardType | undefined>(undefined);
     const [inputQuestionValue, setInputQuestionValue] = useState('');
     const [inputAnswerValue, setInputAnswerValue] = useState('');
+    const [inputEditQuestionValue, setInputEditQuestionValue] = useState('');
+    const [inputEditAnswerValue, setInputEditAnswerValue] = useState('');
+
+
     const handleOpen = () => setOpen(true);
+    const handleEditOpen = (row: any) => setEditOpen(row);
     const handleClose = () => setOpen(false);
+    const handleEditClose = () => setEditOpen(undefined);
 
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
@@ -100,10 +108,29 @@ const CardDetails = () => {
     const handleChangeAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
         setInputAnswerValue(e.target.value)
     }
+    const handleChangeEditQuestion =(e:React.ChangeEvent<HTMLInputElement>) => {
+        setInputEditQuestionValue(e.target.value)
+    }
+    const handleChangeEditAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
+        setInputEditAnswerValue(e.target.value)
+    }
+
     const handleCardDelete = (id: any) => {
         dispatch(deleteCardTC(id, () => {
             dispatch(getCardsTC(packId || '', currentPage))
         }))
+    }
+    const updateCard = () => {
+        if(editOpen && editOpen._id) {
+            dispatch(editCardTC(editOpen._id,
+                inputEditQuestionValue,
+                inputEditAnswerValue ,
+                () => {
+                handleEditClose();
+                dispatch(getCardsTC(packId || '', currentPage))
+            }))
+        }
+
     }
 
     return (
@@ -160,6 +187,7 @@ const CardDetails = () => {
                                             <StyledTableCell align="right">
                                                 <div className={styles.buttonGroup}>
                                                     <button className={styles.delete} onClick={() => handleCardDelete(card._id)}>Delete</button>
+                                                    <button className={styles.main} onClick={() => handleEditOpen(card)}>Edit</button>
                                                     <button className={styles.main}>Learn</button>
                                                 </div>
                                             </StyledTableCell>
@@ -180,10 +208,32 @@ const CardDetails = () => {
                         )
                     }
                     <Modal
+                        open={!!editOpen}
+                        onClose={handleEditClose}
+                    >
+                        <Box sx={modalStyle} className={modalStyles.modalBlock}>
+                            <h1 className={modalStyles.modalTitle}>Edit Card</h1>
+                            <Box>
+                                <FormControl variant="standard">
+                                    <InputLabel htmlFor="component-simple">Edit question</InputLabel>
+                                    <Input defaultValue={editOpen?.question} className={modalStyles.inputsForm} onChange={handleChangeEditQuestion} />
+                                </FormControl>
+                            </Box>
+                            <Box>
+                                <FormControl variant="standard">
+                                    <InputLabel htmlFor="component-simple">Edit answer</InputLabel>
+                                    <Input defaultValue={editOpen?.answer} className={modalStyles.inputsForm} onChange={handleChangeEditAnswer} />
+                                </FormControl>
+                                <Box className={modalStyles.modalBtnGroup}>
+                                    <Button onClick={handleEditClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                                    <Button className={modalStyles.btnSave} onClick={updateCard} title={'Save'} disabled={appStatus ==="loading"}/>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Modal>
+                    <Modal
                         open={open}
                         onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
                     >
                         <Box sx={modalStyle} className={modalStyles.modalBlock}>
                             <h1 className={modalStyles.modalTitle}>Add new card</h1>
@@ -199,7 +249,7 @@ const CardDetails = () => {
                                     <Input className={modalStyles.inputsForm} onChange={handleChangeAnswer} />
                                 </FormControl>
                                 <Box className={modalStyles.modalBtnGroup}>
-                                    <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                                    <Button onClick={handleEditClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
                                     <Button className={modalStyles.btnSave} onClick={handleAddCard} title={'Add'} disabled={appStatus ==="loading"}/>
                                 </Box>
                             </Box>

@@ -13,6 +13,9 @@ export const cardApi = {
     },
     deleteMyCard(id:string) {
         return instance.delete(`/cards/card?id=${id}`);
+    },
+    editMyCard(_id:string,question:string, answer:string) {
+        return instance.put('/cards/card', {card: {_id, question, answer}});
     }
 }
 
