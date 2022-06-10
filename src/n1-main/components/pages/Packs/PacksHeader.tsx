@@ -30,7 +30,7 @@ const modalStyle = {
     borderRadius: 2,
 };
 
-const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew}) => {
+const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
@@ -59,14 +59,10 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
         if (inputValue !== '') {
             dispatch(addNewCardPackTC({
                         name: inputValue
-                    }, () => {
-                        handleClose();
-                        if (onAddNew) {
-                            onAddNew()
-                        }
                     },currentPage
                 )
             );
+            handleClose()
         } else {
             setAddErrors('Type name of pack')
 
