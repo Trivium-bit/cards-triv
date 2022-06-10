@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from 'react';
-import {Box, FormControl, Input, InputAdornment, InputLabel, Modal} from "@mui/material";
+import {Box, FormControl, FormHelperText, Input, InputAdornment, InputLabel, Modal} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
@@ -13,6 +13,8 @@ import {useSearchParams} from "react-router-dom";
 
 
 type PacksHeaderPropsType = {
+    onSearch?: (searchQuery: string) => void
+    onAddNew?: () => void
     packsOwnerName?: string
 }
 
@@ -28,15 +30,19 @@ const modalStyle = {
     borderRadius: 2,
 };
 
-const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
+const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew}) => {
     const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false)
+        setAddErrors('')
+    };
     const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
+    const [addErrors, setAddErrors] = useState('');
 
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         dispatch(setLocalCardPackNameAC(e.currentTarget.value))
@@ -49,14 +55,28 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     }
 
     const currentPage = Number( searchParams.get("page")) || 1;
-
     const handleSave = () => {
-        dispatch(addNewCardPackTC({name: inputValue, private:true},currentPage))
-        handleClose();
+        if (inputValue !== '') {
+            dispatch(addNewCardPackTC({
+                        name: inputValue
+                    }, () => {
+                        handleClose();
+                        if (onAddNew) {
+                            onAddNew()
+                        }
+                    },currentPage
+                )
+            );
+        } else {
+            setAddErrors('Type name of pack')
+
+        }
+
     };
 
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
+        setAddErrors('')
     };
     return (
         <Box className={s.packHeaderBlock}>
@@ -85,10 +105,13 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                 >
                     <Box sx={modalStyle} className={modalStyles.modalBlock}>
                         <h1 className={modalStyles.modalTitle}>Add new pack</h1>
-                        <FormControl variant="standard">
+                        <FormControl error={!!addErrors} variant="standard">
                             <InputLabel htmlFor="component-simple">Name Pack</InputLabel>
                             <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
                                    onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
+                            {addErrors && (
+                                <FormHelperText id="component-error-text">{addErrors}</FormHelperText>
+                            )}
                         </FormControl>
                         <Box className={modalStyles.modalBtnGroup}>
                             <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>

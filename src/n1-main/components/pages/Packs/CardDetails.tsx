@@ -3,6 +3,7 @@ import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {
     Box,
     Container, FormControl,
+    FormHelperText,
     Input,
     InputAdornment, InputLabel, Modal, Pagination,
     Paper, Rating,
@@ -22,10 +23,24 @@ import {
     appStatusSelector, cardPaginationSelector,
     getCardsSelector
 } from "../../../../Common/Selectors/Selectors";
-import {addNewCardTC, deleteCardTC, getCardsTC} from "../../../../state/cardsReducer";
+import {addNewCardTC, deleteCardTC, editCardTC, getCardsTC} from "../../../../state/cardsReducer";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "./styles/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
+import {PackCardType} from "../../../../api/cardAPI";
+
+type NewCardPayloadType = {
+    answer: string;
+    question: string;
+}
+type EditCardPayloadType = {
+    answer: string;
+    question: string;
+}
+type ErrorStateType = {
+    answer?: string;
+    question?: string;
+}
 
 
 //mui table styles
@@ -68,10 +83,28 @@ const CardDetails = () => {
     const cardPagination = useSelector(cardPaginationSelector);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
-    const [inputQuestionValue, setInputQuestionValue] = useState('');
-    const [inputAnswerValue, setInputAnswerValue] = useState('');
+    const [editOpen, setEditOpen] = useState<PackCardType | undefined>(undefined);
+    const [newCardPayload, setNewCardPayload] = useState<NewCardPayloadType>({
+        answer: "",
+        question: ""
+    });
+    const [editCardPayload, setEditCardPayload] = useState<EditCardPayloadType>({
+        answer: "",
+        question: ""
+    });
+    const [addErrors, setAddErrors] = useState<ErrorStateType>({});
+
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setAddErrors({});
+        setNewCardPayload({
+            answer: "",
+            question: ""
+        })
+    };
+    const handleEditOpen = (row: any) => setEditOpen(row);
+    const handleEditClose = () => setEditOpen(undefined);
 
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
@@ -86,24 +119,59 @@ const CardDetails = () => {
     }
 
     const handleAddCard =() => {
-        dispatch(addNewCardTC( packId || '',{
-            question: inputQuestionValue,
-            answer: inputAnswerValue
-        }, () => {
-            handleClose();
-            dispatch(getCardsTC(packId || '', currentPage))
-        }))
+        if (newCardPayload.question !== "" && newCardPayload.answer !== "") {
+            dispatch(addNewCardTC( packId || '', {
+                question: newCardPayload.question,
+                answer: newCardPayload.answer
+            }, () => {
+                handleClose();
+                dispatch(getCardsTC(packId || '', currentPage))
+            }))
+        } else {
+            const errors: ErrorStateType = {};
+            if (newCardPayload.answer === "") {
+                errors.answer = "Please type your answer"
+            }
+
+            if (newCardPayload.question === "") {
+                errors.question = "Please type your question"
+            }
+
+            setAddErrors(errors);
+        }
     }
     const handleChangeQuestion =(e:React.ChangeEvent<HTMLInputElement>) => {
-        setInputQuestionValue(e.target.value)
+        setNewCardPayload(payload => ({...payload, question: e.target.value}))
+        setAddErrors(errors => ({...errors, question: undefined}))
     }
     const handleChangeAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
-        setInputAnswerValue(e.target.value)
+        setNewCardPayload(payload => ({...payload, answer: e.target.value}))
+        setAddErrors(errors => ({...errors, answer: undefined}))
     }
+    const handleChangeEditQuestion =(e:React.ChangeEvent<HTMLInputElement>) => {
+        setEditCardPayload(payload => ({...payload, question: e.target.value}))
+        setAddErrors(errors => ({...errors, question: undefined}))
+    }
+    const handleChangeEditAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
+        setEditCardPayload(payload => ({...payload, answer: e.target.value}))
+        setAddErrors(errors => ({...errors, answer: undefined}))
+    }
+
     const handleCardDelete = (id: any) => {
         dispatch(deleteCardTC(id, () => {
             dispatch(getCardsTC(packId || '', currentPage))
         }))
+    }
+    const updateCard = () => {
+        if(editOpen && editOpen._id)  {
+            dispatch(editCardTC(editOpen._id,
+                editCardPayload.answer,
+                editCardPayload.question,
+                () => {
+                handleEditClose();
+                dispatch(getCardsTC(packId || '', currentPage))
+            }))
+        }
     }
 
     return (
@@ -160,6 +228,7 @@ const CardDetails = () => {
                                             <StyledTableCell align="right">
                                                 <div className={styles.buttonGroup}>
                                                     <button className={styles.delete} onClick={() => handleCardDelete(card._id)}>Delete</button>
+                                                    <button className={styles.main} onClick={() => handleEditOpen(card)}>Edit</button>
                                                     <button className={styles.main}>Learn</button>
                                                 </div>
                                             </StyledTableCell>
@@ -168,7 +237,7 @@ const CardDetails = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                    )}
+                        )}
                     <Pagination onChange={handleChangePagination} count={cardPagination.count}  page={cardPagination.current} shape="rounded" />
                     {
                         cards.length === 0 && (
@@ -180,23 +249,51 @@ const CardDetails = () => {
                         )
                     }
                     <Modal
+                        open={!!editOpen}
+                        onClose={handleEditClose}
+                    >
+                        <Box sx={modalStyle} className={modalStyles.modalBlock}>
+                            <h1 className={modalStyles.modalTitle}>Edit Card</h1>
+                            <Box>
+                                <FormControl variant="standard">
+                                    <InputLabel htmlFor="component-simple">Edit question</InputLabel>
+                                    <Input defaultValue={editOpen?.question} className={modalStyles.inputsForm} onChange={handleChangeEditQuestion} />
+                                </FormControl>
+                            </Box>
+                            <Box>
+                                <FormControl  variant="standard">
+                                    <InputLabel htmlFor="component-simple">Edit answer</InputLabel>
+                                    <Input defaultValue={editOpen?.answer} className={modalStyles.inputsForm} onChange={handleChangeEditAnswer} />
+                                </FormControl>
+                                <Box className={modalStyles.modalBtnGroup}>
+                                    <Button onClick={handleEditClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
+                                    <Button className={modalStyles.btnSave} onClick={updateCard} title={'Save'} disabled={appStatus ==="loading"}/>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Modal>
+                    <Modal
                         open={open}
                         onClose={handleClose}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
                     >
                         <Box sx={modalStyle} className={modalStyles.modalBlock}>
                             <h1 className={modalStyles.modalTitle}>Add new card</h1>
                             <Box>
-                                <FormControl variant="standard">
+                                <FormControl error={!!addErrors.question} variant="standard">
                                     <InputLabel htmlFor="component-simple">Question</InputLabel>
                                     <Input className={modalStyles.inputsForm} onChange={handleChangeQuestion} />
+                                    {addErrors.question && (
+                                        <FormHelperText id="component-error-text">{addErrors.question}</FormHelperText>
+                                    )}
                                 </FormControl>
                             </Box>
                             <Box>
-                                <FormControl variant="standard">
+                                <FormControl error={!!addErrors.answer} variant="standard">
                                     <InputLabel htmlFor="component-simple">Answer</InputLabel>
                                     <Input className={modalStyles.inputsForm} onChange={handleChangeAnswer} />
+                                    {addErrors.answer && (
+                                        <FormHelperText id="component-error-text">{addErrors.answer}</FormHelperText>
+                                    )}
                                 </FormControl>
                                 <Box className={modalStyles.modalBtnGroup}>
                                     <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>

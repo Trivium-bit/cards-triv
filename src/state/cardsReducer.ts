@@ -20,7 +20,7 @@ const initialState: InitialCardsStateType = {
     pagination: {
         count: 0,
         current: 0
-    }
+    },
 }
 
 //reducer
@@ -40,6 +40,7 @@ export type getPackCardsActionType = ReturnType<typeof setPackCardsAC>;
 
 //main AC type
 export type CardActionType = getPackCardsActionType
+
 
 //get card thunk
 export const getCardsTC = (id: string, currentPage: string) =>(dispatch:AppThunkDispatch) => {
@@ -74,6 +75,19 @@ export const addNewCardTC = (id: string, card: PackCardType,callback: () => void
 export const deleteCardTC = (id: string, callback: () => void) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardApi.deleteMyCard(id)
+        .then(() =>{
+            dispatch(setAppStatusAC("succeeded"));
+            callback();
+        })
+        .catch((error: AxiosError<{ error: string }>) => {
+            dispatch(setAppStatusAC("failed"));
+            handleNetworkError(error, dispatch)
+        })
+}
+//edit Thunk
+export const editCardTC = (_id: string, question:string, answer:string, callback: () => void) =>(dispatch:AppThunkDispatch) => {
+    dispatch(setAppStatusAC("loading"));
+    cardApi.editMyCard(_id,question,answer)
         .then(() =>{
             dispatch(setAppStatusAC("succeeded"));
             callback();
