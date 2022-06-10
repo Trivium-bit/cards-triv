@@ -172,7 +172,6 @@ const CardDetails = () => {
                 dispatch(getCardsTC(packId || '', currentPage))
             }))
         }
-
     }
 
     return (
