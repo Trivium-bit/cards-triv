@@ -173,7 +173,6 @@ const CardDetails = () => {
             }))
         }
     }
-
     return (
         <Container fixed >
             <Box className={s.packDetailBlock}>
