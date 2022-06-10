@@ -6,7 +6,7 @@ import Slider from "../../Slider/Slider";
 import PacksHeader from "../Packs/PacksHeader";
 import {useAppSelector} from "../../../../state/store";
 import {userNameSelector} from "../../../../Common/Selectors/Selectors";
-import Packs from "../Packs/AllPacks/Packs";
+import AllTable from "../Packs/AllPacks/AllTable";
 
 
 
@@ -31,7 +31,7 @@ const Profile = () => {
                         <Grid xs={9} item>
                             <Box className={s.myPacksBlock}>
                                 <PacksHeader packsOwnerName={userName}/>
-                                <Packs/>
+                                <AllTable/>
                             </Box>
                         </Grid>
                     </Grid>

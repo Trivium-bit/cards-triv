@@ -13,8 +13,6 @@ import {useSearchParams} from "react-router-dom";
 
 
 type PacksHeaderPropsType = {
-    onSearch?: (searchQuery: string) => void
-    onAddNew?: () => void
     packsOwnerName?: string
 }
 
@@ -30,7 +28,7 @@ const modalStyle = {
     borderRadius: 2,
 };
 
-const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew}) => {
+const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
@@ -51,17 +49,10 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName, onAddNew})
     }
 
     const currentPage = Number( searchParams.get("page")) || 1;
+
     const handleSave = () => {
-        dispatch(addNewCardPackTC({
-                name: inputValue
-            }, () => {
-                handleClose();
-                if (onAddNew) {
-                    onAddNew()
-                }
-            },currentPage
-            )
-        );
+        dispatch(addNewCardPackTC({name: inputValue, private:true},currentPage))
+        handleClose();
     };
 
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {

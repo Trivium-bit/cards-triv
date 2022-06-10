@@ -32,7 +32,7 @@ export const myCardsIsLoadingSelector = (state: AppStoreType): boolean =>{
 export const myCardsPaginationSelector = (state: AppStoreType): PacksPaginationType =>{
     return state.cardPacksReducer.pagination
 }
-export const myCardsSelector = (state: AppStoreType): Array<PacksResponseType> =>{
+export const myCardsPacksSelector = (state: AppStoreType): Array<PacksResponseType> =>{
     return state.cardPacksReducer.cardsPacks
 }
 export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{

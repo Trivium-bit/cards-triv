@@ -18,9 +18,10 @@ import {useSelector} from "react-redux";
 import {
     appStatusSelector,
     myCardsPaginationSelector,
-    myCardsSelector, userIdSelector,
+    myCardsPacksSelector, userIdSelector,
 } from "../../../../../Common/Selectors/Selectors";
 import {
+    CardPackUpdateRequestType,
     changeSortPacksAC,
     deleteCardPackTC,
     editCardPackAC,
@@ -33,6 +34,7 @@ import {RequestStatusType} from "../../../../../state/app-reducer";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import {useDebounce} from "use-debounce";
+import {PATH} from "../../../AppRoutes";
 //types
 
 
@@ -78,17 +80,22 @@ const AllTable = React.memo(() => {
     const myId = useAppSelector<string>(userIdSelector);
     const [searchParams, setSearchParams] = useSearchParams()
     const dispatch = useAppDispatch();
-    const myCards = useAppSelector(myCardsSelector);
+    const myCardPacks = useAppSelector(myCardsPacksSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
     const updatedCardPackName = useAppSelector<string>(state => state.cardPacksReducer.newCardPackName);
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
-    const [rowToUpdate, setRowToUpdate] = useState<PacksResponseType | undefined>(undefined);
+    const [rowToUpdate, setRowToUpdate] = useState<CardPackUpdateRequestType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
     const [openLearn, setOpenLearn] = useState(false);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
     const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
     const [debounceMin] = useDebounce(min, debounceDelay);
     const [debounceMax] = useDebounce(max, debounceDelay);
+    // @ts-ignore
+    const questions = useAppSelector(state => state.cardsReducer.cards.map(card => card.cardsPack_id === myCardPacks.map(pack => pack._id) ?
+    [card.question]:""))
+    console.log(questions)
+
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
     const handleCloseEdit = () => setRowToUpdate(undefined);
     const currentPage = Number(searchParams.get("page")) || 1;
@@ -107,14 +114,14 @@ const AllTable = React.memo(() => {
         setOpenLearn(false);
     };
     const updatePackName = () => {
-        if(rowToUpdate){
-            dispatch(editMyCardsPacksTC(rowToUpdate._id, updatedCardPackName, currentPage))
+        if (rowToUpdate) {
+            dispatch(editMyCardsPacksTC({_id: rowToUpdate._id, name: updatedCardPackName}, currentPage))
             handleCloseEdit();
         }
 
     };
-    const changeSortValue = () =>{
-        dispatch(changeSortPacksAC( sortPacks === '0updated' ? '1updated' : '0updated'))
+    const changeSortValue = () => {
+        dispatch(changeSortPacksAC(sortPacks === '0updated' ? '1updated' : '0updated'))
     }
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
@@ -130,7 +137,7 @@ const AllTable = React.memo(() => {
     }
 
     useEffect(() => {
-        dispatch(getCardsPacksTC(isMyTable, currentPage, debounceLocalPackName,debounceMin, debounceMax, sortPacks ))
+        dispatch(getCardsPacksTC(isMyTable, currentPage, debounceLocalPackName, debounceMin, debounceMax, sortPacks))
     }, [currentPage, dispatch, isMyTable, debounceLocalPackName, debounceMin, debounceMax, sortPacks]);
 
     return (
@@ -141,11 +148,12 @@ const AllTable = React.memo(() => {
                         <TableRow>
                             <StyledTableCell>Name</StyledTableCell>
                             <StyledTableCell align="left">Cards</StyledTableCell>
-                            <StyledTableCell className={s.arrowBlock} align="left" onClick={changeSortValue}>Last Updates
+                            <StyledTableCell className={s.arrowBlock} align="left" onClick={changeSortValue}>Last
+                                Updates
                                 {
                                     sortPacks === "0updated"
-                                    ? <ArrowDropDownIcon/>
-                                    :<ArrowDropUpIcon/>
+                                        ? <ArrowDropDownIcon/>
+                                        : <ArrowDropUpIcon/>
                                 }
                             </StyledTableCell>
                             <StyledTableCell align="left">Created By</StyledTableCell>
@@ -154,31 +162,39 @@ const AllTable = React.memo(() => {
                     </TableHead>
                     <TableBody className={s.tableBody}>
                         {
-                            myCards.map((card => <StyledTableRow key={card._id}>
-                                    {card.user_id === myId
+                            myCardPacks.map((cardPack => <StyledTableRow key={cardPack._id}>
+                                    {cardPack.user_id === myId
                                         ?
                                         <StyledTableCell component="th" scope="row">
-                                            <NavLink to={`/packs/${card._id}`}>
-                                                {card.name}
+                                            <NavLink  to={`${PATH.PACKS}/${cardPack._id}`}>
+                                                {cardPack.name}
                                             </NavLink>
                                         </StyledTableCell>
                                         :
-                                        <StyledTableCell component="th" scope="row">{card.name}</StyledTableCell>
+                                        <StyledTableCell component="th" scope="row">{cardPack.name}</StyledTableCell>
                                     }
-                                    <StyledTableCell align="left">{card.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.updated.substring(0, 10).replace( /-/g, "." )}</StyledTableCell>
-                                    <StyledTableCell align="left">{card.user_name}</StyledTableCell>
+                                    <StyledTableCell align="left">{cardPack.cardsCount}</StyledTableCell>
+                                    <StyledTableCell align="left">
+                                        {
+                                            cardPack.updated.substring(0, 10)
+                                                .replace(/-/g, " ")
+                                                .replace(/(\w+) (\w+) (\w+)/, (match, year, month, day) => `${day}.${month}.${year}`)
+                                        }
+                                    </StyledTableCell>
+                                    <StyledTableCell align="left">{cardPack.user_name}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
-                                            {card.user_id === myId && (
+                                            {cardPack.user_id === myId && (
                                                 <>
-                                                    <button onClick={() => handleOpenDelete(card)}
+                                                    <button onClick={() => handleOpenDelete(cardPack)}
                                                             className={s.delete}>Delete
                                                     </button>
-                                                    <button onClick={() => handleOpenEdit(card)} className={s.main}>Edit</button>
+                                                    <button onClick={() => handleOpenEdit(cardPack)}
+                                                            className={s.edit}>Edit
+                                                    </button>
                                                 </>
                                             )}
-                                            <button onClick={() => handleOpenAnswer(card)} className={s.main}>Learn
+                                            <button onClick={() => handleOpenAnswer(cardPack)} className={s.edit}>Learn
                                             </button>
                                         </Box>
                                     </StyledTableCell>
@@ -237,12 +253,14 @@ const AllTable = React.memo(() => {
                     <h1 className={modalStyles.modalTitle}>Enter new card pack name</h1>
                     <FormControl variant="standard">
                         <InputLabel htmlFor="component-simple">Enter new card pack name</InputLabel>
-                        <Input className={modalStyles.inputsForm} id="component-simple" value={updatedCardPackName}
+                        <Input className={modalStyles.inputsForm} id="component-simple" autoFocus={true} value={updatedCardPackName}
                                onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
                     </FormControl>
                     <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                        <Button onClick={updatePackName} className={modalStyles.btnSave} title={'Save new name'} disabled={appStatus ==="loading"}/>
+                        <Button onClick={handleCloseEdit} className={modalStyles.btnCancel} title={'Cancel'}
+                                disabled={appStatus === "loading"}/>
+                        <Button onClick={updatePackName} className={modalStyles.btnSave} title={'Save new name'}
+                                disabled={appStatus === "loading"}/>
                     </Box>
                 </Box>
             </Modal>

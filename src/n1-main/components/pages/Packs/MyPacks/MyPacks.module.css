@@ -1,0 +1,30 @@
+.myPacksBlock {
+  position: relative;
+  height: 100%;
+  padding: 15px 40px;
+}
+.myPacksBlock .title {
+  font-size: 22px;
+}
+.myPacksBlock .paginator {
+  display: block;
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+}
+.myPacksBlock .elements {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.myPacksBlock .elements .addBtn {
+  background-color: #21268F;
+  color: white;
+  border-radius: 30px;
+  padding: 9px 40px;
+  border: none;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=MyPacks.module.css.map */

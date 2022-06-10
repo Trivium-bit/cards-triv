@@ -1,7 +1,6 @@
 import React from 'react';
 import {Box, Container, Grid} from "@mui/material";
 import s from './styles/Packs.module.scss'
-import Packs from "./AllPacks/Packs";
 import Slider from "../../Slider/Slider";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
@@ -9,6 +8,7 @@ import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {useSearchParams} from "react-router-dom";
 import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
+import AllTable from "./AllPacks/AllTable";
 
 
 
@@ -64,7 +64,7 @@ const PacksContainer = () => {
                     <Grid xs={9} item>
                         <Box className={s.myPacksBlock}>
                             <PacksHeader/>
-                            <Packs/>
+                            <AllTable/>
                         </Box>
                     </Grid>
                 </Grid>

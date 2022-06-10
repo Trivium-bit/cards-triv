@@ -18,13 +18,17 @@ const SET_CARDS_PACKS_SORT_VALUE = "SET_CARDS_PACKS_SORT_VALUE";
 export type CardPackRequestType = {
     name: string
     path?: string
-    grade?: number
-    shots?: number
-    rating?: number
-    deckCover?: string
+    grade?: number //средняя оценка карточек
+    shots?: number //колличество попыток ответить
+    rating?: number //лайки
+    deckCover?: string //обложка колоды
     private?: boolean
     type?: string
 }
+export type CardPackUpdateRequestType = {
+    _id:string
+} & CardPackRequestType
+
 export type AddNewCardPackType = {
     isLoading: boolean,
     success?: boolean;
@@ -178,14 +182,14 @@ export const getCardsPacksTC = (isMyTable: boolean, page: number, packName?: str
         })
 }
 
-export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void, currentPage: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
+export const addNewCardPackTC = (pack: CardPackRequestType, currentPage: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const isMyTable = getState().cardPacksReducer.isMyTable;
 
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.addPack(pack)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
-            callback();
+
             dispatch(getCardsPacksTC(isMyTable, currentPage))
 
         })
@@ -194,26 +198,26 @@ export const addNewCardPackTC = (pack: CardPackRequestType, callback: () => void
         })
 }
 
-export const deleteCardPackTC = (id: string, page:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
+export const deleteCardPackTC = (id: string, currentPage:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const {isMyTable} = getState().cardPacksReducer;
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.deleteMyCardsPacks(id)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
-            dispatch(getCardsPacksTC(isMyTable, page))
+            dispatch(getCardsPacksTC(isMyTable, currentPage))
         })
         .catch((error: AxiosError<{ error: string }>) => {
             handleNetworkError(error, dispatch)
         })
 }
 
-export const editMyCardsPacksTC = (_id: string, name: string, page:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
+export const editMyCardsPacksTC = (pack: CardPackUpdateRequestType, currentPage:number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const {isMyTable} = getState().cardPacksReducer;
     dispatch(setAppStatusAC("loading"));
-    cardPacksAPI.editMyCardsPacks(_id, name)
+    cardPacksAPI.editMyCardsPacks(pack)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
-            dispatch(getCardsPacksTC(isMyTable, page))
+            dispatch(getCardsPacksTC(isMyTable, currentPage))
         })
         .catch((error: AxiosError<{ error: string }>) => {
             handleNetworkError(error, dispatch)
