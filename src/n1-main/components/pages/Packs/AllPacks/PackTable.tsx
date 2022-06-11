@@ -73,7 +73,7 @@ const modalStyle = {
 };
 
 //table
-const PackTable = React.memo(() => {
+export const PackTable = React.memo(() => {
 
     const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
@@ -300,5 +300,3 @@ const PackTable = React.memo(() => {
 
     );
 });
-
-export default PackTable;

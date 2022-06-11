@@ -8,7 +8,8 @@ import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {useSearchParams} from "react-router-dom";
 import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
-import PackTable from "./AllPacks/PackTable";
+import {PackTable} from "./AllPacks/PackTable";
+
 
 
 

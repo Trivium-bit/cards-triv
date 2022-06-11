@@ -37,8 +37,8 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
-        setOpen(false)
-        setAddErrors('')
+        setOpen(false);
+        setAddErrors('');
     };
     const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
     const [addErrors, setAddErrors] = useState('');
