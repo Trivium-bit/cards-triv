@@ -1,0 +1,33 @@
+import React from 'react';
+import {useAppDispatch, useAppSelector} from "../../../../../state/store";
+import {sortPacksAC} from "../../../../../state/cardPacksReducer";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import s from "./universalHeader.module.scss"
+type HeaderPropsType = {
+    headerValue: string
+    sortedValue: string
+}
+export const UniversalHeader = ({headerValue, sortedValue}: HeaderPropsType) => {
+    const dispatch = useAppDispatch()
+    const sortPacks = useAppSelector(state => state.cardPacksReducer.sortPacks);
+    const onClickHandler = () => {
+        debugger
+        if (sortPacks.slice(1) === sortedValue) {
+            dispatch(sortPacksAC(sortPacks[0] === "0" ? 1 + sortedValue : 0 + sortedValue))
+        } else {
+            dispatch(sortPacksAC( 0 + sortedValue))
+        }
+    }
+    return (
+        <div onClick={onClickHandler} className={s.arrowBlock}>
+            {headerValue}
+            {
+                sortPacks === "0"
+                    ? <ArrowDropDownIcon/>
+                    : <ArrowDropUpIcon/>
+            }
+        </div>
+    );
+};
+

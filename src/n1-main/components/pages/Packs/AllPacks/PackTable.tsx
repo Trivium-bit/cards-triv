@@ -22,7 +22,7 @@ import {
 } from "../../../../../Common/Selectors/Selectors";
 import {
     CardPackUpdateRequestType,
-    changeSortPacksAC,
+
     deleteCardPackTC,
     editCardPackAC,
     editMyCardsPacksTC, getCardsPacksTC,
@@ -31,11 +31,11 @@ import {
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import {useDebounce} from "use-debounce";
 import {PATH} from "../../../AppRoutes";
 import {debounceDelay} from "../../../Slider/Slider";
+import {UniversalHeader} from "./universalHeader";
+
 //types
 
 
@@ -89,7 +89,7 @@ const PackTable = React.memo(() => {
     const [openLearn, setOpenLearn] = useState(false);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
     const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
-    console.log(debounceLocalPackName)
+
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
     const handleCloseEdit = () => setRowToUpdate(undefined);
     const currentPage = Number(searchParams.get("page")) || 1;
@@ -97,7 +97,7 @@ const PackTable = React.memo(() => {
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editCardPackAC((event.target.value)));
     };
-    console.log("pack table")
+
     const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
     const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
@@ -114,9 +114,6 @@ const PackTable = React.memo(() => {
         }
 
     };
-    const changeSortValue = () => {
-        dispatch(changeSortPacksAC(sortPacks === '0updated' ? '1updated' : '0updated'))
-    }
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
@@ -140,17 +137,22 @@ const PackTable = React.memo(() => {
                 <Table sx={{minWidth: 700}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell align="left">Cards</StyledTableCell>
-                            <StyledTableCell className={s.arrowBlock} align="left" onClick={changeSortValue}>Last
-                                Updates
-                                {
-                                    sortPacks === "0updated"
-                                        ? <ArrowDropDownIcon/>
-                                        : <ArrowDropUpIcon/>
-                                }
+                            <StyledTableCell>
+                                <UniversalHeader headerValue={"Name"}
+                                                 sortedValue={"user_name"}/>
                             </StyledTableCell>
-                            <StyledTableCell align="left">Created By</StyledTableCell>
+                            <StyledTableCell align="left">
+                                <UniversalHeader headerValue={"Cards"}
+                                                 sortedValue={"cardsCount"}/>
+                            </StyledTableCell>
+                            <StyledTableCell  className={s.arrowCreatedBlock} align="left">
+                                <UniversalHeader headerValue={"Last Updated"}
+                                                 sortedValue={"updated"}/>
+                            </StyledTableCell>
+                            <StyledTableCell className={s.arrowUpdateBlock} align="left">
+                                <UniversalHeader headerValue={"Created by"}
+                                                 sortedValue={"name"}/>
+                            </StyledTableCell>
                             <StyledTableCell align="center">Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
@@ -160,7 +162,7 @@ const PackTable = React.memo(() => {
                                     {cardPack.user_id === myId
                                         ?
                                         <StyledTableCell component="th" scope="row">
-                                            <NavLink  to={`${PATH.PACKS}/${cardPack._id}`}>
+                                            <NavLink to={`${PATH.PACKS}/${cardPack._id}`}>
                                                 {cardPack.name}
                                             </NavLink>
                                         </StyledTableCell>
@@ -234,6 +236,7 @@ const PackTable = React.memo(() => {
                                 disabled={appStatus === "loading"}/>
                         <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Save'}
                                 disabled={appStatus === "loading"}/>
+
                     </Box>
                 </Box>
             </Modal>
@@ -247,7 +250,8 @@ const PackTable = React.memo(() => {
                     <h1 className={modalStyles.modalTitle}>Enter new card pack name</h1>
                     <FormControl variant="standard">
                         <InputLabel htmlFor="component-simple">Enter new card pack name</InputLabel>
-                        <Input className={modalStyles.inputsForm} id="component-simple" autoFocus={true} value={updatedCardPackName}
+                        <Input className={modalStyles.inputsForm} id="component-simple" autoFocus={true}
+                               value={updatedCardPackName}
                                onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
                     </FormControl>
                     <Box className={modalStyles.modalBtnGroup}>

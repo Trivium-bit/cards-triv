@@ -5,8 +5,6 @@ import {setAppStatusAC} from "./app-reducer";
 import {cardPacksAPI, PacksResponseType} from "../api/cardPacksAPI";
 
 const SET_CARDS = "CARDS/SET_CARDS";
-const SET_IS_LOADING_CARDS = "CARDS/IS_LOADING";
-const SET_PERSONAL_CARDS_PACKS = "CARDS/SET_PERSONAL_CARDS_PACKS";
 const INIT_ADD_NEW_CARD_PACK = "CARDS/INIT_ADD_NEW_CARD_PACK";
 const ADD_NEW_CARD_PACK = "CARDS/ADD_NEW_CARD_PACK";
 const SET_LOCAL_CARD_PACK_NAME = "CARDS/SET_LOCAL_CARD_PACK_NAME";
@@ -26,7 +24,7 @@ export type CardPackRequestType = {
     type?: string
 }
 export type CardPackUpdateRequestType = {
-    _id:string
+    _id: string
 } & CardPackRequestType
 
 
@@ -64,11 +62,10 @@ const initialState: InitialProfileStateType = {
     pageCount: 8,
     page: 0,
     packName: "",
-    sortPacks: "0updated",
+    sortPacks: "0",
 
 }
 export type CardsPacksActionType = SetCardsActionType
-    | setInitAddNewCardsPackActionType
     | AddNewCardsPackActionType
     | SetLocalCardPackNameType
     | SetIsMyTableType
@@ -91,24 +88,17 @@ export const cardPacksReducer = (state: InitialProfileStateType = initialState, 
         case EDIT_CARD_PACK_NAME:
             return {...state, newCardPackName: action.newPackName}
         case SET_CARDS_PACKS_SORT_VALUE:
-            return {...state, sortPacks:action.sortPacks}
+            return {...state, sortPacks: action.sortPacks}
         default:
             return state
     }
 }
 
 // actions
-export const setCardsIsLoadingAC = (isLoading: boolean) => ({type: SET_IS_LOADING_CARDS, isLoading} as const)
 export const setCardsAC = (cardsPacks: PacksResponseType[], pagination: PacksPaginationType) => ({
     type: SET_CARDS,
     cardsPacks,
     pagination
-} as const);
-export const setPersonalCardsPacksAC = (cardsPacks: PacksResponseType[], user_id: string, pagination: PacksPaginationType) => ({
-    type: SET_PERSONAL_CARDS_PACKS,
-    cardsPacks,
-    user_id,
-    pagination,
 } as const);
 export const setInitAddNewCardPackAC = (isLoading: boolean) => ({type: INIT_ADD_NEW_CARD_PACK, isLoading} as const);
 export const AddNewCardPackAC = (pack: PacksResponseType) => ({type: ADD_NEW_CARD_PACK, pack} as const);
@@ -116,18 +106,17 @@ export const setLocalCardPackNameAC = (packName: string) => ({type: SET_LOCAL_CA
 export const setIsMyTableAC = (isMyTable: boolean) => ({type: SET_IS_MY_TABLE, isMyTable} as const);
 export const setPacksCardsCountAC = (min: number, max: number) => ({type: SET_PACK_CARD_COUNT, min, max} as const);
 export const editCardPackAC = (newPackName: string) => ({type: EDIT_CARD_PACK_NAME, newPackName} as const)
-export const changeSortPacksAC = (sortPacks: string,) => ({type: SET_CARDS_PACKS_SORT_VALUE, sortPacks} as const)
+export const sortPacksAC = (sortPacks: string) => ({type: SET_CARDS_PACKS_SORT_VALUE, sortPacks} as const)
 
 // types
-/*export type SetCardsIsLoadingActionType = ReturnType<typeof setCardsIsLoadingAC>;*/
+
 export type SetCardsActionType = ReturnType<typeof setCardsAC>;
-export type setInitAddNewCardsPackActionType = ReturnType<typeof setInitAddNewCardPackAC>;
 export type AddNewCardsPackActionType = ReturnType<typeof AddNewCardPackAC>;
 export type SetLocalCardPackNameType = ReturnType<typeof setLocalCardPackNameAC>;
 export type SetIsMyTableType = ReturnType<typeof setIsMyTableAC>;
 export type SetPacksCardCountType = ReturnType<typeof setPacksCardsCountAC>;
 export type EditCardsPackActionType = ReturnType<typeof editCardPackAC>;
-export type SortCardsPackByDateActionType = ReturnType<typeof changeSortPacksAC>;
+export type SortCardsPackByDateActionType = ReturnType<typeof sortPacksAC>;
 
 //thunks
 export const getCardsPacksTC = (page: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
@@ -161,7 +150,7 @@ export const addNewCardPackTC = (pack: CardPackRequestType, currentPage: number)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
 
-            dispatch(getCardsPacksTC(currentPage) )
+            dispatch(getCardsPacksTC(currentPage))
 
         })
         .catch((error: AxiosError<{ error: string }>) => {
@@ -169,7 +158,7 @@ export const addNewCardPackTC = (pack: CardPackRequestType, currentPage: number)
         })
 }
 
-export const deleteCardPackTC = (id: string, currentPage:number) => (dispatch: AppThunkDispatch) => {
+export const deleteCardPackTC = (id: string, currentPage: number) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.deleteMyCardsPacks(id)
         .then(() => {
@@ -181,7 +170,7 @@ export const deleteCardPackTC = (id: string, currentPage:number) => (dispatch: A
         })
 }
 
-export const editMyCardsPacksTC = (pack: CardPackUpdateRequestType, currentPage:number) => (dispatch: AppThunkDispatch) => {
+export const editMyCardsPacksTC = (pack: CardPackUpdateRequestType, currentPage: number) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.editMyCardsPacks(pack)
         .then(() => {
