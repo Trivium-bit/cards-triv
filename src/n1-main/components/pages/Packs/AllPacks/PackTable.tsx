@@ -35,6 +35,8 @@ import {useDebounce} from "use-debounce";
 import {PATH} from "../../../AppRoutes";
 import {debounceDelay} from "../../../Slider/Slider";
 import {UniversalHeader} from "./universalHeader";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 //types
 
@@ -46,6 +48,7 @@ const StyledTableCell = styled(TableCell)(() => ({
         color: "#000",
         fontWeight: 600,
         fontSize: 13,
+        border: "1px solid black"
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
@@ -137,23 +140,27 @@ const PackTable = React.memo(() => {
                 <Table sx={{minWidth: 700}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>
+                            <StyledTableCell >
                                 <UniversalHeader headerValue={"Name"}
                                                  sortedValue={"user_name"}/>
+                                {sortPacks === "0user_name" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
                             </StyledTableCell>
-                            <StyledTableCell align="left">
+                            <StyledTableCell  align="center">
                                 <UniversalHeader headerValue={"Cards"}
                                                  sortedValue={"cardsCount"}/>
+                                {sortPacks === "0cardsCount" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
                             </StyledTableCell>
-                            <StyledTableCell  className={s.arrowCreatedBlock} align="left">
+                            <StyledTableCell  align="center">
                                 <UniversalHeader headerValue={"Last Updated"}
                                                  sortedValue={"updated"}/>
+                                {sortPacks === "0updated" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
                             </StyledTableCell>
-                            <StyledTableCell className={s.arrowUpdateBlock} align="left">
+                            <StyledTableCell  align="center">
                                 <UniversalHeader headerValue={"Created by"}
                                                  sortedValue={"name"}/>
+                                {sortPacks === "0name" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
                             </StyledTableCell>
-                            <StyledTableCell align="center">Actions</StyledTableCell>
+                            <StyledTableCell  align="center">Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody className={s.tableBody}>
