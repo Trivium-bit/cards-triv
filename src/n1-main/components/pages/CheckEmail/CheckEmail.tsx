@@ -7,14 +7,15 @@ import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {Loader} from "../../../../Common/Components/Loader";
 
+export let emailFromLocalStorage = localStorage.getItem("email")
+if (emailFromLocalStorage) {
+    emailFromLocalStorage = emailFromLocalStorage.replace(/['"]+/g, '') //убираем кавычки из строки из localStorage
+}
 
 export const CheckEmail: FC = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
 
-    let emailFromLocalStorage = localStorage.getItem("email")
-    if (emailFromLocalStorage) {
-        emailFromLocalStorage = emailFromLocalStorage.replace(/['"]+/g, '') //убираем кавычки из строки из localStorage
-    }
+
     if (appStatus === "loading") {
         return <Loader/>
     }

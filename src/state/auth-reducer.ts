@@ -1,7 +1,7 @@
 import {AxiosError} from "axios"
 import {setAppStatusAC, setAppUserAC} from "./app-reducer"
 import {AppThunkDispatch} from "./store"
-import {authAPI, LoginParamsType, NewPasswordType, ResponseLoginType} from "../api/loginAPI"
+import {authAPI, LoginParamsType, NewPasswordType} from "../api/loginAPI"
 import {handleNetworkError} from "../utils/error.utils"
 
 const SET_IS_LOGGED_IN = "login/SET-IS-LOGGED-IN"
@@ -88,7 +88,6 @@ export const logOutTC = () => (dispatch: AppThunkDispatch) => {
         .then(() => {
             dispatch(setIsLoggedInAC(false));
             dispatch(setAppStatusAC('succeeded'));
-            dispatch(setAppUserAC( {} as ResponseLoginType));
         })
         .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch);
