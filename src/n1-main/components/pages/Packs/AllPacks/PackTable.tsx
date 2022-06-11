@@ -35,6 +35,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import {useDebounce} from "use-debounce";
 import {PATH} from "../../../AppRoutes";
+import {debounceDelay} from "../../../Slider/Slider";
 //types
 
 
@@ -69,16 +70,15 @@ const modalStyle = {
 };
 
 //table
-const AllTable = React.memo(() => {
+const PackTable = React.memo(() => {
 
-    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
-    const debounceDelay = 1000;
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const myCardPacks = useAppSelector(myCardsPacksSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
@@ -89,13 +89,7 @@ const AllTable = React.memo(() => {
     const [openLearn, setOpenLearn] = useState(false);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
     const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
-    const [debounceMin] = useDebounce(min, debounceDelay);
-    const [debounceMax] = useDebounce(max, debounceDelay);
-    // @ts-ignore
-    const questions = useAppSelector(state => state.cardsReducer.cards.map(card => card.cardsPack_id === myCardPacks.map(pack => pack._id) ?
-    [card.question]:""))
-    console.log(questions)
-
+    console.log(debounceLocalPackName)
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
     const handleCloseEdit = () => setRowToUpdate(undefined);
     const currentPage = Number(searchParams.get("page")) || 1;
@@ -103,7 +97,7 @@ const AllTable = React.memo(() => {
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editCardPackAC((event.target.value)));
     };
-
+    console.log("pack table")
     const handleOpenDelete = (card: PacksResponseType) => setRowToDelete(card);
     const handleCloseDelete = () => setRowToDelete(undefined);
     const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
@@ -137,8 +131,8 @@ const AllTable = React.memo(() => {
     }
 
     useEffect(() => {
-        dispatch(getCardsPacksTC(isMyTable, currentPage, debounceLocalPackName, debounceMin, debounceMax, sortPacks))
-    }, [currentPage, dispatch, isMyTable, debounceLocalPackName, debounceMin, debounceMax, sortPacks]);
+        dispatch(getCardsPacksTC(currentPage))
+    }, [currentPage, dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
 
     return (
         <Box className={s.wrapper}>
@@ -296,4 +290,4 @@ const AllTable = React.memo(() => {
     );
 });
 
-export default AllTable;
+export default PackTable;

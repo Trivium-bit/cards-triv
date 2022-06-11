@@ -1,6 +1,6 @@
 import React from 'react';
 import {Box} from "@mui/material";
-import AllTable from "./AllTable";
+import PackTable from "./PackTable";
 import s from './AllPacks.module.scss'
 
 
@@ -8,7 +8,7 @@ const Packs = () => {
 
     return (
         <Box className={s.table}>
-            <AllTable/>
+            <PackTable/>
         </Box>
     );
 };

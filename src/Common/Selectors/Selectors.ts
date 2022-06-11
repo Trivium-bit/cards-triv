@@ -1,6 +1,6 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-import {AddNewCardPackType, PacksPaginationType} from "../../state/cardPacksReducer";
+import {PacksPaginationType} from "../../state/cardPacksReducer";
 import {PacksResponseType} from "../../api/cardPacksAPI";
 import {PackCardType} from "../../api/cardAPI";
 import {PaginationCardType} from "../../state/cardsReducer";
@@ -17,9 +17,6 @@ export const appUserSelector = (state: AppStoreType):UserType =>{
 export const isRegisteredSelector = (state: AppStoreType):boolean =>{
     return state.registerReducer.isRegistered
 }
-export const emailSelector = (state: AppStoreType):string =>{
-    return state.registerReducer.email
-}
 export const isLoggedInSelector = (state: AppStoreType):boolean =>{
     return state.authReducer.isLoggedIn
 }
@@ -35,9 +32,9 @@ export const myCardsPaginationSelector = (state: AppStoreType): PacksPaginationT
 export const myCardsPacksSelector = (state: AppStoreType): Array<PacksResponseType> =>{
     return state.cardPacksReducer.cardsPacks
 }
-export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
+/*export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
     return state.cardPacksReducer.addNewCardPack
-}
+}*/
 export const userNameSelector = (state: AppStoreType): string =>{
     return state.appReducer.user.name
 }

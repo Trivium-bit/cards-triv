@@ -22,12 +22,6 @@ type RegisterResponse = {
     error?: string;
 }
 
-export type ForgotPassResponseType = {
-    info: string;
-    error: string;
-    }
-    
-
 export const registerAPI = {
     registerReducer(values: RegisterParamsType) {
         return instance.post<RegisterResponse>(`/auth/register`, values)
