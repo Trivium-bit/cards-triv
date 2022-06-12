@@ -22,7 +22,7 @@ import {
 } from "../../../../../Common/Selectors/Selectors";
 import {
     CardPackUpdateRequestType,
-    changeSortPacksAC,
+
     deleteCardPackTC,
     editCardPackAC,
     editMyCardsPacksTC, getCardsPacksTC,
@@ -31,10 +31,13 @@ import {
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {RequestStatusType} from "../../../../../state/app-reducer";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import {useDebounce} from "use-debounce";
 import {PATH} from "../../../AppRoutes";
+import {debounceDelay} from "../../../Slider/Slider";
+import {UniversalHeader} from "./universalHeader";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
 //types
 
 
@@ -45,6 +48,7 @@ const StyledTableCell = styled(TableCell)(() => ({
         color: "#000",
         fontWeight: 600,
         fontSize: 13,
+        border: "1px solid black"
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
@@ -69,16 +73,15 @@ const modalStyle = {
 };
 
 //table
-const AllTable = React.memo(() => {
+export const PackTable = React.memo(() => {
 
-    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
-    const debounceDelay = 1000;
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const myCardPacks = useAppSelector(myCardsPacksSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
@@ -89,12 +92,6 @@ const AllTable = React.memo(() => {
     const [openLearn, setOpenLearn] = useState(false);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
     const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
-    const [debounceMin] = useDebounce(min, debounceDelay);
-    const [debounceMax] = useDebounce(max, debounceDelay);
-    // @ts-ignore
-    const questions = useAppSelector(state => state.cardsReducer.cards.map(card => card.cardsPack_id === myCardPacks.map(pack => pack._id) ?
-    [card.question]:""))
-    console.log(questions)
 
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
     const handleCloseEdit = () => setRowToUpdate(undefined);
@@ -120,9 +117,6 @@ const AllTable = React.memo(() => {
         }
 
     };
-    const changeSortValue = () => {
-        dispatch(changeSortPacksAC(sortPacks === '0updated' ? '1updated' : '0updated'));
-    }
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
@@ -137,8 +131,8 @@ const AllTable = React.memo(() => {
     }
 
     useEffect(() => {
-        dispatch(getCardsPacksTC(isMyTable, currentPage, debounceLocalPackName, debounceMin, debounceMax, sortPacks))
-    }, [currentPage, dispatch, isMyTable, debounceLocalPackName, debounceMin, debounceMax, sortPacks]);
+        dispatch(getCardsPacksTC(currentPage))
+    }, [currentPage, dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
 
     return (
         <Box className={s.wrapper}>
@@ -146,18 +140,27 @@ const AllTable = React.memo(() => {
                 <Table sx={{minWidth: 700}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>Name</StyledTableCell>
-                            <StyledTableCell align="left">Cards</StyledTableCell>
-                            <StyledTableCell className={s.arrowBlock} align="left" onClick={changeSortValue}>Last
-                                Updates
-                                {
-                                    sortPacks === "0updated"
-                                        ? <ArrowDropDownIcon/>
-                                        : <ArrowDropUpIcon/>
-                                }
+                            <StyledTableCell >
+                                <UniversalHeader headerValue={"Name"}
+                                                 sortedValue={"user_name"}/>
+                                {sortPacks === "0user_name" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
                             </StyledTableCell>
-                            <StyledTableCell align="left">Created By</StyledTableCell>
-                            <StyledTableCell align="center">Actions</StyledTableCell>
+                            <StyledTableCell  align="center">
+                                <UniversalHeader headerValue={"Cards"}
+                                                 sortedValue={"cardsCount"}/>
+                                {sortPacks === "0cardsCount" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                            </StyledTableCell>
+                            <StyledTableCell  align="center">
+                                <UniversalHeader headerValue={"Last Updated"}
+                                                 sortedValue={"updated"}/>
+                                {sortPacks === "0updated" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                            </StyledTableCell>
+                            <StyledTableCell  align="center">
+                                <UniversalHeader headerValue={"Created by"}
+                                                 sortedValue={"name"}/>
+                                {sortPacks === "0name" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                            </StyledTableCell>
+                            <StyledTableCell  align="center">Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody className={s.tableBody}>
@@ -166,7 +169,7 @@ const AllTable = React.memo(() => {
                                     {cardPack.user_id === myId
                                         ?
                                         <StyledTableCell component="th" scope="row">
-                                            <NavLink  to={`${PATH.PACKS}/${cardPack._id}`}>
+                                            <NavLink to={`${PATH.PACKS}/${cardPack._id}`}>
                                                 {cardPack.name}
                                             </NavLink>
                                         </StyledTableCell>
@@ -240,6 +243,7 @@ const AllTable = React.memo(() => {
                                 disabled={appStatus === "loading"}/>
                         <Button onClick={handleDeletePack} className={modalStyles.btnSave} title={'Save'}
                                 disabled={appStatus === "loading"}/>
+
                     </Box>
                 </Box>
             </Modal>
@@ -253,7 +257,8 @@ const AllTable = React.memo(() => {
                     <h1 className={modalStyles.modalTitle}>Enter new card pack name</h1>
                     <FormControl variant="standard">
                         <InputLabel htmlFor="component-simple">Enter new card pack name</InputLabel>
-                        <Input className={modalStyles.inputsForm} id="component-simple" autoFocus={true} value={updatedCardPackName}
+                        <Input className={modalStyles.inputsForm} id="component-simple" autoFocus={true}
+                               value={updatedCardPackName}
                                onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
                     </FormControl>
                     <Box className={modalStyles.modalBtnGroup}>
@@ -295,5 +300,3 @@ const AllTable = React.memo(() => {
 
     );
 });
-
-export default AllTable;

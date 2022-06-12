@@ -8,7 +8,8 @@ import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {useSearchParams} from "react-router-dom";
 import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
-import AllTable from "./AllPacks/AllTable";
+import {PackTable} from "./AllPacks/PackTable";
+
 
 
 
@@ -64,7 +65,7 @@ const PacksContainer = () => {
                     <Grid xs={9} item>
                         <Box className={s.myPacksBlock}>
                             <PacksHeader/>
-                            <AllTable/>
+                            <PackTable/>
                         </Box>
                     </Grid>
                 </Grid>

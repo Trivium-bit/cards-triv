@@ -5,15 +5,17 @@ import {Box, Container} from "@mui/material";
 import ArticleIcon from '@mui/icons-material/Article';
 import PersonIcon from '@mui/icons-material/Person';
 import { PATH } from '../../AppRoutes'
-import {useAppDispatch} from "../../../../state/store";
+import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import s from "./Header.module.scss";
 import {logOutTC} from "../../../../state/auth-reducer";
+import {RequestStatusType} from "../../../../state/app-reducer";
+import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 
 
 function Header() {
     const location = useLocation();
     const dispatch = useAppDispatch();
-
+    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const handleLogOut = () => {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         dispatch(logOutTC())
@@ -50,7 +52,7 @@ function Header() {
                     </Grid>
                     <Grid item xs={4}>
                         <Box>
-                            <span className={s.logOut} onClick={handleLogOut}>Log Out</span>
+                            <span className={s.logOut} onClick={handleLogOut} aria-disabled={appStatus === "loading"}>Log Out</span>
                         </Box>
                     </Grid>
                 </Grid>

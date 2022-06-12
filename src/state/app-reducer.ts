@@ -59,8 +59,8 @@ export const updateUserTC = (name: string|undefined, avatar: string |undefined) 
         .then((res) => {
             if(res.data){
                 dispatch(setAppStatusAC("succeeded"));
-                dispatch(updateUserNameAC(res.data.updatedUser.name))
-                dispatch(updateUserAvatarAC(res.data.updatedUser.avatar))
+                dispatch(updateUserNameAC(res.data.updatedUser.name));
+                dispatch(updateUserAvatarAC(res.data.updatedUser.avatar));
             }
         })
         .catch((error: AxiosError<{ error: string }>) => {

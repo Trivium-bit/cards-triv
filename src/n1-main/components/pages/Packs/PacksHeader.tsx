@@ -11,7 +11,6 @@ import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {useSearchParams} from "react-router-dom";
 
 
-
 type PacksHeaderPropsType = {
     onSearch?: (searchQuery: string) => void
     onAddNew?: () => void
@@ -38,13 +37,15 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
-        setOpen(false)
-        setAddErrors('')
+        setOpen(false);
+        setAddErrors('');
     };
-    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.searchPackName);
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
     const [addErrors, setAddErrors] = useState('');
 
+
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
+
         dispatch(setLocalCardPackNameAC(e.currentTarget.value))
     }
     const spitName = () => {
@@ -58,7 +59,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     const handleSave = () => {
         if (inputValue !== '') {
             dispatch(addNewCardPackTC({
-                        name: inputValue
+                        name: inputValue,
                     },currentPage
                 )
             );
