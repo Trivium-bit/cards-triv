@@ -47,13 +47,16 @@ const StyledTableCell = styled(TableCell)(() => ({
         backgroundColor: "#ECECF9",
         color: "#000",
         fontWeight: 600,
-        fontSize: 13,
-        border: "1px solid black"
+        fontSize: 13
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
     },
 }));
+
+const InlineCel = styled("div")(() => ({
+    display: "flex"
+}))
 
 const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
@@ -136,31 +139,48 @@ export const PackTable = React.memo(() => {
 
     return (
         <Box className={s.wrapper}>
-            <TableContainer component={Paper}>
+            <TableContainer className={s.table} component={Paper}>
                 <Table sx={{minWidth: 700}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell >
-                                <UniversalHeader headerValue={"Name"}
-                                                 sortedValue={"user_name"}/>
-                                {sortPacks === "0user_name" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                            <StyledTableCell>
+                                <InlineCel>
+                                    <UniversalHeader
+                                        headerValue={"Name"}
+                                        sortedValue={"user_name"}
+                                    />
+                                    {sortPacks === "0user_name" ? <ArrowDropDownIcon className={s.icon}/> :
+                                        <ArrowDropUpIcon/>}
+                                </InlineCel>
                             </StyledTableCell>
-                            <StyledTableCell  align="center">
-                                <UniversalHeader headerValue={"Cards"}
-                                                 sortedValue={"cardsCount"}/>
-                                {sortPacks === "0cardsCount" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                            <StyledTableCell align="center">
+                                <InlineCel>
+                                    <UniversalHeader
+                                        headerValue={"Cards"}
+                                        sortedValue={"cardsCount"}
+                                    />
+                                    {sortPacks === "0cardsCount" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                                </InlineCel>
                             </StyledTableCell>
-                            <StyledTableCell  align="center">
-                                <UniversalHeader headerValue={"Last Updated"}
-                                                 sortedValue={"updated"}/>
-                                {sortPacks === "0updated" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                            <StyledTableCell align="center">
+                                <InlineCel>
+                                    <UniversalHeader
+                                        headerValue={"Last Updated"}
+                                        sortedValue={"updated"}
+                                    />
+                                    {sortPacks === "0updated" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                                </InlineCel>
                             </StyledTableCell>
-                            <StyledTableCell  align="center">
-                                <UniversalHeader headerValue={"Created by"}
-                                                 sortedValue={"name"}/>
-                                {sortPacks === "0name" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                            <StyledTableCell align="center">
+                                <InlineCel>
+                                    <UniversalHeader
+                                        headerValue={"Created by"}
+                                        sortedValue={"name"}
+                                    />
+                                    {sortPacks === "0name" ? <ArrowDropDownIcon/> : <ArrowDropUpIcon/>}
+                                </InlineCel>
                             </StyledTableCell>
-                            <StyledTableCell  align="center">Actions</StyledTableCell>
+                            <StyledTableCell align="center">Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody className={s.tableBody}>

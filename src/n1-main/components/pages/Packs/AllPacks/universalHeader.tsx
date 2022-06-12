@@ -16,11 +16,9 @@ export const UniversalHeader = ({headerValue, sortedValue}: HeaderPropsType) => 
             dispatch(sortPacksAC( 0 + sortedValue))
         }
     }
-    console.log(sortedValue)
     return (
         <div onClick={onClickHandler} className={s.tableHeaderBlock}>
             {headerValue}
-
         </div>
     );
 };

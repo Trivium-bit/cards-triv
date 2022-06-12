@@ -25,7 +25,7 @@ const SliderBar = () => {
     }, [debouncedValues, dispatch])
 
     return (
-        <Box sx={{ width: 250, marginTop: "3rem"}}>
+        <Box sx={{ marginTop: "3rem" }}>
             <Slider
                 style={{color: "#21268F"}}
                 value={values}
