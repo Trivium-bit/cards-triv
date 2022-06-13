@@ -280,7 +280,7 @@ const CardDetails = () => {
                                                     <div className={styles.buttonGroup}>
                                                         <button className={styles.delete} onClick={() => handleCardDelete(card._id)}>Delete</button>
                                                         <button className={styles.edit} onClick={() => handleEditOpen(card)}>Edit</button>
-                                                        <button className={styles.main}>Learn</button>
+                                                        <button className={styles.edit}>Learn</button>
                                                     </div>
                                                 </StyledTableCell>
                                             </StyledTableRow>
