@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
-
+import moment from "moment";
 import s from './styles/CardDetails.module.scss'
 import styles from './AllPacks/AllTable.module.scss'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
@@ -268,7 +268,7 @@ const CardDetails = () => {
                                             <StyledTableRow key={card._id}>
                                                 <StyledTableCell component="th" scope="row">{card.question}</StyledTableCell>
                                                 <StyledTableCell align="left">{card.answer}</StyledTableCell>
-                                                <StyledTableCell align="left">{card.created}</StyledTableCell>
+                                                <StyledTableCell align="left">{moment(card.created).format("DD-MM-YYYY HH:mm:ss")}</StyledTableCell>
                                                 <StyledTableCell align="left">
                                                     <Rating
                                                         readOnly
