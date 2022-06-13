@@ -55,7 +55,7 @@ const PacksContainer = () => {
                                     >All
                                     </button>
                                 </Box>
-                                <Box>
+                                <Box className={s.utils}>
                                     <p className={s.title}>Number of cards</p>
                                     <Slider/>
                                 </Box>
