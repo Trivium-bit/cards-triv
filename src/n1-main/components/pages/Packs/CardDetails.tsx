@@ -16,7 +16,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
 
 import s from './styles/CardDetails.module.scss'
-import styles from './MyPacks/MyTable.module.scss'
+import styles from './AllPacks/AllTable.module.scss'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {useSelector} from "react-redux";
 import {
@@ -250,7 +250,7 @@ const CardDetails = () => {
                     <Button className={s.btn} title={'Add new card'} onClick={handleOpen} />
                 </Box>
                 <Box>
-                    <Box className={s.main}>
+                    <Box className={s.wrapper}>
                         {cards.length !== 0 && (
                             <TableContainer component={Paper}>
                                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -279,7 +279,7 @@ const CardDetails = () => {
                                                 <StyledTableCell align="right">
                                                     <div className={styles.buttonGroup}>
                                                         <button className={styles.delete} onClick={() => handleCardDelete(card._id)}>Delete</button>
-                                                        <button className={styles.main} onClick={() => handleEditOpen(card)}>Edit</button>
+                                                        <button className={styles.edit} onClick={() => handleEditOpen(card)}>Edit</button>
                                                         <button className={styles.main}>Learn</button>
                                                     </div>
                                                 </StyledTableCell>
