@@ -207,6 +207,7 @@ const CardDetails = () => {
         }, 1000)
     }
 
+
     const updateCard = () => {
         if(editOpen && editOpen._id)  {
             dispatch(editCardTC(editOpen._id,
