@@ -53,3 +53,6 @@ export const cardFilterQuestionSelector = (state: AppStoreType): string =>{
 export const cardFilterAnswerSelector = (state: AppStoreType): string =>{
     return state.cardsReducer.answer
 }
+export const changeRatingCardsSelector = (state: AppStoreType): number | undefined =>{
+    return state.cardsReducer.grade
+}

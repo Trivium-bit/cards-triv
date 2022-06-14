@@ -7,6 +7,7 @@ import {handleNetworkError} from "../utils/error.utils";
 const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
 const FILTER_ANSWER = "PACK_CARDS/FILTER_ANSWER"
 const FILTER_QUESTION = "PACK_CARDS/FILTER_QUESTION"
+const CHANGE_GRADE = "PACK_CARDS/CHANGE_GRADE"
 
 export type PaginationCardType = {
     current: number,
@@ -18,6 +19,7 @@ export type InitialCardsStateType = {
     pagination: PaginationCardType
     answer: string
     question: string
+    grade: number | undefined
 }
 const initialState: InitialCardsStateType = {
     cards: [],
@@ -26,7 +28,8 @@ const initialState: InitialCardsStateType = {
         current: 0
     },
     answer: '',
-    question: ''
+    question: '',
+    grade: undefined
 }
 
 //reducer
@@ -38,6 +41,8 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
             return {...state, answer: action.answer}
         case FILTER_QUESTION:
             return {...state, question: action.question}
+        case CHANGE_GRADE:
+            return {...state, grade: action.grade}
         default:
             return state
     }
@@ -46,14 +51,16 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
 export const setPackCardsAC = (cards:PackCardType[],pagination: PaginationCardType) => ({type: SET_PACK_CARDS, cards, pagination} as const)
 export const setFilterQuestionAC = (question: string) => ({type: FILTER_QUESTION, question} as const)
 export const setFilterAnswerAC = (answer:string) => ({type: FILTER_ANSWER, answer} as const)
+export const changeGradeAC = (grade: number | undefined) => ({type: CHANGE_GRADE, grade} as const)
 
 //AC TYPES
 export type getPackCardsActionType = ReturnType<typeof setPackCardsAC>;
 export type setFilterQuestionActionType = ReturnType<typeof setFilterQuestionAC>;
 export type setFilterAnswersActionType = ReturnType<typeof setFilterAnswerAC>;
+export type changeGradeActionType = ReturnType<typeof changeGradeAC>;
 
 //main AC type
-export type CardActionType = getPackCardsActionType | setFilterQuestionActionType | setFilterAnswersActionType
+export type CardActionType = getPackCardsActionType | setFilterQuestionActionType | setFilterAnswersActionType | changeGradeActionType
 
 
 //get card thunk
@@ -105,6 +112,20 @@ export const editCardTC = (_id: string, question:string, answer:string, callback
         .then(() =>{
             dispatch(setAppStatusAC("succeeded"));
             callback();
+        })
+        .catch((error: AxiosError<{ error: string }>) => {
+            dispatch(setAppStatusAC("failed"));
+            handleNetworkError(error, dispatch)
+        })
+}
+//
+export const changeGradeTC = (grade: number | undefined, card_id: string | undefined) =>(dispatch:AppThunkDispatch) => {
+    dispatch(setAppStatusAC("loading"));
+    cardApi.gradeMyCard(grade, card_id)
+        .then((res) =>{
+            dispatch(setAppStatusAC("succeeded"));
+            const grade = res.data.updatedCard.grade
+            dispatch(changeGradeAC(grade))
         })
         .catch((error: AxiosError<{ error: string }>) => {
             dispatch(setAppStatusAC("failed"));
