@@ -17,6 +17,11 @@
   letter-spacing: 0.01em;
   background-color: #21268F;
   color:  #ECECF9;
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+  }
 }
 .commonButtonStyles:hover {
 

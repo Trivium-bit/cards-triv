@@ -1,10 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {
-    Box, FormControl, FormControlLabel, Input, InputLabel, Modal, Pagination,
-    Paper, Radio, RadioGroup,
+    Box,
+    FormControl,
+    Input,
+    InputLabel,
+    Modal,
+    Pagination,
+    Paper,
     styled,
     Table,
-    TableBody, TableCell,
+    TableBody,
+    TableCell,
     tableCellClasses,
     TableContainer,
     TableHead,
@@ -22,7 +28,6 @@ import {
 } from "../../../../../Common/Selectors/Selectors";
 import {
     CardPackUpdateRequestType,
-
     deleteCardPackTC,
     editCardPackAC,
     editMyCardsPacksTC, getCardsPacksTC,
@@ -37,6 +42,7 @@ import {debounceDelay} from "../../../Slider/Slider";
 import {UniversalHeader} from "./universalHeader";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import PackModalBody from "./PackModalBody";
 
 //types
 
@@ -77,22 +83,20 @@ const modalStyle = {
 
 //table
 export const PackTable = React.memo(() => {
-
+    const [searchParams, setSearchParams] = useSearchParams();
+    const dispatch = useAppDispatch();
     const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const myId = useAppSelector<string>(userIdSelector);
-    const [searchParams, setSearchParams] = useSearchParams();
-    const dispatch = useAppDispatch();
     const myCardPacks = useAppSelector(myCardsPacksSelector);
     const myCardsPagination = useSelector(myCardsPaginationSelector);
     const updatedCardPackName = useAppSelector<string>(state => state.cardPacksReducer.newCardPackName);
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<CardPackUpdateRequestType | undefined>(undefined);
     const [openAnswer, setOpenAnswer] = useState<PacksResponseType | undefined>(undefined);
-    const [openLearn, setOpenLearn] = useState(false);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
     const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
 
@@ -108,11 +112,6 @@ export const PackTable = React.memo(() => {
     const handleCloseDelete = () => setRowToDelete(undefined);
     const handleOpenAnswer = (card: PacksResponseType) => setOpenAnswer(card);
     const handleCloseAnswer = () => setOpenAnswer(undefined);
-    const handleOpenLearn = () => setOpenLearn(true);
-    const handleCloseLearn = () => {
-        setOpenAnswer(undefined);
-        setOpenLearn(false);
-    };
     const updatePackName = () => {
         if (rowToUpdate) {
             dispatch(editMyCardsPacksTC({_id: rowToUpdate._id, name: updatedCardPackName}, currentPage))
@@ -121,7 +120,7 @@ export const PackTable = React.memo(() => {
 
     };
 
-    const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
+    const handleChangePagination = (event:ChangeEvent<unknown>, page: number) => {
         searchParams.set('page', page.toString())
         setSearchParams(searchParams)
 
@@ -217,7 +216,11 @@ export const PackTable = React.memo(() => {
                                                     </button>
                                                 </>
                                             )}
-                                            <button onClick={() => handleOpenAnswer(cardPack)} className={s.edit}>Learn
+                                            <button
+                                                onClick={() => handleOpenAnswer(cardPack)}
+                                                className={s.edit}
+                                            >
+                                                Learn
                                             </button>
                                         </Box>
                                     </StyledTableCell>
@@ -227,23 +230,8 @@ export const PackTable = React.memo(() => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {/*// Show Answer Modal*/}
             <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
                         page={myCardsPagination.current} shape="rounded"/>
-
-            <Modal
-                open={!!openAnswer}
-                onClose={handleCloseAnswer}
-            >
-                <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                    <h1 className={modalStyles.modalTitle}>{openAnswer?.name}</h1>
-                    <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
-                    <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseAnswer} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button onClick={handleOpenLearn} className={modalStyles.btnSave} title={'Show Answer'}/>
-                    </Box>
-                </Box>
-            </Modal>
 
             {/*// Delete Button Modal*/}
             <Modal
@@ -289,31 +277,12 @@ export const PackTable = React.memo(() => {
                     </Box>
                 </Box>
             </Modal>
-
-            {/*Learn Modal*/}
+            {/*// Show Question Modal*/}
             <Modal
-                open={openLearn}
-                onClose={handleCloseLearn}
+                open={!!openAnswer}
+                onClose={handleCloseAnswer}
             >
-                <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                    <h1 className={modalStyles.modalTitle}>Learn {openAnswer?.name}</h1>
-                    <p className={modalStyles.modalText}><b>Question:</b>“How "This" works in JavaScript?”</p>
-                    <p className={modalStyles.modalText}><b>Answer:</b>“This is how "This" works in JavaScript”</p>
-                    <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
-                    <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="female"
-                        name="radio-buttons-group"
-                    >
-                        <FormControlLabel value="Did you know" control={<Radio/>} label="Did you know"/>
-                        <FormControlLabel value="Forgot" control={<Radio/>} label="Forgot"/>
-                        <FormControlLabel value="Confused" control={<Radio/>} label="Confused"/>
-                    </RadioGroup>
-                    <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleCloseLearn} className={modalStyles.btnCancel} title={'Cancel'}/>
-                        <Button className={modalStyles.btnSave} title={'Next'}/>
-                    </Box>
-                </Box>
+                <PackModalBody openAnswer={openAnswer}  onCancel={handleCloseAnswer} />
             </Modal>
         </Box>
 
