@@ -47,3 +47,9 @@ export const getCardsSelector = (state: AppStoreType): PackCardType[] =>{
 export const cardPaginationSelector = (state: AppStoreType): PaginationCardType =>{
     return state.cardsReducer.pagination
 }
+export const cardFilterQuestionSelector = (state: AppStoreType): string =>{
+    return state.cardsReducer.question
+}
+export const cardFilterAnswerSelector = (state: AppStoreType): string =>{
+    return state.cardsReducer.answer
+}

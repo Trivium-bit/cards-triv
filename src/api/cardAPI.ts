@@ -1,9 +1,22 @@
 import {instance} from "./instance";
 
+export type GetCardsParams = {
+    cardsPack_id: string | undefined;
+    page?: string;
+    pageCount?: number;
+    cardAnswer?: string;
+    cardQuestion?: string;
+}
+
 export const pageCount = 8;
 export const cardApi = {
-    getAllCards(id: string, currentPage: string) {
-        return instance.get<ResponseCardType>(`/cards/card?cardsPack_id=${id}&page=${currentPage}&pageCount=${pageCount}`);
+    getAllCards(params: GetCardsParams) {
+
+        if (!params.pageCount) {
+            params.pageCount = pageCount;
+        }
+
+        return instance.get<ResponseCardType>('/cards/card', {params});
     },
     addNewCard(id: string,card: PackCardType) {
         return instance.post<ResponseAddCardType>(`/cards/card`, {card: {
