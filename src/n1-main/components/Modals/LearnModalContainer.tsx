@@ -44,7 +44,7 @@ export const LearnModalContainer = React.memo(({openLearnModal, setOpenLearnModa
     }
     useEffect(() => {
         openLearnModal && dispatch(getCardsTC(payload))
-    }, [dispatch, openLearnModal, currentPage])
+    }, [dispatch, openLearnModal])
 
     return (
         <>
