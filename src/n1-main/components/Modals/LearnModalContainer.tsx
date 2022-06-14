@@ -55,7 +55,7 @@ export const LearnModalContainer = React.memo(({openLearnModal, setOpenLearnModa
                             ?
                             <>
                                 <p className={modalStyles.modalText}>
-                                    <b>Question:</b> {cardsData[0] && cardsData[0].answer}
+                                    <b>Question:</b> {cardsData[0] && cardsData[0].question}
                                 </p>
                                 <Box className={modalStyles.modalBtnGroup}>
                                     <Button onClick={handleCloseLearnModal} className={modalStyles.btnCancel}
@@ -81,8 +81,8 @@ export const LearnModalContainer = React.memo(({openLearnModal, setOpenLearnModa
                             show={openAnswerModal}
                             h1Title={`Learn “${openLearnModal?.name}“`}>
 
-                <p className={modalStyles.modalText}><b>Question:</b> “{cardsData[0] && cardsData[0].answer}”</p>
-                <p className={modalStyles.modalText}><b>Answer:</b> “{cardsData[0] && cardsData[0].question}”</p>
+                <p className={modalStyles.modalText}><b>Question:</b> “{cardsData[0] && cardsData[0].question}”</p>
+                <p className={modalStyles.modalText}><b>Answer:</b> “{cardsData[0] && cardsData[0].answer}”</p>
                 <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
                 <RadioGroup>
                     {
