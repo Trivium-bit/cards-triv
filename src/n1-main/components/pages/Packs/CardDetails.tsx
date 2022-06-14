@@ -25,7 +25,7 @@ import {
 } from "../../../../Common/Selectors/Selectors";
 import {addNewCardTC, deleteCardTC, editCardTC, getCardsTC} from "../../../../state/cardsReducer";
 import Button from "../../../../Common/Components/Button";
-import modalStyles from "./styles/ModalStyles.module.scss";
+import modalStyles from "../../Modals/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {PackCardType} from "../../../../api/cardAPI";
 
