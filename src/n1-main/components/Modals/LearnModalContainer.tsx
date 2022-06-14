@@ -9,6 +9,7 @@ import Button from "../../../Common/Components/Button";
 import {getCardsTC} from "../../../state/cardsReducer";
 import {RequestStatusType} from "../../../state/app-reducer";
 import {appStatusSelector} from "../../../Common/Selectors/Selectors";
+import {GetCardsParams} from "../../../api/cardAPI";
 
 
 type ModalContainerPropsType = {
@@ -37,8 +38,12 @@ export const LearnModalContainer = React.memo(({openLearnModal, setOpenLearnModa
     const rateCard = () => {
         //тут будет санка на добавление рейтинга
     }
+    const payload: GetCardsParams = {
+        cardsPack_id: openLearnModal?._id,
+        page: currentPage
+    }
     useEffect(() => {
-        openLearnModal && dispatch(getCardsTC(openLearnModal?._id, currentPage))
+        openLearnModal && dispatch(getCardsTC(payload))
     }, [dispatch, openLearnModal, currentPage])
 
     return (
