@@ -19,7 +19,7 @@ const ANSWER = "ANSWER";
 const PackModalBody = forwardRef(({openAnswer, onCancel, modalStyle}: PackModalBodyPropsType, ref: any) => {
     const cards = useAppSelector(getCardsSelector);
     const currentCard = cards[0];
-    const grades = ["I don't know", 'Forgot', 'Long thought', 'Confused', 'I knew the answer'];
+    const grades = ["I didn't know", 'Forgot', 'Long thought', 'Confused', 'I knew the answer'];
     const [step, setStep] = useState<typeof QUESTION | typeof ANSWER>(QUESTION)
     const [selectedRatio, setSelectedRatio] = useState<string | boolean>(false) // Думаю, лучше сохранять в редакс рейтинг, а не локально
 
@@ -28,7 +28,7 @@ const PackModalBody = forwardRef(({openAnswer, onCancel, modalStyle}: PackModalB
         console.log(value)
         //тут надо сохранять value через action creator в редьюсер
     }
-
+    console.log(cards[0])
     const handleCancel = () => onCancel()
     const handleSubmit = () => {
         if (step === QUESTION) {

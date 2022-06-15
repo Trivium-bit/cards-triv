@@ -18,7 +18,7 @@ const PacksContainer = () => {
     const dispatch = useAppDispatch()
     const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
 
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [, setSearchParams] = useSearchParams()
 
     const handlerOpenAllTable = () => {
         setSearchParams({ page: "1" })
