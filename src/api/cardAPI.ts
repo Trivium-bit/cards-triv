@@ -31,7 +31,7 @@ export const cardApi = {
         return instance.put<ResponseUpdateCardType>('/cards/card', {card: {_id, question, answer}});
     },
     gradeMyCard(grade: number | undefined, card_id:string) {
-        return instance.put<ResponseUpdateCardType>('/cards/grade', {card: {grade, card_id}});
+        return instance.put<ResponseUpdateCardType>('/cards/grade', {grade, card_id});
     }
 }
 
