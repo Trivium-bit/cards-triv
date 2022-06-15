@@ -9,20 +9,21 @@ type SuperButtonPropsType = DefaultButtonPropsType & {
     title: string
 }
 
-const Button: React.FC<SuperButtonPropsType> = (
-    {
-        title,
-        callBack, className,
-        ...restProps// все остальные пропсы попадут в объект restProps, там же будет children
-    }
-) => {
-
-    return (
-        <button onClick={callBack}
-                className={ `${styles.commonButtonStyles} + ${className}`}
-                {...restProps} // отдаём кнопке остальные пропсы если они есть (children там внутри)
-        >{title}</button>
-    )
-}
+const Button: React.FC<SuperButtonPropsType> = ({
+    title,
+    callBack,
+    className,
+    disabled,
+    ...restProps// все остальные пропсы попадут в объект restProps, там же будет children
+}) => (
+    <button
+        onClick={callBack}
+        className={`${styles.commonButtonStyles} ${className} ${disabled ? styles.disabled : ""}`}
+        disabled={disabled}
+        {...restProps} // отдаём кнопке остальные пропсы если они есть (children там внутри)
+    >
+        {title}
+    </button>
+)
 
 export default Button

@@ -14,9 +14,9 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SearchIcon from "@mui/icons-material/Search";
-
+import moment from "moment";
 import s from './styles/CardDetails.module.scss'
-import styles from './MyPacks/MyTable.module.scss'
+import styles from './AllPacks/AllTable.module.scss'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {useSelector} from "react-redux";
 import {
@@ -34,7 +34,7 @@ import {
     setFilterQuestionAC
 } from "../../../../state/cardsReducer";
 import Button from "../../../../Common/Components/Button";
-import modalStyles from "./styles/ModalStyles.module.scss";
+import modalStyles from "../../Modals/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
 
@@ -260,7 +260,7 @@ const CardDetails = () => {
                     <Button className={s.btn} title={'Add new card'} onClick={handleOpen} />
                 </Box>
                 <Box>
-                    <Box className={s.main}>
+                    <Box className={s.wrapper}>
                         {cards.length !== 0 && (
                             <TableContainer component={Paper}>
                                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -278,7 +278,7 @@ const CardDetails = () => {
                                             <StyledTableRow key={card._id}>
                                                 <StyledTableCell component="th" scope="row">{card.question}</StyledTableCell>
                                                 <StyledTableCell align="left">{card.answer}</StyledTableCell>
-                                                <StyledTableCell align="left">{card.created}</StyledTableCell>
+                                                <StyledTableCell align="left">{moment(card.created).format("DD-MM-YYYY HH:mm:ss")}</StyledTableCell>
                                                 <StyledTableCell align="left">
                                                     <Rating
                                                         readOnly
@@ -290,8 +290,7 @@ const CardDetails = () => {
                                                 <StyledTableCell align="right">
                                                     <div className={styles.buttonGroup}>
                                                         <button className={styles.delete} onClick={() => handleCardDelete(card._id)}>Delete</button>
-                                                        <button className={styles.main} onClick={() => handleEditOpen(card)}>Edit</button>
-                                                        <button className={styles.main}>Learn</button>
+                                                        <button className={styles.edit} onClick={() => handleEditOpen(card)}>Edit</button>
                                                     </div>
                                                 </StyledTableCell>
                                             </StyledTableRow>

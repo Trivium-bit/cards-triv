@@ -4,10 +4,14 @@
         max-height: 55vh;
         margin-bottom: 15px;
 
-        .tableBody {
-            a {
-                color: #21268F;
-            }
+    .headerItem {
+      cursor: pointer;
+    }
+
+    .tableBody {
+      a {
+        color: #21268F;
+      }
 
             a:hover {
                 color: goldenrod;
@@ -15,35 +19,33 @@
             }
         }
     }
-
-    .buttonGroup {
-        display: flex;
-        justify-content: space-evenly;
-
-        .edit {
-            padding: 4px 6px;
-            border-radius: 2px;
-            border: none;
-            background: #D7D8EF;
-            color: #21268F;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            flex-wrap: wrap;
-            max-height: 100%;
-        }
-
-        .delete {
-            border-radius: 2px;
-            padding: 4px;
-            border: none;
-            background: red;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-    }
 }
 
+.buttonGroup {
+    display: flex;
+    justify-content: space-evenly;
 
+    .edit {
+        padding: 4px 6px;
+        border-radius: 2px;
+        border: none;
+        background: #D7D8EF;
+        color: #21268F;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        flex-wrap: wrap;
+        max-height: 100%;
+    }
+
+    .delete {
+        border-radius: 2px;
+        padding: 4px;
+        border: none;
+        background: red;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+}
