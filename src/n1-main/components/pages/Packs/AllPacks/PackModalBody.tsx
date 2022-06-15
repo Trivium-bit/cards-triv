@@ -1,10 +1,10 @@
 import React, {ChangeEvent, useState, forwardRef, useEffect} from 'react';
 import {Box, FormControlLabel, Radio, RadioGroup, Paper} from "@mui/material";
-import modalStyles from "../styles/ModalStyles.module.scss";
 import Button from "../../../../../Common/Components/Button";
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {getCardsSelector} from "../../../../../Common/Selectors/Selectors";
 import {getCardsTC} from "../../../../../state/cardsReducer";
+import modalStyles from "../../../Modals/ModalStyles.module.scss";
 
 const modalStyle = {
     position: 'absolute' as 'absolute',
@@ -29,6 +29,7 @@ const ANSWER = "ANSWER";
 const PackModalBody = forwardRef(({openAnswer, onCancel}: PackModalBodyPropsType, ref: any) => {
     const cards = useAppSelector(getCardsSelector);
     const dispatch = useAppDispatch();
+    const currentCard = cards[0];
 
     const [step, setStep] = useState<typeof QUESTION | typeof ANSWER>(QUESTION)
     const [selectedRatio, setSelectedRatio] = useState<string | boolean>(false)
@@ -60,11 +61,11 @@ const PackModalBody = forwardRef(({openAnswer, onCancel}: PackModalBodyPropsType
         <Paper tabIndex={-1} ref={ref}>
             <Box sx={modalStyle} className={modalStyles.modalBlock} >
                 <h1 className={modalStyles.modalTitle}>Learn {openAnswer?.name}</h1>
-                <p className={modalStyles.modalText}><b>Question:</b>{}</p>
+                <p className={modalStyles.modalText}><b>Question:</b>{currentCard.question}</p>
                 {step === ANSWER && (
                     (
                         <>
-                            <p className={modalStyles.modalText}><b>Answer:</b>{}</p>
+                            <p className={modalStyles.modalText}><b>Answer:</b>{currentCard.answer}</p>
                             <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
                             <RadioGroup
                                 aria-labelledby="demo-radio-buttons-group-label"
