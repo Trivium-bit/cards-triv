@@ -7,7 +7,6 @@ import {getCardsTC} from "../../../state/cardsReducer";
 import {GetCardsParams} from "../../../api/cardAPI";
 import PackModalBody from "../pages/Packs/AllPacks/PackModalBody";
 
-
 type ModalContainerPropsType = {
     openLearnModal: PacksResponseType | undefined
     setOpenLearnModal: (openAnswer: PacksResponseType | undefined) => void
