@@ -1,11 +1,16 @@
 import React, {CSSProperties, useEffect} from 'react';
 import {UniversalModal} from "./UniversalModal";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
-import {useAppDispatch} from "../../../state/store";
+import {useAppDispatch, useAppSelector} from "../../../state/store";
 import {useSearchParams} from "react-router-dom";
 import {getCardsTC} from "../../../state/cardsReducer";
 import {GetCardsParams} from "../../../api/cardAPI";
 import PackModalBody from "../pages/Packs/AllPacks/PackModalBody";
+import {RequestStatusType} from "../../../state/app-reducer";
+import {appStatusSelector, getCardsSelector} from "../../../Common/Selectors/Selectors";
+import {Box} from "@mui/material";
+import Button from "../../../Common/Components/Button";
+import modalStyles from "../Modals/ModalStyles.module.scss";
 
 type ModalContainerPropsType = {
     openLearnModal: PacksResponseType | undefined
@@ -20,6 +25,8 @@ export const LearnModalContainer = React.memo(({openLearnModal, setOpenLearnModa
     const handleCloseLearnModal = () => {
         setOpenLearnModal(undefined)
     };
+    const cards = useAppSelector(getCardsSelector);
+    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const payload: GetCardsParams = {
         cardsPack_id: openLearnModal?._id,
         page: currentPage
@@ -30,9 +37,21 @@ export const LearnModalContainer = React.memo(({openLearnModal, setOpenLearnModa
 
     return (
         <>
-            <UniversalModal modalStyle={styles} show={!!openLearnModal}  h1Title={openLearnModal?.name}>
-                <PackModalBody openAnswer={openLearnModal} onCancel={handleCloseLearnModal}/>
-            </UniversalModal>
+            {
+                appStatus !== "loading" &&
+                <UniversalModal modalStyle={styles} show={!!openLearnModal}>
+                    {   cards.length >0
+                        ? <PackModalBody modalStyle={styles} openAnswer={openLearnModal} onCancel={handleCloseLearnModal}/>
+                        :  <>
+                            <p className={modalStyles.modalText}>This card pack is empty. Please, chose another card pack</p>
+                            <Box className={modalStyles.modalOneCancelBtn}>
+                                <Button onClick={handleCloseLearnModal} className={modalStyles.btnCancel}
+                                        title={'Cancel'}/>
+                            </Box>
+                        </>
+                    }
+                </UniversalModal>
+            }
         </>
     );
 });

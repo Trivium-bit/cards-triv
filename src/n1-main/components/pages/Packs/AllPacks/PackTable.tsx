@@ -113,7 +113,7 @@ export const PackTable = React.memo(() => {
     return (
         <Box className={s.wrapper}>
             <TableContainer className={s.table} component={Paper}>
-                <Table sx={{minWidth: 700}} aria-label="customized table">
+                <Table sx={{maxWidth: 800}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
                             <StyledTableCell>
@@ -158,7 +158,7 @@ export const PackTable = React.memo(() => {
                                             </NavLink>
                                         </StyledTableCell>
                                         :
-                                        <StyledTableCell component="th" scope="row">{cardPack.name}</StyledTableCell>
+                                        <StyledTableCell component="th" scope="row" className={s.cardPackItem}>{cardPack.name}</StyledTableCell>
                                     }
                                     <StyledTableCell align="left">{cardPack.cardsCount}</StyledTableCell>
                                     <StyledTableCell align="left">
