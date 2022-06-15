@@ -5,11 +5,13 @@
     line-height: 27px;
     text-align: center;
   }
+
   .modalText {
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
   }
+
   .modalBtnGroup {
     display: flex;
     justify-content: space-between;
@@ -17,7 +19,7 @@
 
     .btnSave {
       background: #21268F;
-      color: white;
+      color: #ECECF9;;
       border-radius: 30px;
       padding: 9px 30px;
       border: none;
@@ -32,7 +34,18 @@
       border: none;
       cursor: pointer;
     }
+    .btnDelete {
+      @extend .btnSave;
+      background: #F1453D !important;
+
+    }
   }
+
+  .modalOneCancelBtn {
+    @extend .modalBtnGroup;
+    justify-content: center !important;
+  }
+
   .inputsForm {
     width: 350px;
     margin: 20px 0;

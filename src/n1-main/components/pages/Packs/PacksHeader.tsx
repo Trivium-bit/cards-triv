@@ -1,14 +1,14 @@
 import React, {ChangeEvent, useState} from 'react';
-import {Box, FormControl, FormHelperText, Input, InputAdornment, InputLabel, Modal} from "@mui/material";
+import {Box, FormControl, FormHelperText, Input, InputAdornment, InputLabel} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
-import modalStyles from "./styles/ModalStyles.module.scss";
+import modalStyles from "../../Modals/ModalStyles.module.scss";
 import s from './styles/PackHeader.module.scss'
 import {addNewCardPackTC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
-import {RequestStatusType} from "../../../../state/app-reducer";
-import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {useSearchParams} from "react-router-dom";
+import {UniversalModal} from "../../Modals/UniversalModal";
+import {modalStyle} from "./AllPacks/PackTable";
 
 
 type PacksHeaderPropsType = {
@@ -17,22 +17,10 @@ type PacksHeaderPropsType = {
     packsOwnerName?: string
 }
 
-const modalStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 350,
-    bgcolor: '#F9F9FE',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2,
-};
 
 const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     const [searchParams] = useSearchParams();
     const dispatch = useAppDispatch();
-    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
     const handleOpen = () => setOpen(true);
@@ -94,28 +82,23 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                 <Button
                     onClick={handleOpen}
                     className={s.addBtn}
-                    title={'Add New Pack'}
+                    title={'Add a new card pack'}
                 />
-                <Modal
-                    open={open}
-                    onClose={handleClose}
-                >
-                    <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                        <h1 className={modalStyles.modalTitle}>Add new pack</h1>
-                        <FormControl error={!!addErrors} variant="standard">
-                            <InputLabel htmlFor="component-simple">Name Pack</InputLabel>
-                            <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
-                                   onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
-                            {addErrors && (
-                                <FormHelperText id="component-error-text">{addErrors}</FormHelperText>
-                            )}
-                        </FormControl>
-                        <Box className={modalStyles.modalBtnGroup}>
-                            <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                            <Button onClick={handleSave} className={modalStyles.btnSave} title={'Save new'} disabled={appStatus ==="loading"}/>
-                        </Box>
+
+                <UniversalModal modalStyle={modalStyle} show={open} h1Title={"Add a new card pack"}>
+                    <FormControl error={!!addErrors} variant="standard">
+                        <InputLabel htmlFor="component-simple">Enter a name of card Pack</InputLabel>
+                        <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
+                               onChange={handleChangeNewPack} autoFocus={true}/>
+                        {addErrors && (
+                            <FormHelperText id="component-error-text">{addErrors}</FormHelperText>
+                        )}
+                    </FormControl>
+                    <Box className={modalStyles.modalBtnGroup}>
+                        <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} />
+                        <Button onClick={handleSave} className={modalStyles.btnSave} title={'Save new'} />
                     </Box>
-                </Modal>
+                </UniversalModal>
             </Box>
 
         </Box>

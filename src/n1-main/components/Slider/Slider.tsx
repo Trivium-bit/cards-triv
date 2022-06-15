@@ -5,7 +5,7 @@ import {setPacksCardsCountAC} from "../../../state/cardPacksReducer";
 import {useDebounce} from "use-debounce";
 
 export const debounceDelay = 1000;
-const SliderBar = () => {
+const SliderBar = React.memo(() => {
 
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
@@ -31,10 +31,10 @@ const SliderBar = () => {
                 value={values}
                 onChange={handleChange}
                 valueLabelDisplay="on"
-                max={150}
+                max={111}
             />
         </Box>
     );
-};
+});
 
 export default React.memo(SliderBar);

@@ -32,7 +32,7 @@ import {
     setFilterQuestionAC
 } from "../../../../state/cardsReducer";
 import Button from "../../../../Common/Components/Button";
-import modalStyles from "./styles/ModalStyles.module.scss";
+import modalStyles from "../../Modals/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
 
@@ -206,6 +206,7 @@ const CardDetails = () => {
             dispatch(setFilterAnswerAC(value))
         }, 1000)
     }
+
 
     const updateCard = () => {
         if(editOpen && editOpen._id)  {

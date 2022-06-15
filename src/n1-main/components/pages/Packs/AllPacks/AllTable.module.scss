@@ -4,10 +4,14 @@
         max-height: 55vh;
         margin-bottom: 15px;
 
-        .tableBody {
-            a {
-                color: #21268F;
-            }
+    .headerItem {
+      cursor: pointer;
+    }
+
+    .tableBody {
+      a {
+        color: #21268F;
+      }
 
             a:hover {
                 color: goldenrod;

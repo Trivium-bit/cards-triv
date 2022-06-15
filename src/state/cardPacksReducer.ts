@@ -57,7 +57,7 @@ const initialState: InitialProfileStateType = {
     cardPacksTotalCount: 0,
     newCardPackName: "",
     min: 0,
-    max: 150,
+    max: 111,
     isMyTable: true,
     pageCount: 8,
     page: 0,
