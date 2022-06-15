@@ -21,12 +21,10 @@ import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {useSelector} from "react-redux";
 import {
     appStatusSelector, cardFilterAnswerSelector, cardFilterQuestionSelector, cardPaginationSelector,
-    changeRatingCardsSelector,
     getCardsSelector
 } from "../../../../Common/Selectors/Selectors";
 import {
     addNewCardTC,
-    changeGradeTC,
     deleteCardTC,
     editCardTC,
     getCardsTC,
@@ -91,7 +89,6 @@ const CardDetails = () => {
     const location = useLocation();
     const {packId} = useParams();
     const cards = useSelector(getCardsSelector);
-    const grade = useSelector(changeRatingCardsSelector);
     const filterQuestion = useSelector(cardFilterQuestionSelector);
     const filterAnswer = useSelector(cardFilterAnswerSelector);
     const cardPagination = useSelector(cardPaginationSelector);
@@ -107,7 +104,6 @@ const CardDetails = () => {
         question: ""
     });
     const [addErrors, setAddErrors] = useState<ErrorStateType>({});
-
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
@@ -196,11 +192,6 @@ const CardDetails = () => {
             }))
         }))
     }
-
-    
-    const changeRatingCard = (grade: number | undefined, card_id: string | undefined) => {
-        (dispatch(changeGradeTC(grade,card_id)))}
-
     const onChangeQuestionHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         const value = e.target.value;
         clearTimeout(delaySetQuestionRef.current)
@@ -283,8 +274,7 @@ const CardDetails = () => {
                                                     <Rating
                                                         readOnly
                                                         size="small"
-                                                        value={card.grade}
-                                                        onChange={() => {changeRatingCard(grade)}}
+                                                        value={card.rating}
                                                     />
                                                 </StyledTableCell>
                                                 <StyledTableCell align="right">

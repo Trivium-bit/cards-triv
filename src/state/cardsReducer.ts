@@ -119,7 +119,7 @@ export const editCardTC = (_id: string, question:string, answer:string, callback
         })
 }
 //
-export const changeGradeTC = (grade: number | undefined, card_id: string | undefined) =>(dispatch:AppThunkDispatch) => {
+export const changeGradeTC = (grade: number | undefined, card_id: string) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardApi.gradeMyCard(grade, card_id)
         .then((res) =>{

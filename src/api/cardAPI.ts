@@ -30,7 +30,7 @@ export const cardApi = {
     editMyCard(_id:string,question:string, answer:string) {
         return instance.put<ResponseUpdateCardType>('/cards/card', {card: {_id, question, answer}});
     },
-    gradeMyCard(grade: number | undefined, card_id:string | undefined) {
+    gradeMyCard(grade: number | undefined, card_id:string) {
         return instance.put<ResponseUpdateCardType>('/cards/grade', {card: {grade, card_id}});
     }
 }
