@@ -19,10 +19,12 @@ export const cardApi = {
         return instance.get<ResponseCardType>('/cards/card', {params});
     },
     addNewCard(id: string,card: PackCardPayloadType) {
-        return instance.post<ResponseAddCardType>(`/cards/card`, {card: {
+        return instance.post<ResponseAddCardType>(`/cards/card`, {
+            card: {
                 ...card,
                 cardsPack_id: id
-            }});
+            }
+        });
     },
     deleteMyCard(id:string) {
         return instance.delete<ResponseDeleteCardType>(`/cards/card?id=${id}`);
