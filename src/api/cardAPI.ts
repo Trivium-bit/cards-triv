@@ -18,7 +18,7 @@ export const cardApi = {
 
         return instance.get<ResponseCardType>('/cards/card', {params});
     },
-    addNewCard(id: string,card: PackCardType) {
+    addNewCard(id: string,card: PackCardPayloadType) {
         return instance.post<ResponseAddCardType>(`/cards/card`, {card: {
                 ...card,
                 cardsPack_id: id
@@ -32,15 +32,26 @@ export const cardApi = {
     }
 }
 
+export type PackCardPayloadType = {
+    answer: string;
+    question: string;
+}
+
 export type PackCardType = {
-    answer: string
-    question: string
-    cardsPack_id?: string
-    user_id?: string
-    created?: string
-    updated?: string
-    rating?: number
-    _id?: string
+    answer: string;
+    cardsPack_id: string;
+    comments: string;
+    created: string;
+    grade: number;
+    more_id: string;
+    question: string;
+    rating: number;
+    shots: number;
+    type: string;
+    updated: string;
+    user_id: string;
+    __v: number;
+    _id: string;
 }
 
 export type ResponseCardType ={

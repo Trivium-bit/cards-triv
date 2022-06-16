@@ -1,7 +1,7 @@
 import {AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
 import {setAppStatusAC} from "./app-reducer";
-import {cardApi, GetCardsParams, PackCardType} from "../api/cardAPI";
+import {cardApi, GetCardsParams, PackCardPayloadType, PackCardType} from "../api/cardAPI";
 import {handleNetworkError} from "../utils/error.utils";
 
 const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
@@ -73,7 +73,7 @@ export const getCardsTC = (payload: GetCardsParams) =>(dispatch:AppThunkDispatch
         })
 }
 //add card thunk
-export const addNewCardTC = (id: string, card: PackCardType,callback: () => void) =>(dispatch:AppThunkDispatch) => {
+export const addNewCardTC = (id: string, card: PackCardPayloadType, callback: () => void) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardApi.addNewCard(id, card)
         .then(() =>{
