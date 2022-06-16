@@ -2,10 +2,29 @@ import React, {ChangeEvent, useState, forwardRef, CSSProperties} from 'react';
 import {Box, FormControlLabel, Radio, RadioGroup, Paper} from "@mui/material";
 import Button from "../../../Common/Components/Button";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
-import {getCardsSelector} from "../../../Common/Selectors/Selectors";
+import {getCardsSelector, getLocalCardGradeSelector} from "../../../Common/Selectors/Selectors";
 import modalStyles from "./ModalStyles.module.scss";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
 import {saveLocalCardGradeAC, updateCardGradeTC} from "../../../state/cardsReducer";
+import {PackCardType} from "../../../api/cardAPI";
+
+const getRandomCard = (items: PackCardType[]) => {
+    const MAX_RATING = 6;
+    const arr: number[] = []; // xTimes of i for any item
+    items.map((item, i) => {
+        const grade = Math.round(item.grade);
+        let xTimes = MAX_RATING - grade;
+
+        while (xTimes > 0) {
+            arr.push(i)
+            xTimes--;
+        }
+    });
+
+    const randomIndexOfArr = Math.floor(Math.random() * arr.length);
+    const indexOfItem = arr[randomIndexOfArr];
+    return items[indexOfItem];
+}
 
 export interface PackModalBodyPropsType {
     cardPack: PacksResponseType | undefined;
@@ -19,12 +38,12 @@ const ANSWER = "ANSWER";
 const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBodyPropsType, ref: any) => {
     const cards = useAppSelector(getCardsSelector);
     const [currentCard, setCurrentCard] = useState<PackCardType>(getRandomCard(cards));
+    const selectedValue = useAppSelector(getLocalCardGradeSelector);
     const grades = ["I didn't know", 'Forgot', 'Long thought', 'Confused', 'I knew the answer'];
     const [step, setStep] = useState<typeof QUESTION | typeof ANSWER>(QUESTION);
     const dispatch = useAppDispatch();
 
     const handleChangeRatio = (e: ChangeEvent<HTMLInputElement>, value:string) => {
-
         dispatch(saveLocalCardGradeAC(Number(value)))
     }
 
@@ -35,7 +54,8 @@ const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBod
         }
 
         setStep(QUESTION);
-        currentCard._id && dispatch(updateCardGradeTC(currentCard._id))
+        dispatch(updateCardGradeTC(currentCard._id))
+        setCurrentCard(getRandomCard(cards));
     }
 
 
@@ -70,7 +90,7 @@ const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBod
                     <Button onClick={handleCancel} className={modalStyles.btnCancel} title={'Cancel'}/>
                     <Button
                         className={modalStyles.btnSave}
-                        disabled={step === ANSWER}
+                        disabled={step === ANSWER && !selectedValue}
                         onClick={handleSubmit}
                         title={step === ANSWER ? "Next" : "Show Answer"}
                     />

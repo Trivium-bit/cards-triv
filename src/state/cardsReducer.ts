@@ -1,7 +1,7 @@
 import {AppStoreType, AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
 import {setAppStatusAC} from "./app-reducer";
-import {cardApi, GetCardsParams, PackCardType, updatedCardType} from "../api/cardAPI";
+import {cardApi, GetCardsParams, PackCardPayloadType, PackCardType, updatedCardType} from "../api/cardAPI";
 import {handleNetworkError} from "../utils/error.utils";
 
 const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
@@ -20,7 +20,7 @@ export type InitialCardsStateType = {
     pagination: PaginationCardType
     answer: string
     question: string
-    localCardGrade: number
+    localCardGrade: number | undefined
 }
 const initialState: InitialCardsStateType = {
     cards: [],
@@ -30,7 +30,7 @@ const initialState: InitialCardsStateType = {
     },
     answer: '',
     question: '',
-    localCardGrade: 1
+    localCardGrade: undefined
 }
 
 //reducer
@@ -45,8 +45,19 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
         case SET_LOCAL_CARD_GRADE:
             return {...state, localCardGrade: action.localCardGrade}
         case SET_NEW_CARD_GRADE:
-            return {...state, cards: state.cards.map(card => card._id === action.updatedCard.card_id ?
-                    {...card, grade: action.updatedCard.grade, shots:action.updatedCard.shots} : {...card})}
+            return {
+                ...state,
+                localCardGrade: undefined,
+                cards: state.cards.map(card =>
+                    card._id === action.updatedCard.card_id
+                        ? {
+                            ...card,
+                            grade: action.updatedCard.grade,
+                            shots:action.updatedCard.shots
+                        }
+                        : card
+                )
+            }
         default:
             return state
     }
@@ -86,7 +97,7 @@ export const getCardsTC = (payload: GetCardsParams) =>(dispatch:AppThunkDispatch
         })
 }
 //add card thunk
-export const addNewCardTC = (id: string, card: PackCardType,callback: () => void) =>(dispatch:AppThunkDispatch) => {
+export const addNewCardTC = (id: string, card: PackCardPayloadType,callback: () => void) =>(dispatch:AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardApi.addNewCard(id, card)
         .then(() =>{
@@ -128,14 +139,16 @@ export const editCardTC = (_id: string, question:string, answer:string, callback
 
 export const updateCardGradeTC = (card_id: string) => (dispatch:AppThunkDispatch, getState: () => AppStoreType) =>{
     const grade = getState().cardsReducer.localCardGrade
-    dispatch(setAppStatusAC("loading"));
-    cardApi.editCardGrade(grade, card_id)
-        .then((res)=>{
-            dispatch(setAppStatusAC("succeeded"));
-            dispatch(setNewCardGradeAC(res.data.updatedGrade))
-        })
-        .catch((error: AxiosError<{ error: string }>) => {
-            dispatch(setAppStatusAC("failed"));
-            handleNetworkError(error, dispatch)
-        })
+    if (grade) {
+        dispatch(setAppStatusAC("loading"));
+        cardApi.editCardGrade(grade, card_id)
+            .then((res)=>{
+                dispatch(setAppStatusAC("succeeded"));
+                dispatch(setNewCardGradeAC(res.data.updatedGrade))
+            })
+            .catch((error: AxiosError<{ error: string }>) => {
+                dispatch(setAppStatusAC("failed"));
+                handleNetworkError(error, dispatch)
+            })
+    }
 }

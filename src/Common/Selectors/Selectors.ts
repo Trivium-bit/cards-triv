@@ -44,6 +44,9 @@ export const userIdSelector = (state: AppStoreType): string =>{
 export const getCardsSelector = (state: AppStoreType): PackCardType[] =>{
     return state.cardsReducer.cards
 }
+export const getLocalCardGradeSelector = (state: AppStoreType): number | undefined =>{
+    return state.cardsReducer.localCardGrade
+}
 export const cardPaginationSelector = (state: AppStoreType): PaginationCardType =>{
     return state.cardsReducer.pagination
 }
