@@ -29,18 +29,23 @@ export const cardApi = {
     },
     editMyCard(_id:string,question:string, answer:string) {
         return instance.put<ResponseUpdateCardType>('/cards/card', {card: {_id, question, answer}});
+    },
+    editCardGrade(grade: number, card_id: string){
+        return instance.put<ResponseUpdateCardParamsType>('/cards/grade', {grade, card_id})
     }
 }
 
 export type PackCardType = {
+    _id?: string //это айдишка карточки в пэке
+    cardsPack_id?: string //это айдишка пэка
+    user_id?: string
     answer: string
     question: string
-    cardsPack_id?: string
-    user_id?: string
+    grade?: number,
+    shots?: number
+    rating?: number
     created?: string
     updated?: string
-    rating?: number
-    _id?: string
 }
 
 export type ResponseCardType ={
@@ -64,3 +69,16 @@ export type ResponseDeleteCardType = {
 export type ResponseUpdateCardType = {
     updatedCard:PackCardType
 }
+export type updatedCardType = {
+    cardsPack_id: string,
+    card_id: string,
+    user_id: string,
+    grade: number,
+    shots: number
+    created: string
+    updated: string
+}
+export type ResponseUpdateCardParamsType = {
+    updatedGrade:updatedCardType
+}
+

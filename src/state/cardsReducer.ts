@@ -1,12 +1,14 @@
-import {AppThunkDispatch} from "./store";
+import {AppStoreType, AppThunkDispatch} from "./store";
 import {AxiosError} from "axios";
 import {setAppStatusAC} from "./app-reducer";
-import {cardApi, GetCardsParams, PackCardType} from "../api/cardAPI";
+import {cardApi, GetCardsParams, PackCardType, updatedCardType} from "../api/cardAPI";
 import {handleNetworkError} from "../utils/error.utils";
 
 const SET_PACK_CARDS = "PACK_CARDS/SET_PACK_CARDS"
 const FILTER_ANSWER = "PACK_CARDS/FILTER_ANSWER"
 const FILTER_QUESTION = "PACK_CARDS/FILTER_QUESTION"
+const SET_LOCAL_CARD_GRADE = "PACK_CARDS/SET_LOCAL_CARD_GRADE"
+const SET_NEW_CARD_GRADE = "PACK_CARDS/SET_NEW_CARD_GRADE"
 
 export type PaginationCardType = {
     current: number,
@@ -18,6 +20,7 @@ export type InitialCardsStateType = {
     pagination: PaginationCardType
     answer: string
     question: string
+    localCardGrade: number
 }
 const initialState: InitialCardsStateType = {
     cards: [],
@@ -26,7 +29,8 @@ const initialState: InitialCardsStateType = {
         current: 0
     },
     answer: '',
-    question: ''
+    question: '',
+    localCardGrade: 1
 }
 
 //reducer
@@ -38,6 +42,11 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
             return {...state, answer: action.answer}
         case FILTER_QUESTION:
             return {...state, question: action.question}
+        case SET_LOCAL_CARD_GRADE:
+            return {...state, localCardGrade: action.localCardGrade}
+        case SET_NEW_CARD_GRADE:
+            return {...state, cards: state.cards.map(card => card._id === action.updatedCard.card_id ?
+                    {...card, grade: action.updatedCard.grade, shots:action.updatedCard.shots} : {...card})}
         default:
             return state
     }
@@ -46,14 +55,18 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
 export const setPackCardsAC = (cards:PackCardType[],pagination: PaginationCardType) => ({type: SET_PACK_CARDS, cards, pagination} as const)
 export const setFilterQuestionAC = (question: string) => ({type: FILTER_QUESTION, question} as const)
 export const setFilterAnswerAC = (answer:string) => ({type: FILTER_ANSWER, answer} as const)
+export const saveLocalCardGradeAC = (localCardGrade:number) => ({type: SET_LOCAL_CARD_GRADE, localCardGrade} as const)
+export const setNewCardGradeAC = (updatedCard: updatedCardType) => ({type: SET_NEW_CARD_GRADE, updatedCard} as const)
 
 //AC TYPES
 export type getPackCardsActionType = ReturnType<typeof setPackCardsAC>;
 export type setFilterQuestionActionType = ReturnType<typeof setFilterQuestionAC>;
 export type setFilterAnswersActionType = ReturnType<typeof setFilterAnswerAC>;
+export type saveLocalCardGradeActionType = ReturnType<typeof saveLocalCardGradeAC>;
+export type setNewCardGrageActionType = ReturnType<typeof setNewCardGradeAC>;
 
 //main AC type
-export type CardActionType = getPackCardsActionType | setFilterQuestionActionType | setFilterAnswersActionType
+export type CardActionType = getPackCardsActionType | setFilterQuestionActionType | setFilterAnswersActionType | saveLocalCardGradeActionType | setNewCardGrageActionType
 
 
 //get card thunk
@@ -105,6 +118,21 @@ export const editCardTC = (_id: string, question:string, answer:string, callback
         .then(() =>{
             dispatch(setAppStatusAC("succeeded"));
             callback();
+        })
+        .catch((error: AxiosError<{ error: string }>) => {
+            dispatch(setAppStatusAC("failed"));
+            handleNetworkError(error, dispatch)
+        })
+}
+//updateCardGrade Thunk
+
+export const updateCardGradeTC = (card_id: string) => (dispatch:AppThunkDispatch, getState: () => AppStoreType) =>{
+    const grade = getState().cardsReducer.localCardGrade
+    dispatch(setAppStatusAC("loading"));
+    cardApi.editCardGrade(grade, card_id)
+        .then((res)=>{
+            dispatch(setAppStatusAC("succeeded"));
+            dispatch(setNewCardGradeAC(res.data.updatedGrade))
         })
         .catch((error: AxiosError<{ error: string }>) => {
             dispatch(setAppStatusAC("failed"));

@@ -212,7 +212,7 @@ export const PackTable = React.memo(() => {
 
             <DeleteModalContainer styles = {modalStyle} rowToDelete={rowToDelete} setRowToDelete={setRowToDelete}/>
             <EditModalContainer styles = {modalStyle} rowToUpdate={rowToUpdate} setRowToUpdate={setRowToUpdate}/>
-            <LearnModalContainer styles = {modalStyle} openLearnModal={openLearnModal} setOpenLearnModal={setOpenLearnModal}/>
+            <LearnModalContainer styles = {modalStyle} cardPack={openLearnModal} setOpenLearnModal={setOpenLearnModal}/>
 
         </Box>
 

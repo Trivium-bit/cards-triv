@@ -274,7 +274,7 @@ const CardDetails = () => {
                                                     <Rating
                                                         readOnly
                                                         size="small"
-                                                        value={card.rating}
+                                                        value={card.grade}
                                                     />
                                                 </StyledTableCell>
                                                 <StyledTableCell align="right">
