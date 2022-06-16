@@ -13,8 +13,6 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 
 
 type PacksHeaderPropsType = {
-    onSearch?: (searchQuery: string) => void
-    onAddNew?: () => void
     packsOwnerName?: string
 }
 

@@ -211,8 +211,8 @@ const CardDetails = () => {
     const updateCard = () => {
         if(editOpen && editOpen._id)  {
             dispatch(editCardTC(editOpen._id,
-                editCardPayload.answer,
                 editCardPayload.question,
+                editCardPayload.answer,
                 () => {
                 handleEditClose();
                     dispatch(getCardsTC({

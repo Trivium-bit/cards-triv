@@ -1,51 +1,79 @@
 .wrapper {
-    .table {
-        overflow-x: auto;
-        max-height: 55vh;
-        margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  /*height: 100%;*/
+  height: 65vh;
+  justify-content: space-between;
+  flex-wrap: wrap;
 
+  box-sizing: border-box;
+
+  .table {
+    overflow-x: auto;
+    margin-bottom: 15px;
+
+    max-width: 100%;
     .headerItem {
       cursor: pointer;
     }
 
     .tableBody {
+
       a {
         color: #21268F;
+        text-decoration: none;
       }
 
-            a:hover {
-                color: goldenrod;
-                cursor: pointer !important;
-            }
-        }
+      a:hover {
+        color: goldenrod;
+        cursor: pointer !important;
+      }
     }
+  }
+
+  .emptyPack {
+
+    height: 100%;
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+
+    .emptyText {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 19px;
+      opacity: 0.5
+    }
+  }
 }
 
 .buttonGroup {
+  display: flex;
+  justify-content: space-evenly;
+
+  .edit {
+    padding: 4px 6px;
+    border-radius: 2px;
+    border: none;
+    background: #D7D8EF;
+    color: #21268F;
+    cursor: pointer;
+    font-weight: 600;
     display: flex;
-    justify-content: space-evenly;
+    flex-wrap: wrap;
+    max-height: 100%;
+  }
 
-    .edit {
-        padding: 4px 6px;
-        border-radius: 2px;
-        border: none;
-        background: #D7D8EF;
-        color: #21268F;
-        cursor: pointer;
-        font-weight: 600;
-        display: flex;
-        flex-wrap: wrap;
-        max-height: 100%;
-    }
-
-    .delete {
-        border-radius: 2px;
-        padding: 4px;
-        border: none;
-        background: red;
-        color: white;
-        cursor: pointer;
-        font-weight: 600;
-    }
+  .delete {
+    border-radius: 2px;
+    padding: 4px;
+    border: none;
+    background: red;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+  }
 
 }

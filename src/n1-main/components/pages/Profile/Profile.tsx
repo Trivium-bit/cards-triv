@@ -12,13 +12,12 @@ import {PackTable} from "../Packs/AllPacks/PackTable";
 
 const Profile = () => {
     const userName = useAppSelector<string>(userNameSelector);
+
     return (
-        <div className={s.profileBlock}>
             <Container fixed >
-                <Box className={s.profileContainer}>
-                    <Grid container>
-                        <Grid xs={3} item>
-                            <Grid container direction="column" className={s.profileColumn}>
+                    <Grid container className={s.profileContainer}>
+                        <Grid xs={3} item className={s.profileColumn}>
+                            <Grid container direction="column" >
                                 <Box className={s.profile}>
                                     <UserProfile />
                                 </Box>
@@ -28,16 +27,15 @@ const Profile = () => {
                                 </Box>
                             </Grid>
                         </Grid>
-                        <Grid xs={9} item>
+                        <Grid xs={9} item >
                             <Box className={s.myPacksBlock}>
                                 <PacksHeader packsOwnerName={userName}/>
                                 <PackTable/>
                             </Box>
                         </Grid>
                     </Grid>
-                </Box>
             </Container>
-        </div>
+
     );
 };
 

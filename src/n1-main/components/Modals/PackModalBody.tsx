@@ -1,10 +1,10 @@
 import React, {ChangeEvent, useState, forwardRef, CSSProperties} from 'react';
 import {Box, FormControlLabel, Radio, RadioGroup, Paper} from "@mui/material";
-import Button from "../../../../../Common/Components/Button";
-import {useAppSelector} from "../../../../../state/store";
-import {getCardsSelector} from "../../../../../Common/Selectors/Selectors";
-import modalStyles from "../../../Modals/ModalStyles.module.scss";
-import {PacksResponseType} from "../../../../../api/cardPacksAPI";
+import Button from "../../../Common/Components/Button";
+import {useAppSelector} from "../../../state/store";
+import {getCardsSelector} from "../../../Common/Selectors/Selectors";
+import modalStyles from "./ModalStyles.module.scss";
+import {PacksResponseType} from "../../../api/cardPacksAPI";
 
 
 export interface PackModalBodyPropsType {

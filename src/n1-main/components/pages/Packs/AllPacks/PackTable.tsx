@@ -46,10 +46,15 @@ const StyledTableCell = styled(TableCell)(() => ({
         backgroundColor: "#ECECF9",
         color: "#000",
         fontWeight: 600,
-        fontSize: 13
+        fontSize: 13,
+
+
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
+        height:29,
+        maxHeight: 30,
+        // boxSizing: "border-box",
     },
 }));
 
@@ -112,7 +117,8 @@ export const PackTable = React.memo(() => {
 
     return (
         <Box className={s.wrapper}>
-            <TableContainer className={s.table} component={Paper}>
+            { myCardPacks.length !== 0 ?
+                <TableContainer className={s.table} component={Paper}>
                 <Table sx={{maxWidth: 800}} aria-label="customized table">
                     <TableHead>
                         <TableRow>
@@ -154,11 +160,11 @@ export const PackTable = React.memo(() => {
                                         ?
                                         <StyledTableCell component="th" scope="row">
                                             <NavLink to={`${PATH.PACKS}/${cardPack._id}`}>
-                                                {cardPack.name}
+                                                {cardPack.name.slice(0,26)}
                                             </NavLink>
                                         </StyledTableCell>
                                         :
-                                        <StyledTableCell component="th" scope="row" className={s.cardPackItem}>{cardPack.name}</StyledTableCell>
+                                        <StyledTableCell component="th" scope="row">{cardPack.name.slice(0,25)}</StyledTableCell>
                                     }
                                     <StyledTableCell align="left">{cardPack.cardsCount}</StyledTableCell>
                                     <StyledTableCell align="left">
@@ -166,7 +172,7 @@ export const PackTable = React.memo(() => {
                                             moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")
                                         }
                                     </StyledTableCell>
-                                    <StyledTableCell align="left">{cardPack.user_name}</StyledTableCell>
+                                    <StyledTableCell align="left">{cardPack.user_name.slice(0,50)}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
                                             {cardPack.user_id === myId && (
@@ -185,12 +191,24 @@ export const PackTable = React.memo(() => {
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))
+
                         }
+
+
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
-                        page={myCardsPagination.current} shape="rounded"/>
+                :
+                (
+                    <div className={s.emptyPack}>
+                                <span className={s.emptyText}>
+                                    You don't have cards pack. Click "Add a new card pack" to create new card pack
+                                </span>
+                    </div>
+                )
+            }
+            {myCardPacks.length !== 0 && <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
+                        page={myCardsPagination.current} shape="rounded"/>}
 
             <DeleteModalContainer styles = {modalStyle} rowToDelete={rowToDelete} setRowToDelete={setRowToDelete}/>
             <EditModalContainer styles = {modalStyle} rowToUpdate={rowToUpdate} setRowToUpdate={setRowToUpdate}/>

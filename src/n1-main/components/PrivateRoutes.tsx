@@ -19,10 +19,10 @@ const PrivateRoutes = () => {
     }
 
     return (
-        <div>
+        <>
             <Header/>
             <Outlet/>
-        </div>
+        </>
     );
 };
 

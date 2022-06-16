@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../../state/store";
 import {useSearchParams} from "react-router-dom";
 import {getCardsTC} from "../../../state/cardsReducer";
 import {GetCardsParams} from "../../../api/cardAPI";
-import PackModalBody from "../pages/Packs/AllPacks/PackModalBody";
+import PackModalBody from "./PackModalBody";
 import {RequestStatusType} from "../../../state/app-reducer";
 import {appStatusSelector, getCardsSelector} from "../../../Common/Selectors/Selectors";
 import {Box} from "@mui/material";
