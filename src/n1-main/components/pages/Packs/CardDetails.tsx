@@ -3,7 +3,6 @@ import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {
     Box,
     Container, FormControl,
-    FormHelperText,
     Input,
     InputAdornment, InputLabel, Modal, Pagination,
     Paper, Rating,
@@ -35,6 +34,7 @@ import modalStyles from "../../Modals/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
 import {DeleteCardModalContainer} from "../../Modals/DeleteCardModalContainer";
+import TextField from "@mui/material/TextField";
 
 type NewCardPayloadType = {
     answer: string;
@@ -323,24 +323,18 @@ const CardDetails = () => {
                             onClose={handleClose}
                         >
                             <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                                <h1 className={modalStyles.modalTitle}>Add new card</h1>
+                                <h1 className={modalStyles.modalTitle}>Add a new card</h1>
                                 <Box>
-                                    <FormControl error={!!addErrors.question} variant="standard">
-                                        <InputLabel htmlFor="component-simple">Question</InputLabel>
-                                        <Input className={modalStyles.inputsForm} onChange={handleChangeQuestion} />
-                                        {addErrors.question && (
-                                            <FormHelperText id="component-error-text">{addErrors.question}</FormHelperText>
-                                        )}
-                                    </FormControl>
+                                    <TextField multiline className={modalStyles.inputsForm} placeholder={"Type your question"}
+                                               autoFocus={true}
+                                               onChange={handleChangeQuestion} error={!!addErrors.question}
+                                    helperText={addErrors.question }/>
+                                    <TextField multiline className={modalStyles.inputsForm} placeholder={"Type your answer"}
+                                               onChange={handleChangeAnswer} error={!!addErrors.answer}
+                                               helperText={addErrors.answer}/>
                                 </Box>
                                 <Box>
-                                    <FormControl error={!!addErrors.answer} variant="standard">
-                                        <InputLabel htmlFor="component-simple">Answer</InputLabel>
-                                        <Input className={modalStyles.inputsForm} onChange={handleChangeAnswer} />
-                                        {addErrors.answer && (
-                                            <FormHelperText id="component-error-text">{addErrors.answer}</FormHelperText>
-                                        )}
-                                    </FormControl>
+
                                     <Box className={modalStyles.modalBtnGroup}>
                                         <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
                                         <Button className={modalStyles.btnSave} onClick={handleAddCard} title={'Add'} disabled={appStatus ==="loading"}/>
