@@ -29,7 +29,7 @@ export const LearnModalContainer = React.memo(({cardPack, setOpenLearnModal, sty
         if(cardPack){
             searchParams.set("cardsPack_id", cardPack?._id)
             setSearchParams(searchParams) // сетаем выбранную айдишку колоды в url
-            dispatch(getCardsTC({cardsPack_id: cardPack?._id})) // получаем карточки в выбранной колоде
+            dispatch(getCardsTC({cardsPack_id: cardPack?._id, pageCount: 100000})) // получаем карточки в выбранной колоде
         }
     }, [dispatch, cardPack])
 
