@@ -16,24 +16,24 @@ import {appStatusSelector} from "../../../Common/Selectors/Selectors";
 
 
 type ModalContainerPropsType = {
-    rowToUpdate: CardPackUpdateRequestType | undefined
-    setRowToUpdate: (rowToDelete:CardPackUpdateRequestType | undefined) => void
+    pack: CardPackUpdateRequestType | undefined
+    deleteCallback: (item: undefined) => void
     styles: CSSProperties
 }
-export const EditModalContainer = React.memo(({rowToUpdate, setRowToUpdate, styles}:ModalContainerPropsType) => {
+export const EditModalContainer = React.memo(({pack, deleteCallback, styles}:ModalContainerPropsType) => {
 
     const [searchParams] = useSearchParams();
     const currentPage = Number(searchParams.get("page")) || 1;
     const dispatch = useAppDispatch();
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const updatedCardPackName = useAppSelector<string>(state => state.cardPacksReducer.newCardPackName);
-    const handleCloseEdit = () => setRowToUpdate(undefined);
+    const handleCloseEdit = () => deleteCallback(undefined);
     const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editCardPackAC((event.target.value)));
     };
     const updatePackName = () => {
-        if (rowToUpdate) {
-            dispatch(editMyCardsPacksTC({_id: rowToUpdate._id, name: updatedCardPackName}, currentPage))
+        if (pack) {
+            dispatch(editMyCardsPacksTC({_id: pack._id, name: updatedCardPackName}, currentPage))
             handleCloseEdit();
         }
 
@@ -41,13 +41,14 @@ export const EditModalContainer = React.memo(({rowToUpdate, setRowToUpdate, styl
     return (
 
         <UniversalModal modalStyle={styles}
-                        show={!!rowToUpdate}
+                        show={!!pack}
                         h1Title={"Enter new card pack name"}
+                        handleClose={handleCloseEdit}
                         >
                 <FormControl variant="standard">
                     <InputLabel htmlFor="component-simple">Enter new card pack name</InputLabel>
                     <Input className={modalStyles.inputsForm} id="component-simple" autoFocus={true}
-                           defaultValue={rowToUpdate?.name}
+                           defaultValue={pack?.name}
                            onChange={handleChangeNewPack} disabled={appStatus === "loading"}/>
                 </FormControl>
                 <Box className={modalStyles.modalBtnGroup}>

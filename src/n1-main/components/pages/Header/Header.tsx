@@ -10,6 +10,7 @@ import s from "./Header.module.scss";
 import {logOutTC} from "../../../../state/auth-reducer";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
+import {setIsMyTableAC} from "../../../../state/cardPacksReducer";
 
 
 function Header() {
@@ -20,7 +21,9 @@ function Header() {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         dispatch(logOutTC())
     }
-
+    const handleChangeIsMyTable = () =>{
+        dispatch(setIsMyTableAC(true));
+    }
     return (
         <div className={s.header}>
             <Container>
@@ -43,7 +46,7 @@ function Header() {
                     <Grid item xs={5} md={2}>
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PROFILE && s.headerLinkActive}`}>
                             <NavLink to={PATH.PROFILE} >
-                                <div className={s.packList}>
+                                <div className={s.packList} onClick={handleChangeIsMyTable}>
                                     <PersonIcon className={s.icon} fontSize="medium"/>
                                     <span className={s.title}>Profile</span>
                                 </div>

@@ -32,9 +32,6 @@ export const myCardsPaginationSelector = (state: AppStoreType): PacksPaginationT
 export const myCardsPacksSelector = (state: AppStoreType): Array<PacksResponseType> =>{
     return state.cardPacksReducer.cardsPacks
 }
-/*export const selectNewCardsPackSelector = (state: AppStoreType): AddNewCardPackType =>{
-    return state.cardPacksReducer.addNewCardPack
-}*/
 export const userNameSelector = (state: AppStoreType): string =>{
     return state.appReducer.user.name
 }
@@ -44,7 +41,7 @@ export const userIdSelector = (state: AppStoreType): string =>{
 export const getCardsSelector = (state: AppStoreType): PackCardType[] =>{
     return state.cardsReducer.cards
 }
-export const getLocalCardGradeSelector = (state: AppStoreType): number | undefined =>{
+export const getLocalCardGradeSelector = (state: AppStoreType): number =>{
     return state.cardsReducer.localCardGrade
 }
 export const cardPaginationSelector = (state: AppStoreType): PaginationCardType =>{
@@ -55,4 +52,7 @@ export const cardFilterQuestionSelector = (state: AppStoreType): string =>{
 }
 export const cardFilterAnswerSelector = (state: AppStoreType): string =>{
     return state.cardsReducer.answer
+}
+export const isMyTableSelector = (state: AppStoreType):boolean =>{
+    return state.cardPacksReducer.isMyTable
 }
