@@ -326,12 +326,12 @@ const CardDetails = () => {
                                 <h1 className={modalStyles.modalTitle}>Add a new card</h1>
                                 <Box>
                                     <TextField multiline className={modalStyles.inputsForm} placeholder={"Type your question"}
-                                               autoFocus={true}
+                                               autoFocus={true} label="Question"
                                                onChange={handleChangeQuestion} error={!!addErrors.question}
                                     helperText={addErrors.question }/>
                                     <TextField multiline className={modalStyles.inputsForm} placeholder={"Type your answer"}
                                                onChange={handleChangeAnswer} error={!!addErrors.answer}
-                                               helperText={addErrors.answer}/>
+                                               helperText={addErrors.answer} label="Answer"/>
                                 </Box>
                                 <Box>
 
