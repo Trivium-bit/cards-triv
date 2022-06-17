@@ -12,21 +12,21 @@ import {appStatusSelector} from "../../../Common/Selectors/Selectors";
 
 
 type ModalContainerPropsType = {
-    rowToDelete: PacksResponseType | undefined
-    setRowToDelete: (rowToDelete:PacksResponseType| undefined) => void
+    pack: PacksResponseType | undefined
+    deleteCallback: (item:undefined) => void
     styles: CSSProperties
 }
-export const DeleteModalContainer = React.memo(({rowToDelete, setRowToDelete, styles}:ModalContainerPropsType) => {
+export const DeleteModalContainer = React.memo(({pack, deleteCallback, styles}:ModalContainerPropsType) => {
 
     const [searchParams] = useSearchParams();
     const currentPage = Number(searchParams.get("page")) || 1;
     const dispatch = useAppDispatch();
-    const handleCloseDelete = () => setRowToDelete(undefined);
+    const handleCloseDelete = () => deleteCallback(undefined);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
 
     const handleDeletePack = () => {
-        if (rowToDelete) {
-            dispatch(deleteCardPackTC(rowToDelete._id, currentPage))
+        if (pack) {
+            dispatch(deleteCardPackTC(pack._id, currentPage))
             handleCloseDelete();
         }
     }
@@ -34,11 +34,12 @@ export const DeleteModalContainer = React.memo(({rowToDelete, setRowToDelete, st
     return (
 
         <UniversalModal modalStyle={styles}
-                        show={!!rowToDelete}
+                        show={!!pack}
                         h1Title={"Delete Pack"}
-                        modalOnClick={handleDeletePack}>
+                        handleClose={handleCloseDelete}
+                        >
             <Box>
-                 <span className={modalStyles.modalText}>Do you really want to remove <b> card pack - {rowToDelete?.name }</b>?
+                 <span className={modalStyles.modalText}>Do you really want to remove <b> card pack - {pack?.name }</b>?
                         All cards will be excluded from this course
                  </span>
             </Box>

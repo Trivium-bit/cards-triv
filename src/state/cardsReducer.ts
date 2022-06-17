@@ -20,7 +20,7 @@ export type InitialCardsStateType = {
     pagination: PaginationCardType
     answer: string
     question: string
-    localCardGrade: number | undefined
+    localCardGrade: number
 }
 const initialState: InitialCardsStateType = {
     cards: [],
@@ -30,7 +30,7 @@ const initialState: InitialCardsStateType = {
     },
     answer: '',
     question: '',
-    localCardGrade: undefined
+    localCardGrade: 0
 }
 
 //reducer
@@ -47,7 +47,6 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
         case SET_NEW_CARD_GRADE:
             return {
                 ...state,
-                localCardGrade: undefined,
                 cards: state.cards.map(card =>
                     card._id === action.updatedCard.card_id
                         ? {
@@ -74,10 +73,10 @@ export type getPackCardsActionType = ReturnType<typeof setPackCardsAC>;
 export type setFilterQuestionActionType = ReturnType<typeof setFilterQuestionAC>;
 export type setFilterAnswersActionType = ReturnType<typeof setFilterAnswerAC>;
 export type saveLocalCardGradeActionType = ReturnType<typeof saveLocalCardGradeAC>;
-export type setNewCardGrageActionType = ReturnType<typeof setNewCardGradeAC>;
+export type setNewCardGradeActionType = ReturnType<typeof setNewCardGradeAC>;
 
 //main AC type
-export type CardActionType = getPackCardsActionType | setFilterQuestionActionType | setFilterAnswersActionType | saveLocalCardGradeActionType | setNewCardGrageActionType
+export type CardActionType = getPackCardsActionType | setFilterQuestionActionType | setFilterAnswersActionType | saveLocalCardGradeActionType | setNewCardGradeActionType
 
 
 //get card thunk
@@ -139,16 +138,17 @@ export const editCardTC = (_id: string, question:string, answer:string, callback
 
 export const updateCardGradeTC = (card_id: string) => (dispatch:AppThunkDispatch, getState: () => AppStoreType) =>{
     const grade = getState().cardsReducer.localCardGrade
-    if (grade) {
+
         dispatch(setAppStatusAC("loading"));
         cardApi.editCardGrade(grade, card_id)
             .then((res)=>{
                 dispatch(setAppStatusAC("succeeded"));
-                dispatch(setNewCardGradeAC(res.data.updatedGrade))
-            })
+                dispatch(setNewCardGradeAC(res.data.updatedGrade));
+                dispatch(saveLocalCardGradeAC(0)) // значение рейтинга 0 дизейблит кнопку next
+            })//сетаем 0 чтобы нельзя было кликать на next без простановки нового рейтинга
             .catch((error: AxiosError<{ error: string }>) => {
                 dispatch(setAppStatusAC("failed"));
                 handleNetworkError(error, dispatch)
             })
-    }
+
 }

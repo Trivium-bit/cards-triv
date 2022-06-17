@@ -25,7 +25,6 @@ import {
 } from "../../../../Common/Selectors/Selectors";
 import {
     addNewCardTC,
-    deleteCardTC,
     editCardTC,
     getCardsTC,
     setFilterAnswerAC,
@@ -35,6 +34,7 @@ import Button from "../../../../Common/Components/Button";
 import modalStyles from "../../Modals/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
+import {DeleteCardModalContainer} from "../../Modals/DeleteCardModalContainer";
 
 type NewCardPayloadType = {
     answer: string;
@@ -51,7 +51,7 @@ type ErrorStateType = {
 
 
 //mui table styles
-const StyledTableCell = styled(TableCell)(({ }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
@@ -63,7 +63,7 @@ const StyledTableCell = styled(TableCell)(({ }) => ({
     },
 }));
 
-const StyledTableRow = styled(TableRow)(({ }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
     },
@@ -75,7 +75,7 @@ const modalStyle = {
     transform: 'translate(-50%, -50%)',
     width: 350,
     bgcolor: '#F9F9FE',
-    boxShadow: 24,
+    boxShadow: 24 as unknown as 'BoxShadow | undefined',
     p: 4,
     borderRadius: 2,
 };
@@ -95,6 +95,7 @@ const CardDetails = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
     const [editOpen, setEditOpen] = useState<PackCardType | undefined>(undefined);
+    const [rowToDelete, setRowToDelete] = useState<PackCardType | undefined>(undefined);
     const [newCardPayload, setNewCardPayload] = useState<NewCardPayloadType>({
         answer: "",
         question: ""
@@ -104,7 +105,7 @@ const CardDetails = () => {
         question: ""
     });
     const [addErrors, setAddErrors] = useState<ErrorStateType>({});
-
+    const handleCloseDelete = () => setRowToDelete(undefined)
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
@@ -136,12 +137,11 @@ const CardDetails = () => {
         }
 
         dispatch(getCardsTC(payload))
-    }, [currentPage, filterAnswer, filterQuestion])
+    }, [dispatch, currentPage, filterAnswer, filterQuestion, packId])
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs/${packId}?page=${page}`)
     }
-
     const handleAddCard =() => {
         if (newCardPayload.question !== "" && newCardPayload.answer !== "") {
             dispatch(addNewCardTC( packId || '', {
@@ -151,7 +151,7 @@ const CardDetails = () => {
                 handleClose();
                 dispatch(getCardsTC({
                     cardsPack_id: packId,
-                    page: currentPage
+                    /*page: currentPage*/
                 }))
             }))
         } else {
@@ -184,14 +184,9 @@ const CardDetails = () => {
         setAddErrors(errors => ({...errors, answer: undefined}))
     }
 
-    const handleCardDelete = (id: any) => {
-        dispatch(deleteCardTC(id, () => {
-            dispatch(getCardsTC({
-                cardsPack_id: packId,
-                page: currentPage
-            }))
-        }))
-    }
+
+    const openDeleteModal = (card: PackCardType) => setRowToDelete(card);
+
     const onChangeQuestionHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         const value = e.target.value;
         clearTimeout(delaySetQuestionRef.current)
@@ -222,6 +217,7 @@ const CardDetails = () => {
             }))
         }
     }
+
     return (
         <Container fixed >
             <Box className={s.packDetailBlock}>
@@ -279,7 +275,7 @@ const CardDetails = () => {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="right">
                                                     <div className={styles.buttonGroup}>
-                                                        <button className={styles.delete} onClick={() => handleCardDelete(card._id)}>Delete</button>
+                                                        <button className={styles.delete} onClick={() => openDeleteModal(card)}>Delete</button>
                                                         <button className={styles.edit} onClick={() => handleEditOpen(card)}>Edit</button>
                                                     </div>
                                                 </StyledTableCell>
@@ -354,6 +350,8 @@ const CardDetails = () => {
                         </Modal>
                     </Box>
                 </Box>
+
+                <DeleteCardModalContainer card={rowToDelete} deleteCallback={handleCloseDelete} styles={modalStyle}/>
                 <Pagination onChange={handleChangePagination} count={cardPagination.count}  page={cardPagination.current} shape="rounded" />
 
             </Box>

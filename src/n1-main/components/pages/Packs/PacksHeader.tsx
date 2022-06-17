@@ -1,5 +1,10 @@
 import React, {ChangeEvent, useState} from 'react';
-import {Box, Checkbox, FormControl, FormHelperText, Input, InputAdornment, InputLabel} from "@mui/material";
+import {
+    Box,
+    Checkbox,
+    Input,
+    InputAdornment,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
 import modalStyles from "../../Modals/ModalStyles.module.scss";
@@ -10,32 +15,33 @@ import {useSearchParams} from "react-router-dom";
 import {UniversalModal} from "../../Modals/UniversalModal";
 import {modalStyle} from "./AllPacks/PackTable";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import TextField from "@mui/material/TextField";
 
 
 type PacksHeaderPropsType = {
     packsOwnerName?: string
 }
 
-
+export const maxCardPackNameLength = 26;
 const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     const [searchParams] = useSearchParams();
-    const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
     const [inputValue, setInputValue] = useState('');
+    const [inputError, setInputError] = useState(false)
     const isPrivate = useAppSelector<boolean>(state => state.cardPacksReducer.isPrivate);
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
+    const dispatch = useAppDispatch();
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
-        setAddErrors('');
+        setInputValue("");
+        setInputError(false)
     };
-    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
-    const [addErrors, setAddErrors] = useState('');
-
-
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
-
         dispatch(setLocalCardPackNameAC(e.currentTarget.value))
     }
+
     const spitName = () => {
         const spitedName = packsOwnerName?.split(" ");
         if (spitedName) {
@@ -47,19 +53,19 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
     }
     const currentPage = Number( searchParams.get("page")) || 1;
     const handleSave = () => {
-        if (inputValue !== '') {
+        if (inputValue !== '' && inputValue.length <= 26) {
             dispatch(addNewCardPackTC({name: inputValue, private: isPrivate},currentPage));
             dispatch(setIsPrivateCardPackAC(false));
             setInputValue("")
             handleClose();
         } else {
-            setAddErrors('Type name of pack')
+            setInputError(true)
         }
     };
 
-    const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeNewPack = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setInputValue(event.target.value);
-        setAddErrors('')
+        setInputError(false)
     };
     return (
         <Box className={s.packHeaderBlock}>
@@ -83,16 +89,18 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                     title={'Add a new card pack'}
                 />
 
-                <UniversalModal modalStyle={modalStyle} show={open} h1Title={"Add a new card pack"}>
-                    <FormControl error={!!addErrors} variant="standard">
-                        <InputLabel htmlFor="component-simple">Enter a name of card Pack</InputLabel>
-                        <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
-                               onChange={handleChangeNewPack} autoFocus={true}/>
-                        {addErrors && (
-                            <FormHelperText id="component-error-text">{addErrors}</FormHelperText>
-                        )}
+                <UniversalModal modalStyle={modalStyle} show={open} h1Title={"Add a new card pack"} handleClose={handleClose}>
+
+                        <TextField className={modalStyles.inputsForm}
+                                   value={inputValue}
+                                   onChange={handleChangeNewPack} autoFocus={true}
+                                   placeholder={"Enter a name of card Pack"}
+                                   error={inputValue.length > maxCardPackNameLength || inputError}
+                                   helperText={
+                                       (inputValue.length > maxCardPackNameLength && `Card pack name must be ${maxCardPackNameLength} symbols max`) ||
+                                       (inputError && 'Type name of pack')
+                                   }/>
                             <FormControlLabel control={<Checkbox onChange={onchangePrivate} checked={isPrivate} size={"small"}/>} label="Private" />
-                    </FormControl>
                     <Box className={modalStyles.modalBtnGroup}>
                         <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} />
                         <Button onClick={handleSave} className={modalStyles.btnSave} title={'Save new'} />

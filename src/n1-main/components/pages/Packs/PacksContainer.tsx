@@ -5,7 +5,7 @@ import Slider from "../../Slider/Slider";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
-import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
+import {appStatusSelector, isMyTableSelector} from "../../../../Common/Selectors/Selectors";
 import {useSearchParams} from "react-router-dom";
 import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 import {PackTable} from "./AllPacks/PackTable";
@@ -15,8 +15,8 @@ import {PackTable} from "./AllPacks/PackTable";
 
 const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const dispatch = useAppDispatch()
-    const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
+    const dispatch = useAppDispatch();
+    const isMyTable = useAppSelector<boolean>(isMyTableSelector);
 
     const [, setSearchParams] = useSearchParams()
 
