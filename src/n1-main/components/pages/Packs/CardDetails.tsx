@@ -151,7 +151,7 @@ const CardDetails = () => {
                 handleClose();
                 dispatch(getCardsTC({
                     cardsPack_id: packId,
-                    /*page: currentPage*/
+                    page: currentPage
                 }))
             }))
         } else {

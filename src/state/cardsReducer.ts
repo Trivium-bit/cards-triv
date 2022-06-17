@@ -21,6 +21,7 @@ export type InitialCardsStateType = {
     answer: string
     question: string
     localCardGrade: number
+    pageCount: number
 }
 const initialState: InitialCardsStateType = {
     cards: [],
@@ -30,7 +31,8 @@ const initialState: InitialCardsStateType = {
     },
     answer: '',
     question: '',
-    localCardGrade: 0
+    localCardGrade: 0,
+    pageCount: 8
 }
 
 //reducer
