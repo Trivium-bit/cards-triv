@@ -39,7 +39,7 @@ const PacksContainer = () => {
         <Container fixed>
             <Box className={s.packsContainer}>
                 <Grid container>
-                    <Grid xs={3} item>
+                    <Grid xs={12} md={3} lg={3} item>
                         <Grid container direction="column" className={s.packColumn}>
                             <Box className={s.showPacks}>
                                 <span className={s.title}>Show packs cards</span>
@@ -62,7 +62,7 @@ const PacksContainer = () => {
                             </Box>
                         </Grid>
                     </Grid>
-                    <Grid xs={9} item>
+                    <Grid xs={12} md={9} lg={9} item>
                         <Box className={s.myPacksBlock}>
                             <PacksHeader/>
                             <PackTable/>

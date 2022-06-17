@@ -16,7 +16,7 @@ const Profile = () => {
     return (
             <Container fixed >
                     <Grid container className={s.profileContainer}>
-                        <Grid xs={3} item className={s.profileColumn}>
+                        <Grid xs={12} md={3} lg={3} item className={s.profileColumn}>
                             <Grid container direction="column" >
                                 <Box className={s.profile}>
                                     <UserProfile />
@@ -27,7 +27,7 @@ const Profile = () => {
                                 </Box>
                             </Grid>
                         </Grid>
-                        <Grid xs={9} item >
+                        <Grid xs={12} md={9} lg={3} item >
                             <Box className={s.myPacksBlock}>
                                 <PacksHeader packsOwnerName={userName}/>
                                 <PackTable/>
