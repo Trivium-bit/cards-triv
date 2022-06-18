@@ -36,7 +36,7 @@ const QUESTION = "QUESTION";
 const ANSWER = "ANSWER";
 const grades = ["I didn't know", 'Forgot', 'Long thought', 'Confused', 'I knew the answer'];
 
-const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBodyPropsType, ref: any) => {
+const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBodyPropsType, ref: any) => {
     const dispatch = useAppDispatch();
     const selectedValue = useAppSelector(getLocalCardGradeSelector);
     const cards = useAppSelector(getCardsSelector);
@@ -100,4 +100,4 @@ const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBod
     );
 })
 
-export default PackModalBody;
+export default LearnModalBody;

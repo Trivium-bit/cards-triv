@@ -13,15 +13,15 @@ import {appStatusSelector} from "../../../Common/Selectors/Selectors";
 
 type ModalContainerPropsType = {
     pack: PacksResponseType | undefined
-    deleteCallback: (item:undefined) => void
+    closeModalCallback: (item:undefined) => void
     styles: CSSProperties
 }
-export const DeleteModalContainer = React.memo(({pack, deleteCallback, styles}:ModalContainerPropsType) => {
+export const DeleteModalContainer = React.memo(({pack, closeModalCallback, styles}:ModalContainerPropsType) => {
 
     const [searchParams] = useSearchParams();
     const currentPage = Number(searchParams.get("page")) || 1;
     const dispatch = useAppDispatch();
-    const handleCloseDelete = () => deleteCallback(undefined);
+    const handleCloseDelete = () => closeModalCallback(undefined);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
 
     const handleDeletePack = () => {

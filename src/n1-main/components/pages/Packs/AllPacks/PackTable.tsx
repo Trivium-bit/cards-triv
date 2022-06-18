@@ -34,7 +34,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import moment from "moment/moment";
 import {DeleteModalContainer} from "../../../Modals/DeleteModalContainer";
-import {EditModalContainer} from "../../../Modals/EditModalContainer";
+import {EditAddModalContainer} from "../../../Modals/EditAddModalContainer";
 import {LearnModalContainer} from "../../../Modals/LearnModalContainer";
 import {maxCardPackNameLength} from "../PacksHeader";
 
@@ -94,7 +94,7 @@ export const PackTable = React.memo(() => {
     const myCardsPagination = useSelector(myCardsPaginationSelector);
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<CardPackUpdateRequestType | undefined>(undefined);
-    const [openLearnModal, setOpenLearnModal] = useState<PacksResponseType | undefined>(undefined);
+    const [rowToLearn, setRowToLearn] = useState<PacksResponseType | undefined>(undefined);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
     const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
 
@@ -103,7 +103,7 @@ export const PackTable = React.memo(() => {
     const currentPage = Number(searchParams.get("page")) || 1;
     const handleOpenDelete = (cardPack: PacksResponseType) => setRowToDelete(cardPack);
     const handleOpenLearn = (cardPack: PacksResponseType) => {
-        setOpenLearnModal(cardPack)
+        setRowToLearn(cardPack)
     };
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
@@ -211,9 +211,9 @@ export const PackTable = React.memo(() => {
             {myCardPacks.length !== 0 && <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
                         page={myCardsPagination.current} shape="rounded"/>}
 
-            <DeleteModalContainer styles = {modalStyle} pack={rowToDelete} deleteCallback={setRowToDelete}/>
-            <EditModalContainer styles = {modalStyle} pack={rowToUpdate} deleteCallback={setRowToUpdate}/>
-            <LearnModalContainer styles = {modalStyle} cardPack={openLearnModal} deleteCallback={setOpenLearnModal}/>
+            <DeleteModalContainer styles = {modalStyle} pack={rowToDelete} closeModalCallback={setRowToDelete}/>
+            <EditAddModalContainer styles = {modalStyle} pack={rowToUpdate} closeModalCallback={setRowToUpdate}/>
+            <LearnModalContainer styles = {modalStyle} pack={rowToLearn} closeModalCallback={setRowToLearn}/>
 
         </Box>
 
