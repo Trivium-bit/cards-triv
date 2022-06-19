@@ -1,6 +1,6 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-import {PacksPaginationType} from "../../state/cardPacksReducer";
+/*import {PacksPaginationType} from "../../state/cardPacksReducer";*/
 import {PacksResponseType} from "../../api/cardPacksAPI";
 import {PackCardType} from "../../api/cardAPI";
 import {PaginationCardType} from "../../state/cardsReducer";
@@ -26,9 +26,9 @@ export const isInitializedSelector = (state: AppStoreType):boolean =>{
 export const myCardsIsLoadingSelector = (state: AppStoreType): boolean =>{
     return state.cardPacksReducer.isLoading
 }
-export const myCardsPaginationSelector = (state: AppStoreType): PacksPaginationType =>{
+/*export const myCardsPaginationSelector = (state: AppStoreType): PacksPaginationType =>{
     return state.cardPacksReducer.pagination
-}
+}*/
 export const myCardsPacksSelector = (state: AppStoreType): Array<PacksResponseType> =>{
     return state.cardPacksReducer.cardsPacks
 }

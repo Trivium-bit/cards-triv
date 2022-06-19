@@ -12,16 +12,14 @@ import {
 } from "@mui/material";
 
 import s from './AllTable.module.scss'
-import {useSearchParams, NavLink} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {
+import {NavLink} from "react-router-dom";
 
-    myCardsPaginationSelector,
+import {
     myCardsPacksSelector, userIdSelector, isMyTableSelector,
 } from "../../../../../Common/Selectors/Selectors";
 import {
     CardPackUpdateRequestType,
-    getCardsPacksTC,
+    getCardsPacksTC, setCardPackCurrentPageAC,
 } from "../../../../../state/cardPacksReducer";
 
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
@@ -37,9 +35,6 @@ import {DeleteModalContainer} from "../../../Modals/DeleteModalContainer";
 import {EditAddModalContainer} from "../../../Modals/EditAddModalContainer";
 import {LearnModalContainer} from "../../../Modals/LearnModalContainer";
 import {maxCardPackNameLength} from "../PacksHeader";
-
-//types
-
 
 //styles mui
 const StyledTableCell = styled(TableCell)(() => ({
@@ -88,37 +83,31 @@ export const PackTable = React.memo(() => {
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
     const max = useAppSelector<number>(state => state.cardPacksReducer.max);
     const myId = useAppSelector<string>(userIdSelector);
-    const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
     const myCardPacks = useAppSelector(myCardsPacksSelector);
-    const myCardsPagination = useSelector(myCardsPaginationSelector);
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<CardPackUpdateRequestType | undefined>(undefined);
     const [rowToLearn, setRowToLearn] = useState<PacksResponseType | undefined>(undefined);
     const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
     const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
+    const cardPacksTotalCount = useAppSelector(state => state.cardPacksReducer.cardPacksTotalCount);
+    const currentPage = useAppSelector(state => state.cardPacksReducer.page)
 
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
-
-    const currentPage = Number(searchParams.get("page")) || 1;
     const handleOpenDelete = (cardPack: PacksResponseType) => setRowToDelete(cardPack);
-    const handleOpenLearn = (cardPack: PacksResponseType) => {
-        setRowToLearn(cardPack)
-    };
+    const handleOpenLearn = (cardPack: PacksResponseType) => setRowToLearn(cardPack);
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
-        searchParams.set('page', page.toString())
-        setSearchParams(searchParams)
-
+        dispatch(setCardPackCurrentPageAC(page))
     }
 
     useEffect(() => {
         dispatch(getCardsPacksTC(currentPage))
-    }, [currentPage, dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
+    }, [dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks, currentPage]);
 
     return (
         <Box className={s.wrapper}>
-            { myCardPacks.length !== 0 ?
+            {/*{ myCardPacks.length !== 0 ?*/}
                 <TableContainer className={s.table} component={Paper}>
                 <Table sx={{maxWidth: 800}} aria-label="customized table">
                     <TableHead>
@@ -199,17 +188,17 @@ export const PackTable = React.memo(() => {
                     </TableBody>
                 </Table>
             </TableContainer>
-                :
+                {/*:
                 (
                     <div className={s.emptyPack}>
                                 <span className={s.emptyText}>
                                     You don't have cards pack. Click "Add a new card pack" to create new card pack
                                 </span>
                     </div>
-                )
-            }
-            {myCardPacks.length !== 0 && <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
-                        page={myCardsPagination.current} shape="rounded"/>}
+              )
+            }*/}
+            {/*{myCardPacks.length !== 0 && */}
+            <Pagination onChange={handleChangePagination} count={cardPacksTotalCount} page={currentPage} shape="rounded"/>
 
             <DeleteModalContainer styles = {modalStyle} pack={rowToDelete} closeModalCallback={setRowToDelete}/>
             <EditAddModalContainer styles = {modalStyle} pack={rowToUpdate} closeModalCallback={setRowToUpdate}/>

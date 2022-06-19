@@ -11,7 +11,7 @@ import {getCardsSelector, getLocalCardGradeSelector} from "../../../Common/Selec
 const getRandomCard = (items: PackCardType[]) => {
     const MAX_RATING = 6;
     const arr: number[] = []; // xTimes of i for any item
-    items.map((item, i) => {
+    items.forEach((item, i) => {
         const grade = Math.round(item.grade);
         let xTimes = MAX_RATING - grade;
 
@@ -60,7 +60,6 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
 
 
     return (
-        /*<Paper tabIndex={-1} ref={ref}>*/
             <Box sx={modalStyle} className={modalStyles.modalBlock} ref={ref}>
                 <h1 className={modalStyles.modalTitle}>Learn {cardPack?.name}</h1>
                 <p className={modalStyles.modalText}><b>Question:</b>{currentCard?.question}</p>
@@ -96,7 +95,6 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
                     />
                 </Box>
             </Box>
-       /* </Paper>*/
     );
 })
 

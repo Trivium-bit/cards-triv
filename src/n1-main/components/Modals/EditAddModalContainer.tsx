@@ -8,7 +8,6 @@ import {
     editMyCardsPacksTC, setIsPrivateCardPackAC
 } from "../../../state/cardPacksReducer";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
-import {useSearchParams} from "react-router-dom";
 import {Box, Checkbox} from "@mui/material";
 import modalStyles from "./ModalStyles.module.scss";
 import Button from "../../../Common/Components/Button";
@@ -27,8 +26,6 @@ export const EditAddModalContainer = React.memo(({pack, closeModalCallback, styl
 
     const [newPackName, setInputValue] = useState('');
     const [inputError, setInputError] = useState(false);
-    const [searchParams] = useSearchParams();
-    const currentPage = Number(searchParams.get("page")) || 1;
     const dispatch = useAppDispatch();
     const updatedCardPackName = useAppSelector<string>(state => state.cardPacksReducer.newCardPackName);
     const isPrivate = useAppSelector<boolean>(state => state.cardPacksReducer.isPrivate);
@@ -46,7 +43,7 @@ export const EditAddModalContainer = React.memo(({pack, closeModalCallback, styl
     };
     const updatePackName = () => {
         if (pack && updatedCardPackName !== "" && updatedCardPackName.length <= maxCardPackNameLength) {
-            dispatch(editMyCardsPacksTC({_id: pack._id, name: updatedCardPackName, private: isPrivate}, currentPage));
+            dispatch(editMyCardsPacksTC({_id: pack._id, name: updatedCardPackName, private: isPrivate}));
             handleCloseModal();
         } else {
             setInputError(true);
@@ -62,7 +59,7 @@ export const EditAddModalContainer = React.memo(({pack, closeModalCallback, styl
     };
     const saveNewPack = () => {
         if (newPackName !== '' && newPackName.length <= maxCardPackNameLength) {
-            dispatch(addNewCardPackTC({name: newPackName, private: isPrivate}, currentPage));
+            dispatch(addNewCardPackTC({name: newPackName, private: isPrivate}));
             dispatch(setIsPrivateCardPackAC(false));
             setInputValue("")
             handleCloseModal();
