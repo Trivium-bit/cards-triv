@@ -36,7 +36,9 @@ const PacksContainer = () => {
     return (
 
 
-        <Container fixed>
+        <Container sx={{
+            height: '100vh'
+        }} fixed>
             <Box className={s.packsContainer}>
                 <Grid container>
                     <Grid xs={12} md={3} lg={3} item>

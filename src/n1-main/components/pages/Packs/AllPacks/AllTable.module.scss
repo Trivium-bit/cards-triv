@@ -1,3 +1,4 @@
+@import "../../../../../Common/Styles/constants";
 .wrapper {
   overflow: auto;
   display: flex;
@@ -59,6 +60,16 @@
     display: flex;
     flex-wrap: wrap;
     max-height: 100%;
+    @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+      display: none;
+    }
+  }
+  .info {
+    @extend .edit;
+    display: none;
+    @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+      display: inline-block;
+    }
   }
 
   .delete {
@@ -69,6 +80,15 @@
     color: white;
     cursor: pointer;
     font-weight: 600;
+    @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+      display: none;
+    }
   }
 
+}
+
+.hideForMobile {
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    display: none;
+  }
 }

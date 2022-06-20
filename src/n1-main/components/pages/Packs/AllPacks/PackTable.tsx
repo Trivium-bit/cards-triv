@@ -42,19 +42,23 @@ import {maxCardPackNameLength} from "../PacksHeader";
 
 
 //styles mui
-const StyledTableCell = styled(TableCell)(() => ({
+const StyledTableCell = styled(TableCell)((theme) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
         fontWeight: 600,
         fontSize: 13,
-
-
+        ["@media (max-height:800px)"]: {
+            display: theme.className === s.hideForMobile ? "none" : ""
+        }
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
         height:29,
         maxHeight: 30,
+        ["@media (max-height:800px)"]: {
+            display: theme.className === s.hideForMobile ? "none" : ""
+        }
         // boxSizing: "border-box",
     },
 }));
@@ -137,21 +141,21 @@ export const PackTable = React.memo(() => {
 
                                 </InlineCel>
                             </StyledTableCell>
-                            <StyledTableCell align="center">
+                            <StyledTableCell align="center" className={s.hideForMobile}>
                                 <InlineCel className={s.headerItem}>
                                     <UniversalHeader headerValue={"Last Updated"} sortedValue={"updated"}/>
                                     {sortPacks === "0updated" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
 
                                 </InlineCel>
                             </StyledTableCell>
-                            <StyledTableCell align="center">
+                            <StyledTableCell align="center" className={s.hideForMobile}>
                                 <InlineCel>
                                     <UniversalHeader headerValue={"Created by"} sortedValue={"name"}/>
                                     {sortPacks === "0name" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
 
                                 </InlineCel>
                             </StyledTableCell>
-                            <StyledTableCell align="center">Actions</StyledTableCell>
+                            <StyledTableCell align="center" >Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody className={s.tableBody}>
@@ -168,12 +172,12 @@ export const PackTable = React.memo(() => {
                                         <StyledTableCell component="th" scope="row">{cardPack.name.slice(0, maxCardPackNameLength)}</StyledTableCell>
                                     }
                                     <StyledTableCell align="left">{cardPack.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left">
+                                    <StyledTableCell align="left" className={s.hideForMobile}>
                                         {
                                             moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")
                                         }
                                     </StyledTableCell>
-                                    <StyledTableCell align="left">{cardPack.user_name.slice(0,50)}</StyledTableCell>
+                                    <StyledTableCell align="left" className={s.hideForMobile} >{cardPack.user_name.slice(0,50)}</StyledTableCell>
                                     <StyledTableCell align="right">
                                         <Box className={s.buttonGroup}>
                                             {cardPack.user_id === myId && (
@@ -186,7 +190,11 @@ export const PackTable = React.memo(() => {
                                                     </button>
                                                 </>
                                             )}
-                                            <button onClick={() => handleOpenLearn(cardPack)} className={s.edit}>Learn
+                                            <button onClick={() => handleOpenLearn(cardPack)}
+                                                    className={s.edit}>Learn
+                                            </button>
+                                            <button
+                                                className={s.info}>Info
                                             </button>
                                         </Box>
                                     </StyledTableCell>
