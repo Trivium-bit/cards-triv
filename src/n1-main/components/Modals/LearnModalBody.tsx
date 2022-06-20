@@ -11,7 +11,7 @@ import {getCardsSelector, getLocalCardGradeSelector} from "../../../Common/Selec
 const getRandomCard = (items: PackCardType[]) => {
     const MAX_RATING = 6;
     const arr: number[] = []; // xTimes of i for any item
-    items.map((item, i) => {
+    items.forEach((item, i) => {
         const grade = Math.round(item.grade);
         let xTimes = MAX_RATING - grade;
 
@@ -36,7 +36,7 @@ const QUESTION = "QUESTION";
 const ANSWER = "ANSWER";
 const grades = ["I didn't know", 'Forgot', 'Long thought', 'Confused', 'I knew the answer'];
 
-const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBodyPropsType, ref: any) => {
+const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBodyPropsType, ref: any) => {
     const dispatch = useAppDispatch();
     const selectedValue = useAppSelector(getLocalCardGradeSelector);
     const cards = useAppSelector(getCardsSelector);
@@ -60,7 +60,6 @@ const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBod
 
 
     return (
-        /*<Paper tabIndex={-1} ref={ref}>*/
             <Box sx={modalStyle} className={modalStyles.modalBlock} ref={ref}>
                 <h1 className={modalStyles.modalTitle}>Learn {cardPack?.name}</h1>
                 <p className={modalStyles.modalText}><b>Question:</b>{currentCard?.question}</p>
@@ -96,8 +95,7 @@ const PackModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBod
                     />
                 </Box>
             </Box>
-       /* </Paper>*/
     );
 })
 
-export default PackModalBody;
+export default LearnModalBody;

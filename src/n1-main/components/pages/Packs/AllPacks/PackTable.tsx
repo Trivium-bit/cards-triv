@@ -12,16 +12,20 @@ import {
 } from "@mui/material";
 
 import s from './AllTable.module.scss'
-import {useSearchParams, NavLink} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {
+import {NavLink} from "react-router-dom";
 
-    myCardsPaginationSelector,
-    myCardsPacksSelector, userIdSelector, isMyTableSelector,
+import {
+    myCardsPacksSelector,
+    userIdSelector,
+    isMyTableSelector,
+    minSelector,
+    maxSelector,
+    searchPackNameSelector,
+    cardPacksCurrentPageSelector, sortCardPacksSelector, totalCardPacksPageCountSelector,
 } from "../../../../../Common/Selectors/Selectors";
 import {
     CardPackUpdateRequestType,
-    getCardsPacksTC,
+    getCardsPacksTC, setCardPackCurrentPageAC,
 } from "../../../../../state/cardPacksReducer";
 
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
@@ -34,12 +38,9 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import moment from "moment/moment";
 import {DeleteModalContainer} from "../../../Modals/DeleteModalContainer";
-import {EditModalContainer} from "../../../Modals/EditModalContainer";
+import {EditAddModalContainer} from "../../../Modals/EditAddModalContainer";
 import {LearnModalContainer} from "../../../Modals/LearnModalContainer";
 import {maxCardPackNameLength} from "../PacksHeader";
-
-//types
-
 
 //styles mui
 const StyledTableCell = styled(TableCell)((theme) => ({
@@ -54,7 +55,7 @@ const StyledTableCell = styled(TableCell)((theme) => ({
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
-        height:29,
+        height: 29,
         maxHeight: 30,
         ["@media (max-height:800px)"]: {
             display: theme.className === s.hideForMobile ? "none" : ""
@@ -87,71 +88,67 @@ export const modalStyle = {
 //table
 export const PackTable = React.memo(() => {
 
-    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
-    const isMyTable = useAppSelector<boolean>(isMyTableSelector);
-    const min = useAppSelector<number>(state => state.cardPacksReducer.min);
-    const max = useAppSelector<number>(state => state.cardPacksReducer.max);
-    const myId = useAppSelector<string>(userIdSelector);
-    const [searchParams, setSearchParams] = useSearchParams();
     const dispatch = useAppDispatch();
+    const searchingPackName = useAppSelector<string>(searchPackNameSelector);
+    const isMyTable = useAppSelector<boolean>(isMyTableSelector);
+    const min = useAppSelector<number>(minSelector);
+    const max = useAppSelector<number>(maxSelector);
+    const myId = useAppSelector<string>(userIdSelector);
     const myCardPacks = useAppSelector(myCardsPacksSelector);
-    const myCardsPagination = useSelector(myCardsPaginationSelector);
+    const sortPacks = useAppSelector<string>(sortCardPacksSelector);
+    const [debounceLocalPackName] = useDebounce(searchingPackName, debounceDelay);
+    const totalCardPacksPageCount = useAppSelector<number>(totalCardPacksPageCountSelector);
+    const currentPage = useAppSelector<number>(cardPacksCurrentPageSelector)
+
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<CardPackUpdateRequestType | undefined>(undefined);
-    const [openLearnModal, setOpenLearnModal] = useState<PacksResponseType | undefined>(undefined);
-    const sortPacks = useAppSelector<string>(state => state.cardPacksReducer.sortPacks);
-    const [debounceLocalPackName] = useDebounce(localPackName, debounceDelay);
+    const [rowToLearn, setRowToLearn] = useState<PacksResponseType | undefined>(undefined);
 
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
-
-    const currentPage = Number(searchParams.get("page")) || 1;
     const handleOpenDelete = (cardPack: PacksResponseType) => setRowToDelete(cardPack);
-    const handleOpenLearn = (cardPack: PacksResponseType) => {
-        setOpenLearnModal(cardPack)
-    };
-
+    const handleOpenLearn = (cardPack: PacksResponseType) => setRowToLearn(cardPack);
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
-        searchParams.set('page', page.toString())
-        setSearchParams(searchParams)
-
+        dispatch(setCardPackCurrentPageAC(page))
+        dispatch(getCardsPacksTC())
     }
 
     useEffect(() => {
-        dispatch(getCardsPacksTC(currentPage))
-    }, [currentPage, dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
+        dispatch(setCardPackCurrentPageAC(1))
+        dispatch(getCardsPacksTC())
+    }, [dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
 
     return (
         <Box className={s.wrapper}>
-            { myCardPacks.length !== 0 ?
+            {myCardPacks.length !== 0 ?
                 <TableContainer className={s.table} component={Paper}>
-                <Table sx={{maxWidth: 800}} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>
-                                <InlineCel className={s.headerItem}>
-                                    <UniversalHeader headerValue={"Name"} sortedValue={"user_name"}/>
-                                    {sortPacks === "0user_name" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
+                    <Table sx={{maxWidth: 800}} aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell>
+                                    <InlineCel className={s.headerItem}>
+                                        <UniversalHeader headerValue={"Name"} sortedValue={"user_name"}/>
+                                        {sortPacks === "0user_name" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
 
-                                </InlineCel>
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                                <InlineCel className={s.headerItem}>
-                                    <UniversalHeader headerValue={"Cards"} sortedValue={"cardsCount"}/>
-                                    {sortPacks === "0cardsCount" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
+                                    </InlineCel>
+                                </StyledTableCell>
+                                <StyledTableCell align="center">
+                                    <InlineCel className={s.headerItem}>
+                                        <UniversalHeader headerValue={"Cards"} sortedValue={"cardsCount"}/>
+                                        {sortPacks === "0cardsCount" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
 
-                                </InlineCel>
-                            </StyledTableCell>
-                            <StyledTableCell align="center" className={s.hideForMobile}>
-                                <InlineCel className={s.headerItem}>
-                                    <UniversalHeader headerValue={"Last Updated"} sortedValue={"updated"}/>
-                                    {sortPacks === "0updated" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
+                                    </InlineCel>
+                                </StyledTableCell>
+                                <StyledTableCell align="center" className={s.hideForMobile}>
+                                    <InlineCel className={s.headerItem}>
+                                        <UniversalHeader headerValue={"Last Updated"} sortedValue={"updated"}/>
+                                        {sortPacks === "0updated" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
 
-                                </InlineCel>
-                            </StyledTableCell>
-                            <StyledTableCell align="center" className={s.hideForMobile}>
-                                <InlineCel>
-                                    <UniversalHeader headerValue={"Created by"} sortedValue={"name"}/>
-                                    {sortPacks === "0name" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
+                                    </InlineCel>
+                                </StyledTableCell>
+                                <StyledTableCell align="center" className={s.hideForMobile}>
+                                    <InlineCel>
+                                        <UniversalHeader headerValue={"Created by"} sortedValue={"name"}/>
+                                        {sortPacks === "0name" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
 
                                 </InlineCel>
                             </StyledTableCell>
@@ -195,18 +192,18 @@ export const PackTable = React.memo(() => {
                                             </button>
                                             <button
                                                 className={s.info}>Info
-                                            </button>
-                                        </Box>
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            ))
+                                                </button>
+                                            </Box>
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                ))
 
-                        }
+                            }
 
 
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                        </TableBody>
+                    </Table>
+                </TableContainer>
                 :
                 (
                     <div className={s.emptyPack}>
@@ -216,12 +213,13 @@ export const PackTable = React.memo(() => {
                     </div>
                 )
             }
-            {myCardPacks.length !== 0 && <Pagination onChange={handleChangePagination} count={myCardsPagination.count}
-                        page={myCardsPagination.current} shape="rounded"/>}
+            {totalCardPacksPageCount > 1 &&
+            <Pagination onChange={handleChangePagination} count={totalCardPacksPageCount} page={currentPage}
+                        shape="rounded"/>}
 
-            <DeleteModalContainer styles = {modalStyle} pack={rowToDelete} deleteCallback={setRowToDelete}/>
-            <EditModalContainer styles = {modalStyle} pack={rowToUpdate} deleteCallback={setRowToUpdate}/>
-            <LearnModalContainer styles = {modalStyle} cardPack={openLearnModal} deleteCallback={setOpenLearnModal}/>
+            <DeleteModalContainer styles={modalStyle} pack={rowToDelete} closeModalCallback={setRowToDelete}/>
+            <EditAddModalContainer styles={modalStyle} pack={rowToUpdate} closeModalCallback={setRowToUpdate}/>
+            <LearnModalContainer styles={modalStyle} pack={rowToLearn} closeModalCallback={setRowToLearn}/>
 
         </Box>
 

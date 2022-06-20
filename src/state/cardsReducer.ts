@@ -48,15 +48,10 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
             return {...state, localCardGrade: action.localCardGrade}
         case SET_NEW_CARD_GRADE:
             return {
-                ...state,
-                cards: state.cards.map(card =>
-                    card._id === action.updatedCard.card_id
-                        ? {
-                            ...card,
-                            grade: action.updatedCard.grade,
-                            shots:action.updatedCard.shots
-                        }
-                        : card
+                ...state, cards: state.cards.map(card =>
+                            card._id === action.updatedCard.card_id
+                            ? {...card, grade: action.updatedCard.grade, shots:action.updatedCard.shots}
+                            : card
                 )
             }
         default:

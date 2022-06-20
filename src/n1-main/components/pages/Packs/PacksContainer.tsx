@@ -6,8 +6,7 @@ import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector, isMyTableSelector} from "../../../../Common/Selectors/Selectors";
-import {useSearchParams} from "react-router-dom";
-import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
+import {setIsMyTableAC} from "../../../../state/cardPacksReducer";
 import {PackTable} from "./AllPacks/PackTable";
 
 
@@ -18,17 +17,15 @@ const PacksContainer = () => {
     const dispatch = useAppDispatch();
     const isMyTable = useAppSelector<boolean>(isMyTableSelector);
 
-    const [, setSearchParams] = useSearchParams()
-
     const handlerOpenAllTable = () => {
-        setSearchParams({ page: "1" })
+
         dispatch(setIsMyTableAC(false))
-        dispatch(setLocalCardPackNameAC(""));
+        /*dispatch(setLocalCardPackNameAC(""));*/
     }
     const handlerOpenMyTable = () => {
-        setSearchParams({ page: "1" })
+
         dispatch(setIsMyTableAC(true))
-        dispatch(setLocalCardPackNameAC(""));
+        /*dispatch(setLocalCardPackNameAC(""));*/
     }
 
 

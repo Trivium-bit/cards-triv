@@ -3,7 +3,6 @@ import {UniversalModal} from "./UniversalModal";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
 import {deleteCardPackTC} from "../../../state/cardPacksReducer";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
-import {useSearchParams} from "react-router-dom";
 import {Box} from "@mui/material";
 import modalStyles from "./ModalStyles.module.scss";
 import Button from "../../../Common/Components/Button";
@@ -13,20 +12,18 @@ import {appStatusSelector} from "../../../Common/Selectors/Selectors";
 
 type ModalContainerPropsType = {
     pack: PacksResponseType | undefined
-    deleteCallback: (item:undefined) => void
+    closeModalCallback: (item:undefined) => void
     styles: CSSProperties
 }
-export const DeleteModalContainer = React.memo(({pack, deleteCallback, styles}:ModalContainerPropsType) => {
+export const DeleteModalContainer = React.memo(({pack, closeModalCallback, styles}:ModalContainerPropsType) => {
 
-    const [searchParams] = useSearchParams();
-    const currentPage = Number(searchParams.get("page")) || 1;
     const dispatch = useAppDispatch();
-    const handleCloseDelete = () => deleteCallback(undefined);
+    const handleCloseDelete = () => closeModalCallback(undefined);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
 
     const handleDeletePack = () => {
         if (pack) {
-            dispatch(deleteCardPackTC(pack._id, currentPage))
+            dispatch(deleteCardPackTC(pack._id))
             handleCloseDelete();
         }
     }
