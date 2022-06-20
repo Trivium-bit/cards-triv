@@ -50,7 +50,7 @@ const StyledTableCell = styled(TableCell)((theme) => ({
         fontWeight: 600,
         fontSize: 13,
         ["@media (max-height:800px)"]: {
-            display: theme.className === s.hideForMobile ? "none" : ""
+            display: theme.className === s.hideForMobile ? "none" : "",
         }
     },
     [`&.${tableCellClasses.body}`]: {
@@ -58,7 +58,8 @@ const StyledTableCell = styled(TableCell)((theme) => ({
         height: 29,
         maxHeight: 30,
         ["@media (max-height:800px)"]: {
-            display: theme.className === s.hideForMobile ? "none" : ""
+            display: theme.className === s.hideForMobile ? "none" : "",
+            height: 14,
         }
         // boxSizing: "border-box",
     },
@@ -190,9 +191,6 @@ export const PackTable = React.memo(() => {
                                             <button onClick={() => handleOpenLearn(cardPack)}
                                                     className={s.edit}>Learn
                                             </button>
-                                            <button
-                                                className={s.info}>Info
-                                                </button>
                                             </Box>
                                         </StyledTableCell>
                                     </StyledTableRow>

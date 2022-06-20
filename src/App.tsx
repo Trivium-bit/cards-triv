@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import AppRoutes from './n1-main/components/AppRoutes';
-import './App.css';
+import s from './App.module.scss';
 import {ErrorSnackBar} from "./n1-main/components/pages/ErrorSnackBar/ErrorSnackBar";
 import {initializeAppTC} from "./state/auth-reducer";
 import {useAppDispatch, useAppSelector} from "./state/store";
@@ -23,7 +23,7 @@ function App() {
     }
 
     return (
-        <div className="App">
+        <div className={s.App}>
             {appStatus === 'loading' && <Loader/>}
             <AppRoutes/>
             <ErrorSnackBar/>

@@ -1,9 +1,16 @@
+@import "../../../../Common/Styles/constants";
+
 .profileContainer {
   height: 80vh;
   background: white;
   margin: 24px 0 0 0;
   border-radius: 8px;
   box-sizing: border-box;
+  width: 100%;
+
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    height: max-content;
+  }
 
   .myPacksBlock {
     display: flex;
@@ -11,6 +18,9 @@
     height: 80vh;
     margin: 0 24px;
     box-sizing: border-box;
+    @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+      height: max-content;
+    }
   }
 
   .profileColumn {

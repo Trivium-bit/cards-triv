@@ -7,6 +7,9 @@
   border-radius:8px;
   padding: 25px;
   position: relative;
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    height: calc(100vh - 135px);
+  }
 
   .nav {
     display: flex;

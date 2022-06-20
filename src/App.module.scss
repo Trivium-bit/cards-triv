@@ -1,0 +1,10 @@
+@import "./Common/Styles/constants";
+.App {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    background: linear-gradient(to bottom right, rgb(218, 201, 219), rgb(154, 146, 199));
+    @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+        height: max-content;
+    }
+}
