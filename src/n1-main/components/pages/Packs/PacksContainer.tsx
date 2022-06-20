@@ -5,7 +5,7 @@ import Slider from "../../Slider/Slider";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import PacksHeader from "./PacksHeader";
 import {RequestStatusType} from "../../../../state/app-reducer";
-import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
+import {appStatusSelector, isMyTableSelector} from "../../../../Common/Selectors/Selectors";
 import {useSearchParams} from "react-router-dom";
 import {setIsMyTableAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 import {PackTable} from "./AllPacks/PackTable";
@@ -15,10 +15,10 @@ import {PackTable} from "./AllPacks/PackTable";
 
 const PacksContainer = () => {
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
-    const dispatch = useAppDispatch()
-    const isMyTable = useAppSelector<boolean>(state => state.cardPacksReducer.isMyTable);
+    const dispatch = useAppDispatch();
+    const isMyTable = useAppSelector<boolean>(isMyTableSelector);
 
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [, setSearchParams] = useSearchParams()
 
     const handlerOpenAllTable = () => {
         setSearchParams({ page: "1" })
@@ -39,7 +39,7 @@ const PacksContainer = () => {
         <Container fixed>
             <Box className={s.packsContainer}>
                 <Grid container>
-                    <Grid xs={3} item>
+                    <Grid xs={12} md={3} lg={3} item>
                         <Grid container direction="column" className={s.packColumn}>
                             <Box className={s.showPacks}>
                                 <span className={s.title}>Show packs cards</span>
@@ -62,7 +62,7 @@ const PacksContainer = () => {
                             </Box>
                         </Grid>
                     </Grid>
-                    <Grid xs={9} item>
+                    <Grid xs={12} md={9} lg={9} item>
                         <Box className={s.myPacksBlock}>
                             <PacksHeader/>
                             <PackTable/>

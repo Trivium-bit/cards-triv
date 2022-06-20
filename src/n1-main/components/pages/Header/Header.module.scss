@@ -1,3 +1,5 @@
+@import "../../../../Common/Styles/constants";
+
 .header {
     height : 60px;
     line-height : 60px;
@@ -13,11 +15,22 @@
         color: #2D2E46;
         cursor: pointer;
     }
+    .logo {
+        @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+            display: none;
+        }
+        @media (min-width: $tablet-and-mobile-min-width) and (max-width: $tablet-and-mobile-max-width) {
+            display: none;
+        }
+    }
 
     .logOut {
         display: block;
         font-size: 15px;
         text-align: right;
+        @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+            font-size: 12px;
+        }
     }
 
     .headerLink {

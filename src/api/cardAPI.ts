@@ -18,11 +18,13 @@ export const cardApi = {
 
         return instance.get<ResponseCardType>('/cards/card', {params});
     },
-    addNewCard(id: string,card: PackCardType) {
-        return instance.post<ResponseAddCardType>(`/cards/card`, {card: {
+    addNewCard(id: string,card: PackCardPayloadType) {
+        return instance.post<ResponseAddCardType>(`/cards/card`, {
+            card: {
                 ...card,
                 cardsPack_id: id
-            }});
+            }
+        });
     },
     deleteMyCard(id:string) {
         return instance.delete<ResponseDeleteCardType>(`/cards/card?id=${id}`);
@@ -30,12 +32,23 @@ export const cardApi = {
     editMyCard(_id:string,question:string, answer:string) {
         return instance.put<ResponseUpdateCardType>('/cards/card', {card: {_id, question, answer}});
     },
+<<<<<<< HEAD
     gradeMyCard(grade: number | undefined, card_id:string) {
         return instance.put<ResponseUpdateCardType>('/cards/grade', {grade, card_id});
+=======
+    editCardGrade(grade: number, card_id: string){
+        return instance.put<ResponseUpdateCardParamsType>('/cards/grade', {grade, card_id})
+>>>>>>> origin/dev
     }
 }
 
+export type PackCardPayloadType = {
+    answer: string;
+    question: string;
+}
+
 export type PackCardType = {
+<<<<<<< HEAD
     answer: string
     question: string
     cardsPack_id?: string
@@ -45,6 +58,22 @@ export type PackCardType = {
     rating?: number
     _id?: string
     grade?: number | undefined
+=======
+    answer: string;
+    cardsPack_id: string;
+    comments: string;
+    created: string;
+    grade: number;
+    more_id: string;
+    question: string;
+    rating: number;
+    shots: number;
+    type: string;
+    updated: string;
+    user_id: string;
+    __v: number;
+    _id: string;
+>>>>>>> origin/dev
 }
 
 export type ResponseCardType ={
@@ -67,4 +96,16 @@ export type ResponseDeleteCardType = {
 }
 export type ResponseUpdateCardType = {
     updatedCard:PackCardType
+}
+export type updatedCardType = {
+    cardsPack_id: string,
+    card_id: string,
+    user_id: string,
+    grade: number,
+    shots: number
+    created: string
+    updated: string
+}
+export type ResponseUpdateCardParamsType = {
+    updatedGrade:updatedCardType
 }

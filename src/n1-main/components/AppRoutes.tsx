@@ -29,7 +29,7 @@ export const PATH = {
 
 function AppRoutes() {
   return (
-    <div>
+    <>
       <Routes>
         <Route path={PATH.HOME} element={<Home/>} />
         <Route path={PATH.LOGIN} element={<Login />} />
@@ -45,7 +45,7 @@ function AppRoutes() {
         <Route path={PATH.ANY_ROUTE} element={<Navigate to={PATH.ERROR404}/>} />
         <Route path={PATH.ERROR404} element={<Error404 />} />
       </Routes>
-    </div>
+    </>
   );
 }
 

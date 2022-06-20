@@ -1,32 +1,36 @@
-.profileBlock {
-  a {
-    text-decoration: none;
-  }
-  .profileContainer {
-    height: 80vh;
-    background: white;
-    margin: 24px 0 0 0;
-    border-radius:8px;
-  }
+.profileContainer {
+  height: 80vh;
+  background: white;
+  margin: 24px 0 0 0;
+  border-radius: 8px;
+  box-sizing: border-box;
+
   .myPacksBlock {
-    position:relative;
-    height: 100%;
-    padding: 15px 40px;
-  }
-  .profileColumn {
+    display: flex;
+    flex-direction: column;
     height: 80vh;
-    background-color:#ECECF9;
+    margin: 0 24px;
+    box-sizing: border-box;
+  }
+
+  .profileColumn {
+    height: 100%;
+    background-color: #ECECF9;
     border-bottom-left-radius: 8px;
     border-top-left-radius: 8px;
+
     .profile {
-      background-color:#D9D9F1;
+      background-color: #D9D9F1;
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
       min-height: 300px;
+
     }
+
     .utils {
       margin: 0 20px;
+
       .utilsTitle {
         font-weight: 600;
         font-size: 16px;
@@ -36,4 +40,7 @@
       }
     }
   }
+
 }
+
+

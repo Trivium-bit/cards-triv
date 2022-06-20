@@ -1,41 +1,37 @@
 import React, {ChangeEvent, useState} from 'react';
-import {Box, FormControl, FormHelperText, Input, InputAdornment, InputLabel} from "@mui/material";
+import {
+    Box,
+    Input,
+    InputAdornment,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../../Common/Components/Button";
-import modalStyles from "../../Modals/ModalStyles.module.scss";
 import s from './styles/PackHeader.module.scss'
-import {addNewCardPackTC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
+import {setIsPrivateCardPackAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
-import {useSearchParams} from "react-router-dom";
-import {UniversalModal} from "../../Modals/UniversalModal";
 import {modalStyle} from "./AllPacks/PackTable";
+import {EditAddModalContainer} from "../../Modals/EditAddModalContainer";
 
 
 type PacksHeaderPropsType = {
-    onSearch?: (searchQuery: string) => void
-    onAddNew?: () => void
     packsOwnerName?: string
 }
 
-
+export const maxCardPackNameLength = 26;
 const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
-    const [searchParams] = useSearchParams();
-    const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
-    const [inputValue, setInputValue] = useState('');
+    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
+    const dispatch = useAppDispatch();
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
-        setAddErrors('');
+        dispatch(setIsPrivateCardPackAC(false));
     };
-    const localPackName = useAppSelector<string>(state => state.cardPacksReducer.packName);
-    const [addErrors, setAddErrors] = useState('');
-
-
     const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
-
         dispatch(setLocalCardPackNameAC(e.currentTarget.value))
     }
+
     const spitName = () => {
         const spitedName = packsOwnerName?.split(" ");
         if (spitedName) {
@@ -43,26 +39,6 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
         }
     }
 
-    const currentPage = Number( searchParams.get("page")) || 1;
-    const handleSave = () => {
-        if (inputValue !== '') {
-            dispatch(addNewCardPackTC({
-                        name: inputValue,
-                    },currentPage
-                )
-            );
-            handleClose()
-        } else {
-            setAddErrors('Type name of pack')
-
-        }
-
-    };
-
-    const handleChangeNewPack = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setInputValue(event.target.value);
-        setAddErrors('')
-    };
     return (
         <Box className={s.packHeaderBlock}>
             {packsOwnerName
@@ -84,21 +60,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                     className={s.addBtn}
                     title={'Add a new card pack'}
                 />
-
-                <UniversalModal modalStyle={modalStyle} show={open} h1Title={"Add a new card pack"}>
-                    <FormControl error={!!addErrors} variant="standard">
-                        <InputLabel htmlFor="component-simple">Enter a name of card Pack</InputLabel>
-                        <Input className={modalStyles.inputsForm} id="component-simple" value={inputValue}
-                               onChange={handleChangeNewPack} autoFocus={true}/>
-                        {addErrors && (
-                            <FormHelperText id="component-error-text">{addErrors}</FormHelperText>
-                        )}
-                    </FormControl>
-                    <Box className={modalStyles.modalBtnGroup}>
-                        <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} />
-                        <Button onClick={handleSave} className={modalStyles.btnSave} title={'Save new'} />
-                    </Box>
-                </UniversalModal>
+                <EditAddModalContainer showAddNewPackModal={open} closeModalCallback={handleClose} styles={modalStyle}/>
             </Box>
 
         </Box>

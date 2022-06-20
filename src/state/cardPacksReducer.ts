@@ -11,7 +11,8 @@ const SET_LOCAL_CARD_PACK_NAME = "CARDS/SET_LOCAL_CARD_PACK_NAME";
 const SET_IS_MY_TABLE = "CARDS/SET_IS_MY_TABLE";
 const SET_PACK_CARD_COUNT = "CARDS/SET_PACK_CARD_COUNT";
 const EDIT_CARD_PACK_NAME = "CARDS/EDIT_CARD_PACK_NAME";
-const SET_CARDS_PACKS_SORT_VALUE = "SET_CARDS_PACKS_SORT_VALUE";
+const SET_CARDS_PACKS_SORT_VALUE = "CARDS/SET_CARDS_PACKS_SORT_VALUE";
+const SET_IS_PRIVATE_CARD_PACK = "CARDS/SET_IS_PRIVATE_CARD_PACK";
 
 export type CardPackRequestType = {
     name: string
@@ -45,6 +46,7 @@ export type InitialProfileStateType = {
     max: number,
     newCardPackName: string,
     sortPacks: string,
+    isPrivate: boolean
 
 }
 const initialState: InitialProfileStateType = {
@@ -63,7 +65,7 @@ const initialState: InitialProfileStateType = {
     page: 0,
     packName: "",
     sortPacks: "0",
-
+    isPrivate: false
 }
 export type CardsPacksActionType = SetCardsActionType
     | AddNewCardsPackActionType
@@ -72,6 +74,7 @@ export type CardsPacksActionType = SetCardsActionType
     | SetPacksCardCountType
     | EditCardsPackActionType
     | SortCardsPackByDateActionType
+    | SetIsPrivateCardPackActionType
 
 export const cardPacksReducer = (state: InitialProfileStateType = initialState, action: CardsPacksActionType): InitialProfileStateType => {
     switch (action.type) {
@@ -89,6 +92,8 @@ export const cardPacksReducer = (state: InitialProfileStateType = initialState, 
             return {...state, newCardPackName: action.newPackName}
         case SET_CARDS_PACKS_SORT_VALUE:
             return {...state, sortPacks: action.sortPacks}
+        case SET_IS_PRIVATE_CARD_PACK:
+            return {...state, isPrivate: action.isPrivate}
         default:
             return state
     }
@@ -107,7 +112,7 @@ export const setIsMyTableAC = (isMyTable: boolean) => ({type: SET_IS_MY_TABLE, i
 export const setPacksCardsCountAC = (min: number, max: number) => ({type: SET_PACK_CARD_COUNT, min, max} as const);
 export const editCardPackAC = (newPackName: string) => ({type: EDIT_CARD_PACK_NAME, newPackName} as const)
 export const sortPacksAC = (sortPacks: string) => ({type: SET_CARDS_PACKS_SORT_VALUE, sortPacks} as const)
-
+export const setIsPrivateCardPackAC = (isPrivate: boolean) => ({type: SET_IS_PRIVATE_CARD_PACK, isPrivate} as const);
 // types
 
 export type SetCardsActionType = ReturnType<typeof setCardsAC>;
@@ -117,6 +122,7 @@ export type SetIsMyTableType = ReturnType<typeof setIsMyTableAC>;
 export type SetPacksCardCountType = ReturnType<typeof setPacksCardsCountAC>;
 export type EditCardsPackActionType = ReturnType<typeof editCardPackAC>;
 export type SortCardsPackByDateActionType = ReturnType<typeof sortPacksAC>;
+export type SetIsPrivateCardPackActionType = ReturnType<typeof setIsPrivateCardPackAC>;
 
 //thunks
 export const getCardsPacksTC = (page: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {

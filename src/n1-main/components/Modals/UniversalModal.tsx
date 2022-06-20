@@ -4,10 +4,11 @@ import {Box} from "@mui/material";
 import Modal from "@mui/material/Modal";
 
 
+
 interface IModal {
     show: boolean
+    handleClose?: any
     children?: React.ReactNode
-    modalOnClick?: () => void;
     h1Title?: string
     modalStyle?: CSSProperties;
 }
@@ -16,7 +17,7 @@ interface IModal {
 export const UniversalModal: React.FC<IModal> = (
     {
         show,
-        modalOnClick,
+        handleClose,
         h1Title,
         modalStyle,
         children,
@@ -25,10 +26,11 @@ export const UniversalModal: React.FC<IModal> = (
 
     if (!show) return null;
 
+
     return (
-        <Modal open={show}>
+        <Modal open={show} onClose={handleClose}>
             <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                <h1 onClick={modalOnClick} className={modalStyles.modalTitle}>{h1Title}</h1>
+                <h1 className={modalStyles.modalTitle}>{h1Title}</h1>
                 {children}
             </Box>
         </Modal>

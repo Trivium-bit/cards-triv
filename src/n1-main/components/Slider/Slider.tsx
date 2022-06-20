@@ -3,8 +3,9 @@ import {Box,Slider} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
 import {setPacksCardsCountAC} from "../../../state/cardPacksReducer";
 import {useDebounce} from "use-debounce";
+import {setAppStatusAC} from "../../../state/app-reducer";
 
-export const debounceDelay = 1000;
+export const debounceDelay = 500;
 const SliderBar = React.memo(() => {
 
     const min = useAppSelector<number>(state => state.cardPacksReducer.min);
@@ -16,6 +17,7 @@ const SliderBar = React.memo(() => {
 
     const handleChange = (event: Event, newValue: number | number[]) => {
         setValues(newValue as number[])
+        dispatch(setAppStatusAC("loading"));
     };
 
 

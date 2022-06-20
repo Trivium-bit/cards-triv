@@ -10,6 +10,7 @@ import s from "./Header.module.scss";
 import {logOutTC} from "../../../../state/auth-reducer";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
+import {setIsMyTableAC} from "../../../../state/cardPacksReducer";
 
 
 function Header() {
@@ -20,17 +21,19 @@ function Header() {
         document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         dispatch(logOutTC())
     }
-
+    const handleChangeIsMyTable = () =>{
+        dispatch(setIsMyTableAC(true));
+    }
     return (
         <div className={s.header}>
             <Container>
                 <Grid container >
-                    <Grid item xs={4}>
+                    <Grid item xs={0} md={4}>
                         <NavLink to={PATH.HOME}>
                             <span className={s.logo}>IT INCUBATOR</span>
                         </NavLink>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={5} md={2}>
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PACKS && s.headerLinkActive}`}>
                             <NavLink to={PATH.PACKS} >
                                 <div className={s.packList}>
@@ -40,17 +43,17 @@ function Header() {
                             </NavLink>
                         </Box>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={5} md={2}>
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PROFILE && s.headerLinkActive}`}>
                             <NavLink to={PATH.PROFILE} >
-                                <div className={s.packList}>
+                                <div className={s.packList} onClick={handleChangeIsMyTable}>
                                     <PersonIcon className={s.icon} fontSize="medium"/>
                                     <span className={s.title}>Profile</span>
                                 </div>
                             </NavLink>
                         </Box>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={2} md={4}>
                         <Box>
                             <span className={s.logOut} onClick={handleLogOut} aria-disabled={appStatus === "loading"}>Log Out</span>
                         </Box>
