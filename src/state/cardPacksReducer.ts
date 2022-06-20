@@ -124,9 +124,9 @@ export type SetIsPrivateCardPackActionType = ReturnType<typeof setIsPrivateCardP
 export type SetCardPackCurrentPageActionType = ReturnType<typeof setCardPackCurrentPageAC>;
 
 //thunks
-export const getCardsPacksTC = (page: number) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
+export const getCardsPacksTC = () => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
     const user_id = getState().appReducer.user._id;
-    const {pageCount, isMyTable, packName, min, max, sortPacks} = getState().cardPacksReducer;
+    const {pageCount, isMyTable, packName, min, max, sortPacks, page} = getState().cardPacksReducer;
     dispatch(setAppStatusAC("loading"));
 
     cardPacksAPI.getCardsPacks(isMyTable
@@ -142,14 +142,12 @@ export const getCardsPacksTC = (page: number) => (dispatch: AppThunkDispatch, ge
         })
 }
 
-export const addNewCardPackTC = (pack: CardPackRequestType) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
-    const page = getState().cardPacksReducer.page
+export const addNewCardPackTC = (pack: CardPackRequestType) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.addPack(pack)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
-            dispatch(getCardsPacksTC(page))
-
+            dispatch(getCardsPacksTC())
         })
         .catch((error: AxiosError<{ error: string }>) => {
             handleNetworkError(error, dispatch)
@@ -163,23 +161,22 @@ export const deleteCardPackTC = (id: string) => (dispatch: AppThunkDispatch, get
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
             if(cardsPacks.length === 1 && page > 1){
-                dispatch(getCardsPacksTC(page-1))
-            } else {
-                dispatch(getCardsPacksTC(page))
+                dispatch(setCardPackCurrentPageAC(page - 1))
             }
+            dispatch(getCardsPacksTC())
         })
         .catch((error: AxiosError<{ error: string }>) => {
             handleNetworkError(error, dispatch)
         })
 }
 
-export const editMyCardsPacksTC = (pack: CardPackUpdateRequestType) => (dispatch: AppThunkDispatch, getState: () => AppStoreType) => {
-    const {page} = getState().cardPacksReducer;
+export const editMyCardsPacksTC = (pack: CardPackUpdateRequestType) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
     cardPacksAPI.editMyCardsPacks(pack)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
-            dispatch(getCardsPacksTC(page))
+            dispatch(setCardPackCurrentPageAC(  1))
+            dispatch(getCardsPacksTC())
         })
         .catch((error: AxiosError<{ error: string }>) => {
             handleNetworkError(error, dispatch)
