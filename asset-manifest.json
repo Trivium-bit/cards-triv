@@ -1,12 +1,13 @@
 {
   "files": {
-    "main.css": "/cards-triv/static/css/main.105e70d9.css",
-    "main.js": "/cards-triv/static/js/main.6a2dea5f.js",
+    "main.css": "/cards-triv/static/css/main.afe4b608.css",
+    "main.js": "/cards-triv/static/js/main.f7913dc6.js",
     "static/js/787.cfef8d12.chunk.js": "/cards-triv/static/js/787.cfef8d12.chunk.js",
     "static/media/error404BG.png": "/cards-triv/static/media/error404BG.2ecd4fd3750a3784c781.png",
     "static/media/sfuidisplay_bold.ttf": "/cards-triv/static/media/sfuidisplay_bold.d5e06ca55ebc19218980.ttf",
     "static/media/sfuidisplay_heavy.ttf": "/cards-triv/static/media/sfuidisplay_heavy.ecbf9ad7d4c93962f449.ttf",
     "static/media/404Text.svg": "/cards-triv/static/media/404Text.154db1210c92203c978fc67ebd4de036.svg",
+    "static/media/CardPacks.svg": "/cards-triv/static/media/CardPacks.b136c7a87ac9b3f0c59f8a3fddb9fe74.svg",
     "static/media/astronaut.svg": "/cards-triv/static/media/astronaut.efda77305413cd2fa4de1835b4ee7ed7.svg",
     "static/media/checkEmail.svg": "/cards-triv/static/media/checkEmail.613ffddcf1a3b2c531b877f8d0140c4d.svg",
     "static/media/moon.svg": "/cards-triv/static/media/moon.5a77d87bc7f7934ec47ccf62ee9dc63b.svg",
@@ -14,12 +15,12 @@
     "static/media/rocket.svg": "/cards-triv/static/media/rocket.9c039dba10f9e3ac40af8ef7c0fb3778.svg",
     "static/media/overlay_stars.svg": "/cards-triv/static/media/overlay_stars.9bc0d2861caf3587df15.svg",
     "index.html": "/cards-triv/index.html",
-    "main.105e70d9.css.map": "/cards-triv/static/css/main.105e70d9.css.map",
-    "main.6a2dea5f.js.map": "/cards-triv/static/js/main.6a2dea5f.js.map",
+    "main.afe4b608.css.map": "/cards-triv/static/css/main.afe4b608.css.map",
+    "main.f7913dc6.js.map": "/cards-triv/static/js/main.f7913dc6.js.map",
     "787.cfef8d12.chunk.js.map": "/cards-triv/static/js/787.cfef8d12.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.105e70d9.css",
-    "static/js/main.6a2dea5f.js"
+    "static/css/main.afe4b608.css",
+    "static/js/main.f7913dc6.js"
   ]
 }
