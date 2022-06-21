@@ -1,5 +1,6 @@
 @import "../../../../../Common/Styles/constants";
 @import "../../../../../Common/Styles/variables";
+
 .wrapper {
   overflow: auto;
   display: flex;
@@ -8,6 +9,13 @@
   box-sizing: border-box;
 
   .table {
+    .highlightTableCell {
+      cursor: pointer;
+    }
+
+    .highlightTableCell:hover {
+      background-color: #ECECF9;;
+    }
 
     overflow-x: auto;
     margin-bottom: 15px;
@@ -76,21 +84,26 @@
   }
 
 }
+
 .mobileButtonGroup {
   display: none;
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: flex;
   }
+
   .iconEdit {
     color: $firstButtonColor;
     opacity: 0.6;
   }
+
   .iconLearn {
     @extend .iconEdit;
   }
+
   .iconInfo {
     @extend .iconEdit;
   }
+
   .iconDelete {
     color: $deleteButtonBgColor;
     opacity: 0.6;
@@ -98,9 +111,14 @@
 }
 
 .hideForMobile {
+  cursor: pointer;
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: none;
   }
+}
+
+.hideForMobile:hover {
+  background-color: #ECECF9;
 }
 
 .infoMobileIcon {
@@ -111,6 +129,7 @@
     height: 40px;
   }
 }
+
 .mobileFlex {
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: flex;
