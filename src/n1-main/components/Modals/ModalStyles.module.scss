@@ -11,7 +11,11 @@
     font-size: 14px;
     line-height: 24px;
   }
-
+  .modalRating{
+    @extend .modalText;
+    display: flex;
+    align-items: center;
+  }
   .modalBtnGroup {
     display: flex;
     justify-content: space-between;

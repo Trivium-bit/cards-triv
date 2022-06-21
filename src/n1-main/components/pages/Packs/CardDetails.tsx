@@ -142,9 +142,9 @@ const CardDetails = () => {
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs/${packId}?page=${page}`)
     }
-    const handleAddCard =() => {
+    const handleAddCard = () => {
         if (newCardPayload.question !== "" && newCardPayload.answer !== "") {
-            dispatch(addNewCardTC( packId || '', {
+            dispatch(addNewCardTC(packId || '', {
                 question: newCardPayload.question,
                 answer: newCardPayload.answer
             }, () => {
@@ -167,19 +167,19 @@ const CardDetails = () => {
             setAddErrors(errors);
         }
     }
-    const handleChangeQuestion =(e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewCardPayload(payload => ({...payload, question: e.target.value}))
         setAddErrors(errors => ({...errors, question: undefined}))
     }
-    const handleChangeAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
         setNewCardPayload(payload => ({...payload, answer: e.target.value}))
         setAddErrors(errors => ({...errors, answer: undefined}))
     }
-    const handleChangeEditQuestion =(e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeEditQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditCardPayload(payload => ({...payload, question: e.target.value}))
         setAddErrors(errors => ({...errors, question: undefined}))
     }
-    const handleChangeEditAnswer =(e:React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeEditAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditCardPayload(payload => ({...payload, answer: e.target.value}))
         setAddErrors(errors => ({...errors, answer: undefined}))
     }
@@ -187,14 +187,14 @@ const CardDetails = () => {
 
     const openDeleteModal = (card: PackCardType) => setRowToDelete(card);
 
-    const onChangeQuestionHandler = (e:ChangeEvent<HTMLInputElement>) =>{
+    const onChangeQuestionHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         clearTimeout(delaySetQuestionRef.current)
         delaySetQuestionRef.current = setTimeout(() => {
             dispatch(setFilterQuestionAC(value))
         }, 1000)
     }
-    const onChangeAnswerHandler = (e:ChangeEvent<HTMLInputElement>) =>{
+    const onChangeAnswerHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
         clearTimeout(delaySetAnswerRef.current)
         delaySetAnswerRef.current = setTimeout(() => {
@@ -204,53 +204,63 @@ const CardDetails = () => {
 
 
     const updateCard = () => {
-        if(editOpen && editOpen._id)  {
+        if (editOpen && editOpen._id) {
             dispatch(editCardTC(editOpen._id,
                 editCardPayload.question,
                 editCardPayload.answer,
                 () => {
-                handleEditClose();
+                    handleEditClose();
                     dispatch(getCardsTC({
                         cardsPack_id: packId,
                         page: currentPage
                     }))
-            }))
+                }))
         }
     }
 
     return (
-        <Container fixed >
+        <Container fixed>
             <Box className={s.packDetailBlock}>
                 <Box className={s.nav} onClick={() => navigate(-1)}>
                     <ArrowBackIcon/>
                     <span className={s.title}>Pack name</span>
                 </Box>
                 <Box className={s.headers}>
-                    <Input
+                    <TextField
+                        sx={{background: "#ECECF9", marginRight: "1.5rem"}}
                         onChange={onChangeQuestionHandler}
                         placeholder={"Search question..."}
-                        startAdornment={
-                            <InputAdornment position='start'>
-                                <SearchIcon />
-                            </InputAdornment>
-                        }
+                        fullWidth
+                        size="small"
+                        InputProps={{
+                            startAdornment:
+                                <InputAdornment position="start">
+                                    <SearchIcon/>
+                                </InputAdornment>,
+
+
+                        }}
                     />
-                    <Input
+                    <TextField
+                        fullWidth
+                        sx={{background: "#ECECF9", marginRight: "1.5rem"}}
                         onChange={onChangeAnswerHandler}
                         placeholder={"Search answer..."}
-                        startAdornment={
-                            <InputAdornment position='start'>
-                                <SearchIcon />
-                            </InputAdornment>
-                        }
+                        size="small"
+                        InputProps={{
+                            startAdornment:
+                                <InputAdornment position="start">
+                                    <SearchIcon/>
+                                </InputAdornment>,
+                        }}
                     />
-                    <Button className={s.btn} title={'Add new card'} onClick={handleOpen} />
+                    <Button className={s.btn} title={'Add new card'} onClick={handleOpen}/>
                 </Box>
                 <Box>
                     <Box className={s.wrapper}>
                         {cards.length !== 0 && (
                             <TableContainer component={Paper}>
-                                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                                <Table sx={{minWidth: 700}} aria-label="customized table">
                                     <TableHead>
                                         <TableRow>
                                             <StyledTableCell>Question</StyledTableCell>
@@ -263,9 +273,11 @@ const CardDetails = () => {
                                     <TableBody>
                                         {cards.map((card) => (
                                             <StyledTableRow key={card._id}>
-                                                <StyledTableCell component="th" scope="row">{card.question}</StyledTableCell>
+                                                <StyledTableCell component="th"
+                                                                 scope="row">{card.question}</StyledTableCell>
                                                 <StyledTableCell align="left">{card.answer}</StyledTableCell>
-                                                <StyledTableCell align="left">{moment(card.created).format("DD-MM-YYYY HH:mm:ss")}</StyledTableCell>
+                                                <StyledTableCell
+                                                    align="left">{moment(card.created).format("DD-MM-YYYY HH:mm:ss")}</StyledTableCell>
                                                 <StyledTableCell align="left">
                                                     <Rating
                                                         readOnly
@@ -275,8 +287,12 @@ const CardDetails = () => {
                                                 </StyledTableCell>
                                                 <StyledTableCell align="right">
                                                     <div className={styles.buttonGroup}>
-                                                        <button className={styles.delete} onClick={() => openDeleteModal(card)}>Delete</button>
-                                                        <button className={styles.edit} onClick={() => handleEditOpen(card)}>Edit</button>
+                                                        <button className={styles.delete}
+                                                                onClick={() => openDeleteModal(card)}>Delete
+                                                        </button>
+                                                        <button className={styles.edit}
+                                                                onClick={() => handleEditOpen(card)}>Edit
+                                                        </button>
                                                     </div>
                                                 </StyledTableCell>
                                             </StyledTableRow>
@@ -303,17 +319,21 @@ const CardDetails = () => {
                                 <Box>
                                     <FormControl variant="standard">
                                         <InputLabel htmlFor="component-simple">Edit question</InputLabel>
-                                        <Input defaultValue={editOpen?.question} className={modalStyles.inputsForm} onChange={handleChangeEditQuestion} />
+                                        <Input defaultValue={editOpen?.question} className={modalStyles.inputsForm}
+                                               onChange={handleChangeEditQuestion}/>
                                     </FormControl>
                                 </Box>
                                 <Box>
-                                    <FormControl  variant="standard">
+                                    <FormControl variant="standard">
                                         <InputLabel htmlFor="component-simple">Edit answer</InputLabel>
-                                        <Input defaultValue={editOpen?.answer} className={modalStyles.inputsForm} onChange={handleChangeEditAnswer} />
+                                        <Input defaultValue={editOpen?.answer} className={modalStyles.inputsForm}
+                                               onChange={handleChangeEditAnswer}/>
                                     </FormControl>
                                     <Box className={modalStyles.modalBtnGroup}>
-                                        <Button onClick={handleEditClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                                        <Button className={modalStyles.btnSave} onClick={updateCard} title={'Save'} disabled={appStatus ==="loading"}/>
+                                        <Button onClick={handleEditClose} className={modalStyles.btnCancel}
+                                                title={'Cancel'} disabled={appStatus === "loading"}/>
+                                        <Button className={modalStyles.btnSave} onClick={updateCard} title={'Save'}
+                                                disabled={appStatus === "loading"}/>
                                     </Box>
                                 </Box>
                             </Box>
@@ -325,19 +345,23 @@ const CardDetails = () => {
                             <Box sx={modalStyle} className={modalStyles.modalBlock}>
                                 <h1 className={modalStyles.modalTitle}>Add a new card</h1>
                                 <Box>
-                                    <TextField multiline className={modalStyles.inputsForm} placeholder={"Type your question"}
+                                    <TextField multiline className={modalStyles.inputsForm}
+                                               placeholder={"Type your question"}
                                                autoFocus={true} label="Question"
                                                onChange={handleChangeQuestion} error={!!addErrors.question}
-                                    helperText={addErrors.question }/>
-                                    <TextField multiline className={modalStyles.inputsForm} placeholder={"Type your answer"}
+                                               helperText={addErrors.question}/>
+                                    <TextField multiline className={modalStyles.inputsForm}
+                                               placeholder={"Type your answer"}
                                                onChange={handleChangeAnswer} error={!!addErrors.answer}
                                                helperText={addErrors.answer} label="Answer"/>
                                 </Box>
                                 <Box>
 
                                     <Box className={modalStyles.modalBtnGroup}>
-                                        <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'} disabled={appStatus ==="loading"}/>
-                                        <Button className={modalStyles.btnSave} onClick={handleAddCard} title={'Add'} disabled={appStatus ==="loading"}/>
+                                        <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'}
+                                                disabled={appStatus === "loading"}/>
+                                        <Button className={modalStyles.btnSave} onClick={handleAddCard} title={'Add'}
+                                                disabled={appStatus === "loading"}/>
                                     </Box>
                                 </Box>
                             </Box>
@@ -346,7 +370,8 @@ const CardDetails = () => {
                 </Box>
 
                 <DeleteCardModalContainer card={rowToDelete} deleteCallback={handleCloseDelete} styles={modalStyle}/>
-                <Pagination onChange={handleChangePagination} count={cardPagination.count}  page={cardPagination.current} shape="rounded" />
+                <Pagination onChange={handleChangePagination} count={cardPagination.count} page={cardPagination.current}
+                            shape="rounded"/>
 
             </Box>
         </Container>

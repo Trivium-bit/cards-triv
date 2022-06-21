@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState, forwardRef, CSSProperties} from 'react';
-import {Box, FormControlLabel, Radio, RadioGroup} from "@mui/material";
+import {Box, FormControlLabel, Radio, RadioGroup, Rating} from "@mui/material";
 import Button from "../../../Common/Components/Button";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
 import modalStyles from "./ModalStyles.module.scss";
@@ -62,10 +62,13 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
     return (
             <Box sx={modalStyle} className={modalStyles.modalBlock} ref={ref}>
                 <h1 className={modalStyles.modalTitle}>Learn {cardPack?.name}</h1>
-                <p className={modalStyles.modalText}><b>Question:</b>{currentCard?.question}</p>
+                <p className={modalStyles.modalText}><b>Question:</b> {currentCard?.question}</p>
+
                 {step === ANSWER &&
                     (
                         <>
+                            <p className={modalStyles.modalText}><b>Numbers of attempts to answer:</b> {currentCard?.shots}</p>
+                            <p className={modalStyles.modalRating}><b>Card rating:</b> <Rating readOnly size="small" value={currentCard.grade}/></p>
                             <p className={modalStyles.modalText}><b>Answer:</b>{currentCard?.answer}</p>
                             <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
                             <RadioGroup

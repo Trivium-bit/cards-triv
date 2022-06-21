@@ -31,6 +31,7 @@
       margin: 0;
     }
     .btn {
+      width: 25rem;
       padding: 9px 40px;
       @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
         margin: 10px 0;
