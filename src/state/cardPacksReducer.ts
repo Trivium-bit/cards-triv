@@ -51,11 +51,11 @@ const initialState: InitialProfileStateType = {
     newCardPackName: "",
     min: 0,
     max: 111,
-    isMyTable: true,
+    isMyTable: false,
     pageCount: 8,
     page: 1,
     packName: "",
-    sortPacks: "0",
+    sortPacks: "0updated",
     isPrivate: false
 }
 export type CardsPacksActionType = SetCardsActionType
@@ -175,8 +175,9 @@ export const editMyCardsPacksTC = (pack: CardPackUpdateRequestType) => (dispatch
     cardPacksAPI.editMyCardsPacks(pack)
         .then(() => {
             dispatch(setAppStatusAC("succeeded"));
-            dispatch(setCardPackCurrentPageAC(  1))
             dispatch(getCardsPacksTC())
+            dispatch(setCardPackCurrentPageAC(  1))
+
         })
         .catch((error: AxiosError<{ error: string }>) => {
             handleNetworkError(error, dispatch)

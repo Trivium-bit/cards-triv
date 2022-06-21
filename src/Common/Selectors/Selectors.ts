@@ -1,6 +1,5 @@
 import {AppStoreType} from "../../state/store";
 import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
-/*import {PacksPaginationType} from "../../state/cardPacksReducer";*/
 import {PacksResponseType} from "../../api/cardPacksAPI";
 import {PackCardType} from "../../api/cardAPI";
 import {PaginationCardType} from "../../state/cardsReducer";
