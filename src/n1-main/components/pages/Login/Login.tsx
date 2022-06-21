@@ -20,9 +20,6 @@ export const Login = React.memo(() => {
 
     const [isPassType, setIsPassType] = useState<boolean>(true);
     const dispatch = useAppDispatch();
-    /*const navigate = useNavigate();
-    const [searchParams] = useSearchParams();
-    const user = useAppSelector<ResponseLoginType | undefined>(appUserSelector);*/
     const IsLoggedIn = useAppSelector<boolean>(state => state.authReducer.isLoggedIn)
 
 
@@ -96,7 +93,7 @@ export const Login = React.memo(() => {
                     />
                 </FormControl>
                 {formik.touched.email && formik.errors.email ?
-                    <div className={styles.errors}>{formik.errors.email}</div> : null}
+                    <div className={styles.emailError}>{formik.errors.email}</div> : null}
 
                 <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
@@ -116,7 +113,7 @@ export const Login = React.memo(() => {
                            }
                     />
                     {formik.touched.password && formik.errors.password ?
-                        <div className={styles.errors}>{formik.errors.password}</div> : null}
+                        <div className={styles.passError}>{formik.errors.password}</div> : null}
                     <label className={styles.checkbox}>
                         <Checkbox {...formik.getFieldProps("rememberMe")}
                                   checked={formik.getFieldProps("rememberMe").value}

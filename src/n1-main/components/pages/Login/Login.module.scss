@@ -4,14 +4,6 @@
 .loginWrapper {
   @include windows();
 
-  .errors {
-    color: red;
-    font-size: 14px;
-    display: flex;
-    justify-content: center;
-    /*border: 1px solid black;*/
-  }
-
   .newPassTextFields {
     display: flex;
     justify-content: space-between;
@@ -26,13 +18,29 @@
     align-items: center;
     flex-direction: column;
     width: 280px;
+    position: relative;
     /* border: 1px solid black;*/
+    .emailError {
+      position: absolute;
+      top: 4rem;
+      color: red;
+      font-size: 14px;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
+    .passError{
+      @extend .emailError;
+      top: 4rem;
+    }
   }
   .checkbox {
     display: flex;
     align-items: center;
     margin-left: -10px;
-    margin-top: 10px;
+    margin-top: 20px;
     cursor: pointer;
   }
 

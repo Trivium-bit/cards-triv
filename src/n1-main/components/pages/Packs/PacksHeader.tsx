@@ -49,7 +49,6 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                 <TextField sx={{background: "#ECECF9", marginRight: "1.5rem"}} onChange={onChangeHandler}
                        fullWidth
                        value={localPackName}
-                       autoFocus={true}
                        placeholder={"Search..."}
                            size="small"
                        InputProps={{

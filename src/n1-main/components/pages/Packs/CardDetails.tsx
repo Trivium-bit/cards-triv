@@ -347,7 +347,7 @@ const CardDetails = () => {
                                 <Box>
                                     <TextField multiline className={modalStyles.inputsForm}
                                                placeholder={"Type your question"}
-                                               autoFocus={true} label="Question"
+                                               label="Question"
                                                onChange={handleChangeQuestion} error={!!addErrors.question}
                                                helperText={addErrors.question}/>
                                     <TextField multiline className={modalStyles.inputsForm}
