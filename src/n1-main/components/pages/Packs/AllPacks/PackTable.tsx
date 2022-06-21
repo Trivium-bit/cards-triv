@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
-    Box, Pagination,
-    Paper,
+    Box, IconButton, Pagination,
+    Paper, Popover,
     styled,
     Table,
     TableBody, TableCell,
@@ -42,6 +42,10 @@ import {EditAddModalContainer} from "../../../Modals/EditAddModalContainer";
 import {LearnModalContainer} from "../../../Modals/LearnModalContainer";
 import {maxCardPackNameLength} from "../PacksHeader";
 
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 //styles mui
 const StyledTableCell = styled(TableCell)((theme) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -104,6 +108,8 @@ export const PackTable = React.memo(() => {
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<CardPackUpdateRequestType | undefined>(undefined);
     const [rowToLearn, setRowToLearn] = useState<PacksResponseType | undefined>(undefined);
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const open = Boolean(anchorEl);
 
     const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
     const handleOpenDelete = (cardPack: PacksResponseType) => setRowToDelete(cardPack);
@@ -117,6 +123,15 @@ export const PackTable = React.memo(() => {
         dispatch(setCardPackCurrentPageAC(1))
         dispatch(getCardsPacksTC())
     }, [dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
+
+    const handlePopoverClick = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <Box className={s.wrapper}>
@@ -177,6 +192,38 @@ export const PackTable = React.memo(() => {
                                     </StyledTableCell>
                                     <StyledTableCell align="left" className={s.hideForMobile} >{cardPack.user_name.slice(0,50)}</StyledTableCell>
                                     <StyledTableCell align="right">
+                                        <Box className={s.mobileButtonGroup}>
+                                            <IconButton onClick={handlePopoverClick}>
+                                                <InfoOutlinedIcon className={s.iconInfo}/>
+                                            </IconButton>
+                                            <IconButton onClick={() => handleOpenLearn(cardPack)} >
+                                                <SchoolOutlinedIcon className={s.iconLearn}/>
+                                            </IconButton>
+                                            {cardPack.user_id === myId && (
+                                                <>
+                                                    <IconButton onClick={() => handleOpenEdit(cardPack)} >
+                                                        <EditOutlinedIcon className={s.iconEdit}/>
+                                                    </IconButton>
+                                                    <IconButton onClick={() => handleOpenDelete(cardPack)} >
+                                                        <DeleteSweepOutlinedIcon className={s.iconDelete}/>
+                                                    </IconButton>
+                                                </>
+                                            )}
+                                            <Popover
+                                                open={open}
+                                                anchorEl={anchorEl}
+                                                onClose={handlePopoverClose}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'left',
+                                                }}
+                                                className={s.popover}
+                                            >
+                                                <div className={s.popoverDiv}>
+                                                    <span>hello, this is popover</span>
+                                                </div>
+                                            </Popover>
+                                        </Box>
                                         <Box className={s.buttonGroup}>
                                             {cardPack.user_id === myId && (
                                                 <>
@@ -195,9 +242,7 @@ export const PackTable = React.memo(() => {
                                         </StyledTableCell>
                                     </StyledTableRow>
                                 ))
-
                             }
-
 
                         </TableBody>
                     </Table>

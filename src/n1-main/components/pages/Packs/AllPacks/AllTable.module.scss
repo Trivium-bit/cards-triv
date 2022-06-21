@@ -1,4 +1,5 @@
 @import "../../../../../Common/Styles/constants";
+@import "../../../../../Common/Styles/variables";
 .wrapper {
   overflow: auto;
   display: flex;
@@ -16,12 +17,12 @@
 
     .tableBody {
       a {
-        color: #21268F;
+        color: $firstButtonColor;
         text-decoration: none;
       }
 
       a:hover {
-        color: goldenrod;
+        color: $firstButtonColor;
         cursor: pointer !important;
       }
     }
@@ -46,6 +47,9 @@
 }
 
 .buttonGroup {
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    display: none;
+  }
   display: flex;
   justify-content: space-evenly;
 
@@ -53,8 +57,8 @@
     padding: 4px 6px;
     border-radius: 2px;
     border: none;
-    background: #D7D8EF;
-    color: #21268F;
+    background: $editBgColor;
+    color: $firstButtonColor;
     cursor: pointer;
     font-weight: 600;
     display: flex;
@@ -66,16 +70,58 @@
     border-radius: 2px;
     padding: 4px;
     border: none;
-    background: red;
-    color: white;
+    background: $deleteButtonBgColor;
+    color: $white;
     cursor: pointer;
     font-weight: 600;
   }
 
+}
+.mobileButtonGroup {
+  display: none;
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    display: flex;
+  }
+  .iconEdit {
+    color: $firstButtonColor;
+    opacity: 0.6;
+  }
+  .iconLearn {
+    @extend .iconEdit;
+  }
+  .iconInfo {
+    @extend .iconEdit;
+  }
+  .iconDelete {
+    color: $deleteButtonBgColor;
+    opacity: 0.6;
+  }
 }
 
 .hideForMobile {
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: none;
   }
+}
+
+.infoMobileIcon {
+  display: none;
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    display: inline-block;
+    margin-right: 5px;
+    height: 40px;
+  }
+}
+.mobileFlex {
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    display: flex;
+    align-items: center
+  }
+}
+
+.popover > * {
+  padding: 15px;
+  color: $firstButtonColor !important;
+  box-shadow: none !important;
+  border: 1px solid $firstButtonColor;
 }
