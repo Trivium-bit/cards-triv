@@ -2,7 +2,6 @@ import React from "react";
 import {NavLink, useLocation} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import {Box, Container} from "@mui/material";
-import ArticleIcon from '@mui/icons-material/Article';
 import PersonIcon from '@mui/icons-material/Person';
 import { PATH } from '../../AppRoutes'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
@@ -11,7 +10,7 @@ import {logOutTC} from "../../../../state/auth-reducer";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {appStatusSelector} from "../../../../Common/Selectors/Selectors";
 import {setIsMyTableAC} from "../../../../state/cardPacksReducer";
-
+import icon from "./../../../../images/CardPacks.svg"
 
 function Header() {
     const location = useLocation();
@@ -37,7 +36,7 @@ function Header() {
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PACKS && s.headerLinkActive}`}>
                             <NavLink to={PATH.PACKS} >
                                 <div className={s.packList}>
-                                    <ArticleIcon className={s.icon}  fontSize="medium"/>
+                                    <img src={icon} alt="cardPackIcon" className={s.icon}/>
                                     <span className={s.title}>Packs List</span>
                                 </div>
                             </NavLink>

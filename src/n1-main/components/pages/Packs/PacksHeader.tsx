@@ -1,7 +1,6 @@
 import React, {ChangeEvent, useState} from 'react';
 import {
     Box,
-    Input,
     InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
@@ -11,6 +10,7 @@ import {setIsPrivateCardPackAC, setLocalCardPackNameAC} from "../../../../state/
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {modalStyle} from "./AllPacks/PackTable";
 import {EditAddModalContainer} from "../../Modals/EditAddModalContainer";
+import TextField from "@mui/material/TextField";
 
 
 type PacksHeaderPropsType = {
@@ -46,14 +46,20 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                 : <h1 className={s.title}>Packs list</h1>
             }
             <Box className={s.elements}>
-                <Input onChange={onChangeHandler}
+                <TextField sx={{background: "#ECECF9", marginRight: "1.5rem"}} onChange={onChangeHandler}
+                       fullWidth
                        value={localPackName}
+                       autoFocus={true}
                        placeholder={"Search..."}
-                       startAdornment={
+                           size="small"
+                       InputProps={{
+                           startAdornment:
                            <InputAdornment position="start">
-                               <SearchIcon/>
-                           </InputAdornment>
-                       }
+                           <SearchIcon/>
+                           </InputAdornment>,
+
+
+                       }}
                 />
                 <Button
                     onClick={handleOpen}

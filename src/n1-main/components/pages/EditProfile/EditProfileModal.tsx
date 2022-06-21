@@ -97,7 +97,7 @@ const EditProfileModal = ({serverAvatar, name, email, title, changeName}: ModalP
                         </Box>
                         <Box>
                             <FormControl variant="standard">
-                                <InputLabel htmlFor="component-simple">Nickname</InputLabel>
+                                <InputLabel htmlFor="component-simple">Email</InputLabel>
                                 <Input className={s.inputForms} value={email} onChange={changeLocalName}
                                        disabled={true}/>
                             </FormControl>
