@@ -10,10 +10,8 @@ import {
     TableHead,
     TableRow
 } from "@mui/material";
-
 import s from './AllTable.module.scss'
-import {NavLink} from "react-router-dom";
-
+import {useNavigate} from "react-router-dom";
 import {
     myCardsPacksSelector,
     userIdSelector,
@@ -27,20 +25,21 @@ import {
     CardPackUpdateRequestType,
     getCardsPacksTC, setCardPackCurrentPageAC,
 } from "../../../../../state/cardPacksReducer";
-
 import {useAppDispatch, useAppSelector} from "../../../../../state/store";
 import {PacksResponseType} from "../../../../../api/cardPacksAPI";
 import {useDebounce} from "use-debounce";
 import {PATH} from "../../../AppRoutes";
 import {debounceDelay} from "../../../Slider/Slider";
 import {UniversalHeader} from "./universalHeader";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
 import moment from "moment/moment";
 import {DeleteModalContainer} from "../../../Modals/DeleteModalContainer";
 import {EditAddModalContainer} from "../../../Modals/EditAddModalContainer";
 import {LearnModalContainer} from "../../../Modals/LearnModalContainer";
 import {maxCardPackNameLength} from "../PacksHeader";
+import TableSortLabel from "@mui/material/TableSortLabel";
+
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
@@ -61,6 +60,7 @@ const StyledTableCell = styled(TableCell)((theme) => ({
         fontSize: 13,
         height: 29,
         maxHeight: 30,
+        zIndex: 1,
         ["@media (max-height:800px)"]: {
             display: theme.className === s.hideForMobile ? "none" : "",
             height: 14,
@@ -69,14 +69,21 @@ const StyledTableCell = styled(TableCell)((theme) => ({
     },
 }));
 
+
+/*
 const InlineCel = styled("div")(() => ({
     display: "flex"
 }))
+*/
 
 const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
     },
+    "&:hover": {
+        backgroundColor: "#c8b7f8",
+        cursor: "pointer"
+    }
 }));
 export const modalStyle = {
     position: 'absolute' as 'absolute',
@@ -94,6 +101,7 @@ export const modalStyle = {
 export const PackTable = React.memo(() => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate()
     const searchingPackName = useAppSelector<string>(searchPackNameSelector);
     const isMyTable = useAppSelector<boolean>(isMyTableSelector);
     const min = useAppSelector<number>(minSelector);
@@ -111,13 +119,15 @@ export const PackTable = React.memo(() => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const open = Boolean(anchorEl);
 
-    const handleOpenEdit = (card: PacksResponseType) => setRowToUpdate(card);
-    const handleOpenDelete = (cardPack: PacksResponseType) => setRowToDelete(cardPack);
-    const handleOpenLearn = (cardPack: PacksResponseType) => setRowToLearn(cardPack);
+    const handleOpenEdit = (cardPack: CardPackUpdateRequestType | undefined) => setRowToUpdate(cardPack);
+    const handleOpenDelete = (cardPack: PacksResponseType | undefined) => setRowToDelete(cardPack);
+    const handleOpenLearn = (cardPack: PacksResponseType | undefined) => setRowToLearn(cardPack);
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         dispatch(setCardPackCurrentPageAC(page))
         dispatch(getCardsPacksTC())
     }
+    const navigateToCardsPage = (e: React.MouseEvent<HTMLTableCellElement, MouseEvent>, cardPack: PacksResponseType) => navigate(`${PATH.PACKS}/${cardPack._id}`)
+
 
     useEffect(() => {
         dispatch(setCardPackCurrentPageAC(1))
@@ -140,107 +150,119 @@ export const PackTable = React.memo(() => {
                     <Table sx={{maxWidth: 800}} aria-label="customized table">
                         <TableHead>
                             <TableRow>
+
                                 <StyledTableCell>
-                                    <InlineCel className={s.headerItem}>
-                                        <UniversalHeader headerValue={"Name"} sortedValue={"user_name"}/>
-                                        {sortPacks === "0user_name" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
-
-                                    </InlineCel>
+                                    <TableSortLabel active={sortPacks === "0name" || sortPacks === "1name"}
+                                                    direction={sortPacks === "0name" ? "asc" : "desc"}
+                                                    IconComponent={ArrowDropUpIcon}>
+                                        <UniversalHeader headerValue={"Name"} sortedValue={"name"}/>
+                                    </TableSortLabel>
                                 </StyledTableCell>
+
                                 <StyledTableCell align="center">
-                                    <InlineCel className={s.headerItem}>
+                                    <TableSortLabel active={sortPacks === "0cardsCount" || sortPacks === "1cardsCount"}
+                                                    direction={sortPacks === "0cardsCount" ? "asc" : "desc"}
+                                                    IconComponent={ArrowDropUpIcon}>
                                         <UniversalHeader headerValue={"Cards"} sortedValue={"cardsCount"}/>
-                                        {sortPacks === "0cardsCount" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
-
-                                    </InlineCel>
+                                    </TableSortLabel>
                                 </StyledTableCell>
+
                                 <StyledTableCell align="center" className={s.hideForMobile}>
-                                    <InlineCel className={s.headerItem}>
+                                    <TableSortLabel className={s.headerItem}
+                                                    active={sortPacks === "0updated" || sortPacks === "1updated"}
+                                                    direction={sortPacks === "0updated" ? "asc" : "desc"}
+                                                    IconComponent={ArrowDropUpIcon}>
                                         <UniversalHeader headerValue={"Last Updated"} sortedValue={"updated"}/>
-                                        {sortPacks === "0updated" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
+                                    </TableSortLabel>
 
-                                    </InlineCel>
                                 </StyledTableCell>
                                 <StyledTableCell align="center" className={s.hideForMobile}>
-                                    <InlineCel>
-                                        <UniversalHeader headerValue={"Created by"} sortedValue={"name"}/>
-                                        {sortPacks === "0name" ? <ArrowDropUpIcon/> : <ArrowDropDownIcon/>}
+                                    <TableSortLabel active={sortPacks === "0user_name" || sortPacks === "1user_name"}
+                                                    direction={sortPacks === "0user_name" ? "asc" : "desc"}
+                                                    IconComponent={ArrowDropUpIcon}>
+                                        <UniversalHeader headerValue={"Created by"} sortedValue={"user_name"}/>
+                                    </TableSortLabel>
+                                </StyledTableCell>
+                                <StyledTableCell align="center">Actions</StyledTableCell>
+                            </TableRow>
+                        </TableHead>
 
-                                </InlineCel>
-                            </StyledTableCell>
-                            <StyledTableCell align="center" >Actions</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody className={s.tableBody}>
-                        {
-                            myCardPacks.map((cardPack => <StyledTableRow key={cardPack._id}>
-                                    {cardPack.user_id === myId
-                                        ?
-                                        <StyledTableCell component="th" scope="row">
-                                            <NavLink to={`${PATH.PACKS}/${cardPack._id}`}>
+                        <TableBody className={s.tableBody}>
+                            {
+                                myCardPacks.map((cardPack =>
+                                        <StyledTableRow key={cardPack._id}>
+
+                                            <StyledTableCell component="th" scope="row"
+                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}>
+                                                {/*<NavLink to={`${PATH.PACKS}/${cardPack._id}`}>*/}
                                                 {cardPack.name.slice(0, maxCardPackNameLength)}
-                                            </NavLink>
-                                        </StyledTableCell>
-                                        :
-                                        <StyledTableCell component="th" scope="row">{cardPack.name.slice(0, maxCardPackNameLength)}</StyledTableCell>
-                                    }
-                                    <StyledTableCell align="left">{cardPack.cardsCount}</StyledTableCell>
-                                    <StyledTableCell align="left" className={s.hideForMobile}>
-                                        {
-                                            moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")
-                                        }
-                                    </StyledTableCell>
-                                    <StyledTableCell align="left" className={s.hideForMobile} >{cardPack.user_name.slice(0,50)}</StyledTableCell>
-                                    <StyledTableCell align="right">
-                                        <Box className={s.mobileButtonGroup}>
-                                            <IconButton onClick={handlePopoverClick}>
-                                                <InfoOutlinedIcon className={s.iconInfo}/>
-                                            </IconButton>
-                                            <IconButton onClick={() => handleOpenLearn(cardPack)} >
-                                                <SchoolOutlinedIcon className={s.iconLearn}/>
-                                            </IconButton>
-                                            {cardPack.user_id === myId && (
-                                                <>
-                                                    <IconButton onClick={() => handleOpenEdit(cardPack)} >
-                                                        <EditOutlinedIcon className={s.iconEdit}/>
-                                                    </IconButton>
-                                                    <IconButton onClick={() => handleOpenDelete(cardPack)} >
-                                                        <DeleteSweepOutlinedIcon className={s.iconDelete}/>
-                                                    </IconButton>
-                                                </>
-                                            )}
-                                            <Popover
-                                                open={open}
-                                                anchorEl={anchorEl}
-                                                onClose={handlePopoverClose}
-                                                anchorOrigin={{
-                                                    vertical: 'bottom',
-                                                    horizontal: 'left',
-                                                }}
-                                                className={s.popover}
-                                            >
-                                                <div className={s.popoverDiv}>
-                                                    <span>hello, this is popover</span>
-                                                </div>
-                                            </Popover>
-                                        </Box>
-                                        <Box className={s.buttonGroup}>
-                                            {cardPack.user_id === myId && (
-                                                <>
-                                                    <button onClick={() => handleOpenDelete(cardPack)}
-                                                            className={s.delete}>Delete
-                                                    </button>
-                                                    <button onClick={() => handleOpenEdit(cardPack)}
-                                                            className={s.edit}>Edit
-                                                    </button>
-                                                </>
-                                            )}
-                                            <button onClick={() => handleOpenLearn(cardPack)}
-                                                    className={s.edit}>Learn
-                                            </button>
+                                                {/*</NavLink>*/}
+                                            </StyledTableCell>
+
+                                            <StyledTableCell align="left"
+                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}>{cardPack.cardsCount}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="left" className={s.hideForMobile}>
+                                                {
+                                                    moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")
+                                                }
+                                            </StyledTableCell>
+
+                                            <StyledTableCell align="left"
+                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}
+                                                             className={s.hideForMobile}>{cardPack.user_name.slice(0, 45)}
+                                            </StyledTableCell>
+                                            <StyledTableCell align="right">
+                                                <Box className={s.mobileButtonGroup}>
+                                                <IconButton onClick={handlePopoverClick}>
+                                                    <InfoOutlinedIcon className={s.iconInfo}/>
+                                                </IconButton>
+                                                <IconButton onClick={() => handleOpenLearn(cardPack)} >
+                                                    <SchoolOutlinedIcon className={s.iconLearn}/>
+                                                </IconButton>
+                                                {cardPack.user_id === myId && (
+                                                    <>
+                                                        <IconButton onClick={() => handleOpenEdit(cardPack)} >
+                                                            <EditOutlinedIcon className={s.iconEdit}/>
+                                                        </IconButton>
+                                                        <IconButton onClick={() => handleOpenDelete(cardPack)} >
+                                                            <DeleteSweepOutlinedIcon className={s.iconDelete}/>
+                                                        </IconButton>
+                                                    </>
+                                                )}
+                                                <Popover
+                                                    open={open}
+                                                    anchorEl={anchorEl}
+                                                    onClose={handlePopoverClose}
+                                                    anchorOrigin={{
+                                                        vertical: 'bottom',
+                                                        horizontal: 'left',
+                                                    }}
+                                                    className={s.popover}
+                                                >
+                                                    <div className={s.popoverDiv}>
+                                                        <span>hello, this is popover</span>
+                                                    </div>
+                                                </Popover>
                                             </Box>
-                                        </StyledTableCell>
-                                    </StyledTableRow>
+                                                <Box className={s.buttonGroup}>
+                                                    {cardPack.user_id === myId && (
+                                                        <>
+                                                            <button name="delete"
+                                                                    onClick={() => handleOpenDelete(cardPack)}
+                                                                    className={s.delete}>Delete
+                                                            </button>
+                                                            <button name="edit" onClick={() => handleOpenEdit(cardPack)}
+                                                                    className={s.edit}>Edit
+                                                            </button>
+                                                        </>
+                                                    )}
+                                                    <button name="learn" onClick={() => handleOpenLearn(cardPack)}
+                                                            className={s.edit}>Learn
+                                                    </button>
+                                                </Box>
+                                            </StyledTableCell>
+                                        </StyledTableRow>
                                 ))
                             }
 
@@ -257,8 +279,8 @@ export const PackTable = React.memo(() => {
                 )
             }
             {totalCardPacksPageCount > 1 &&
-            <Pagination onChange={handleChangePagination} count={totalCardPacksPageCount} page={currentPage}
-                        shape="rounded"/>}
+                <Pagination onChange={handleChangePagination} count={totalCardPacksPageCount} page={currentPage}
+                            shape="rounded"/>}
 
             <DeleteModalContainer styles={modalStyle} pack={rowToDelete} closeModalCallback={setRowToDelete}/>
             <EditAddModalContainer styles={modalStyle} pack={rowToUpdate} closeModalCallback={setRowToUpdate}/>
