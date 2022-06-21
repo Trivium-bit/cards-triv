@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/cards-triv/static/css/main.c74ec40e.css",
+    "main.css": "/cards-triv/static/css/main.4e44ece4.css",
     "main.js": "/cards-triv/static/js/main.7b91b702.js",
     "static/js/787.cfef8d12.chunk.js": "/cards-triv/static/js/787.cfef8d12.chunk.js",
     "static/media/error404BG.png": "/cards-triv/static/media/error404BG.2ecd4fd3750a3784c781.png",
@@ -15,12 +15,12 @@
     "static/media/rocket.svg": "/cards-triv/static/media/rocket.9c039dba10f9e3ac40af8ef7c0fb3778.svg",
     "static/media/overlay_stars.svg": "/cards-triv/static/media/overlay_stars.9bc0d2861caf3587df15.svg",
     "index.html": "/cards-triv/index.html",
-    "main.c74ec40e.css.map": "/cards-triv/static/css/main.c74ec40e.css.map",
+    "main.4e44ece4.css.map": "/cards-triv/static/css/main.4e44ece4.css.map",
     "main.7b91b702.js.map": "/cards-triv/static/js/main.7b91b702.js.map",
     "787.cfef8d12.chunk.js.map": "/cards-triv/static/js/787.cfef8d12.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c74ec40e.css",
+    "static/css/main.4e44ece4.css",
     "static/js/main.7b91b702.js"
   ]
 }
