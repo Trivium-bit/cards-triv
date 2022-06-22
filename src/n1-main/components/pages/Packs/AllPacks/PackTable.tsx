@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {
     Box, Pagination,
     Paper,
+    IconButton,
+    Popover,
     styled,
     Table,
     TableBody, TableCell,
@@ -39,6 +41,11 @@ import {EditAddModalContainer} from "../../../Modals/EditAddModalContainer";
 import {LearnModalContainer} from "../../../Modals/LearnModalContainer";
 import {maxCardPackNameLength} from "../PacksHeader";
 import TableSortLabel from "@mui/material/TableSortLabel";
+
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 
 
 //styles mui
@@ -112,6 +119,8 @@ export const PackTable = React.memo(() => {
     const [rowToDelete, setRowToDelete] = useState<PacksResponseType | undefined>(undefined);
     const [rowToUpdate, setRowToUpdate] = useState<CardPackUpdateRequestType | undefined>(undefined);
     const [rowToLearn, setRowToLearn] = useState<PacksResponseType | undefined>(undefined);
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const open = Boolean(anchorEl);
 
     const handleOpenEdit = (cardPack: CardPackUpdateRequestType | undefined) => setRowToUpdate(cardPack);
     const handleOpenDelete = (cardPack: PacksResponseType | undefined) => setRowToDelete(cardPack);
@@ -129,6 +138,15 @@ export const PackTable = React.memo(() => {
         dispatch(setCardPackCurrentPageAC(1))
         dispatch(getCardsPacksTC())
     }, [dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
+
+    const handlePopoverClick = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <Box className={s.wrapper}>
@@ -202,6 +220,38 @@ export const PackTable = React.memo(() => {
                                                              className={s.hideForMobile}>{cardPack.user_name.slice(0, 45)}
                                             </StyledTableCell>
                                             <StyledTableCell align="left">
+                                                <Box className={s.mobileButtonGroup}>
+                                                    <IconButton onClick={handlePopoverClick}>
+                                                        <InfoOutlinedIcon className={s.iconInfo}/>
+                                                    </IconButton>
+                                                    <IconButton onClick={() => handleOpenLearn(cardPack)} >
+                                                        <SchoolOutlinedIcon className={s.iconLearn}/>
+                                                    </IconButton>
+                                                    {cardPack.user_id === myId && (
+                                                        <>
+                                                            <IconButton onClick={() => handleOpenEdit(cardPack)} >
+                                                                <EditOutlinedIcon className={s.iconEdit}/>
+                                                            </IconButton>
+                                                            <IconButton onClick={() => handleOpenDelete(cardPack)} >
+                                                                <DeleteSweepOutlinedIcon className={s.iconDelete}/>
+                                                            </IconButton>
+                                                        </>
+                                                    )}
+                                                    <Popover
+                                                        open={open}
+                                                        anchorEl={anchorEl}
+                                                        onClose={handlePopoverClose}
+                                                        anchorOrigin={{
+                                                            vertical: 'bottom',
+                                                            horizontal: 'left',
+                                                        }}
+                                                        className={s.popover}
+                                                    >
+                                                        <div className={s.popoverDiv}>
+                                                            <span>hello, this is popover</span>
+                                                        </div>
+                                                    </Popover>
+                                                </Box>
                                                 <Box className={s.buttonGroup}>
                                                     {cardPack.user_id === myId && (
                                                         <>
