@@ -1,9 +1,13 @@
 @import "../../../../../Common/Styles/constants";
+@import "../../../../../Common/Styles/variables";
 
 .mainContainer {
   height: calc(100vh - 60px);
   padding-bottom: 20px;
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    height: max-content;
+  }
+  @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
     height: max-content;
   }
 
@@ -14,6 +18,9 @@
     height: 80vh;
     box-sizing: border-box;
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+      height: max-content;
+    }
+    @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
       height: max-content;
     }
 
@@ -30,13 +37,16 @@
 
     .packColumn {
       height: 80vh;
-      background-color: #ECECF9;
+      background-color: $profileBgColor;
       border-bottom-left-radius: 8px;
       border-top-left-radius: 8px;
       padding: 25px 15px;
       @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
         height: 40vh;
         border-radius: 8px;
+      }
+      @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
+        height: auto;
       }
 
       .title {
@@ -55,7 +65,7 @@
           padding: 15px;
           border: none;
           text-decoration: none;
-          background-color: #fff;
+          background-color: $white;
           cursor: pointer;
         }
 
@@ -64,7 +74,7 @@
           padding: 15px;
           border: none;
           text-decoration: none;
-          background-color: #9A91C8;
+          background-color: $mainPurple;
           color: white;
           cursor: pointer;
         }

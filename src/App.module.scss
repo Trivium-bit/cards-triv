@@ -7,4 +7,10 @@
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
         height: max-content;
     }
+    @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
+        height: max-content;
+    }
+    @media (min-width: $tablet-and-mobile-min-width) and (max-width: $tablet-and-mobile-max-width) {
+        height: max-content;
+    }
 }

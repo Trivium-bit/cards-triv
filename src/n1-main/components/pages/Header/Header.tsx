@@ -27,12 +27,12 @@ function Header() {
         <div className={s.header}>
             <Container>
                 <Grid container >
-                    <Grid item xs={0} md={4}>
+                    <Grid item xs={0} sm={2} md={4}>
                         <NavLink to={PATH.HOME}>
                             <span className={s.logo}>IT INCUBATOR</span>
                         </NavLink>
                     </Grid>
-                    <Grid item xs={5} md={2}>
+                    <Grid item xs={5} sm={4} md={2}>
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PACKS && s.headerLinkActive}`}>
                             <NavLink to={PATH.PACKS} >
                                 <div className={s.packList}>
@@ -42,7 +42,7 @@ function Header() {
                             </NavLink>
                         </Box>
                     </Grid>
-                    <Grid item xs={5} md={2}>
+                    <Grid item xs={5} sm={4} md={2}>
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PROFILE && s.headerLinkActive}`}>
                             <NavLink to={PATH.PROFILE} >
                                 <div className={s.packList} onClick={handleChangeIsMyTable}>
@@ -52,9 +52,13 @@ function Header() {
                             </NavLink>
                         </Box>
                     </Grid>
-                    <Grid item xs={2} md={4}>
+                    <Grid item xs={2} sm={2} md={4}>
                         <Box>
-                            <span className={s.logOut} onClick={handleLogOut} aria-disabled={appStatus === "loading"}>Log Out</span>
+                            <span className={s.logOut}
+                                  onClick={handleLogOut}
+                                  aria-disabled={appStatus === "loading"}>
+                                Log Out
+                            </span>
                         </Box>
                     </Grid>
                 </Grid>

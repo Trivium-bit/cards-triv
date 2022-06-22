@@ -1,4 +1,5 @@
 @import "../../../../Common/Styles/constants";
+@import "../../../../Common/Styles/variables";
 
 .profileContainer {
   height: 80vh;
@@ -11,6 +12,9 @@
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     height: max-content;
   }
+  @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
+    height: max-content;
+  }
 
   .myPacksBlock {
     display: flex;
@@ -21,15 +25,19 @@
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
       height: max-content;
     }
+    @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
+      height: max-content;
+    }
   }
 
   .profileColumn {
-    background-color: #ECECF9;
+    background-color: $profileBgColor;
     border-bottom-left-radius: 8px;
     border-top-left-radius: 8px;
 
+
     .profile {
-      background-color: #D9D9F1;
+      background-color: $windowBackGroundColor;
       border-top-left-radius: 8px;
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
@@ -44,8 +52,7 @@
         font-weight: 600;
         font-size: 16px;
         line-height: 19px;
-        color: #2D2E46;
-
+        color: $textColor;
       }
     }
   }
