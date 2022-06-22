@@ -1,5 +1,5 @@
 import {AxiosError} from "axios"
-import {setAppStatusAC, setAppUserAC} from "./app-reducer"
+import {setAppErrorAC, setAppStatusAC, setAppUserAC} from "./app-reducer"
 import {AppThunkDispatch} from "./store"
 import {authAPI, LoginParamsType, NewPasswordType} from "../api/loginAPI"
 import {handleNetworkError} from "../utils/error.utils"
@@ -63,7 +63,8 @@ export const loginTC = ({email, password, rememberMe}: LoginParamsType) =>
                 dispatch(setAppStatusAC("succeeded"));
                 dispatch(setAppUserAC(res.data));
             }).catch((error: AxiosError<{ error: string }>) => {
-                    handleNetworkError(error, dispatch);
+                handleNetworkError(error, dispatch);
+                dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
                 }
             )
     }

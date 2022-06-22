@@ -6,7 +6,11 @@
   border-radius: 2px !important;
   padding: 4px 10px !important;
   cursor: pointer;
+}
 
+.editBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .modalMainBox {
@@ -25,6 +29,7 @@
       border-radius: 100%;
       object-fit: cover;
     }
+
     .iconUpload {
       position: absolute;
       bottom: -11px;
@@ -36,7 +41,8 @@
     width: 250px;
     margin: 20px 0;
   }
-  .emailBlock{
+
+  .emailBlock {
     display: flex;
     justify-content: space-between !important;
     border: 1px solid black;
@@ -49,21 +55,31 @@
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
+
   .btnSave {
     background: #21268F;
     color: white;
     border-radius: 30px;
     padding: 9px 30px;
-    border:none;
+    border: none;
     cursor: pointer;
+
   }
-  .btnCancel  {
-    background: #D7D8EF;
-    color: #21268F;
-    border-radius: 30px;
-    padding: 9px 30px;
-    border:none;
-    cursor: pointer;
+  .btnSave:hover {
+    background-color: #4448c2 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .btnCancel {
+    @extend .btnSave;
+    background: #D7D8EF !important;
+    color: #21268F !important;;
+  }
+  .btnCancel:hover {
+    background-color: #c9caec !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   }
 
 

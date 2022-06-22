@@ -10,7 +10,7 @@
     align-items: center;
     flex-direction: column;
     width: 280px;
-    /* border: 1px solid black;*/
+
   }
   .textFields {
     display: flex;
@@ -19,10 +19,10 @@
     flex-direction: column;
     width: 280px;
     position: relative;
-    /* border: 1px solid black;*/
+
     .emailError {
       position: absolute;
-      top: 4rem;
+      top: 3.8rem;
       color: red;
       font-size: 14px;
       margin-left: auto;
@@ -33,7 +33,7 @@
     }
     .passError{
       @extend .emailError;
-      top: 3.5rem;
+      top: 3.4rem;
     }
   }
   .checkbox {
@@ -94,7 +94,6 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    /*border: 1px solid black;*/
     width: 280px;
     height: 80px;
 
@@ -124,6 +123,8 @@
 
     .loginButton:hover {
       background-color: #4448c2 !important;
+      transform: scale(1.05);
+      box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
 
     .links {

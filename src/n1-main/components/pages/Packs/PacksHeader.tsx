@@ -1,17 +1,16 @@
 import React, {ChangeEvent, useState} from 'react';
 import {
-    Box,
+    Box, Button,
     InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Button from "../../../../Common/Components/Button";
 import s from './styles/PackHeader.module.scss'
 import {setIsPrivateCardPackAC, setLocalCardPackNameAC} from "../../../../state/cardPacksReducer";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {modalStyle} from "./AllPacks/PackTable";
 import {EditAddModalContainer} from "../../Modals/EditAddModalContainer";
 import TextField from "@mui/material/TextField";
-
+import CloseIcon from '@mui/icons-material/Close';
 
 type PacksHeaderPropsType = {
     packsOwnerName?: string
@@ -38,6 +37,9 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
             return `${spitedName[0]}'s`
         }
     }
+    const onclickHandler = () =>{
+        dispatch(setLocalCardPackNameAC(""));
+    }
 
     return (
         <Box className={s.packHeaderBlock}>
@@ -50,21 +52,22 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                        fullWidth
                        value={localPackName}
                        placeholder={"Search..."}
-                           size="small"
+                       size="small"
                        InputProps={{
                            startAdornment:
                            <InputAdornment position="start">
-                           <SearchIcon/>
+                                <SearchIcon/>
                            </InputAdornment>,
-
-
+                           endAdornment:
+                               <InputAdornment position="end" style={{cursor:"pointer"}} onClick={onclickHandler}>
+                                   <CloseIcon/>
+                               </InputAdornment>
                        }}
                 />
-                <Button
+                <Button sx={{textTransform: "none"}}
                     onClick={handleOpen}
                     className={s.addBtn}
-                    title={'Add a new card pack'}
-                />
+                    title={'Add a new card pack'}>Add a new card pack</Button>
                 <EditAddModalContainer showAddNewPackModal={open} closeModalCallback={handleClose} styles={modalStyle}/>
             </Box>
 

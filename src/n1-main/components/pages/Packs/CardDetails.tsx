@@ -2,6 +2,7 @@ import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from 'react';
 import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {
     Box,
+    Button,
     Container, FormControl,
     Input,
     InputAdornment, InputLabel, Modal, Pagination,
@@ -29,7 +30,7 @@ import {
     setFilterAnswerAC,
     setFilterQuestionAC
 } from "../../../../state/cardsReducer";
-import Button from "../../../../Common/Components/Button";
+import CustomButton from "../../../../Common/Components/Button";
 import modalStyles from "../../Modals/ModalStyles.module.scss";
 import {RequestStatusType} from "../../../../state/app-reducer";
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
@@ -88,6 +89,7 @@ const CardDetails = () => {
     const dispatch = useAppDispatch();
     const location = useLocation();
     const {packId} = useParams();
+    const user_id = useAppSelector<string>(state => state.appReducer.user._id)
     const cards = useSelector(getCardsSelector);
     const filterQuestion = useSelector(cardFilterQuestionSelector);
     const filterAnswer = useSelector(cardFilterAnswerSelector);
@@ -121,6 +123,7 @@ const CardDetails = () => {
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
+
 
     useEffect(() => {
 
@@ -254,7 +257,7 @@ const CardDetails = () => {
                                 </InputAdornment>,
                         }}
                     />
-                    <Button className={s.btn} title={'Add new card'} onClick={handleOpen}/>
+                    <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleOpen}>Add new card</Button>
                 </Box>
                 <Box>
                     <Box className={s.wrapper}>
@@ -277,20 +280,21 @@ const CardDetails = () => {
                                                                  scope="row">{card.question}</StyledTableCell>
                                                 <StyledTableCell align="left">{card.answer}</StyledTableCell>
                                                 <StyledTableCell
-                                                    align="left">{moment(card.created).format("DD-MM-YYYY HH:mm:ss")}</StyledTableCell>
+                                                    align="left">{moment(card.created).format("DD.MM.YYYY HH:mm:ss")}</StyledTableCell>
                                                 <StyledTableCell align="left">
                                                     <Rating
                                                         readOnly
                                                         size="small"
                                                         value={card.grade}
+                                                        color={"#21268F"}
                                                     />
                                                 </StyledTableCell>
                                                 <StyledTableCell align="right">
                                                     <div className={styles.buttonGroup}>
-                                                        <button className={styles.delete}
+                                                        <button className={styles.delete} disabled={user_id !== card.user_id}
                                                                 onClick={() => openDeleteModal(card)}>Delete
                                                         </button>
-                                                        <button className={styles.edit}
+                                                        <button className={styles.edit} disabled={user_id !== card.user_id}
                                                                 onClick={() => handleEditOpen(card)}>Edit
                                                         </button>
                                                     </div>
@@ -330,10 +334,10 @@ const CardDetails = () => {
                                                onChange={handleChangeEditAnswer}/>
                                     </FormControl>
                                     <Box className={modalStyles.modalBtnGroup}>
-                                        <Button onClick={handleEditClose} className={modalStyles.btnCancel}
-                                                title={'Cancel'} disabled={appStatus === "loading"}/>
-                                        <Button className={modalStyles.btnSave} onClick={updateCard} title={'Save'}
-                                                disabled={appStatus === "loading"}/>
+                                        <CustomButton onClick={handleEditClose} className={modalStyles.btnCancel}
+                                                      title={'Cancel'} disabled={appStatus === "loading"}/>
+                                        <CustomButton className={modalStyles.btnSave} onClick={updateCard} title={'Save'}
+                                                      disabled={appStatus === "loading"}/>
                                     </Box>
                                 </Box>
                             </Box>
@@ -356,12 +360,9 @@ const CardDetails = () => {
                                                helperText={addErrors.answer} label="Answer"/>
                                 </Box>
                                 <Box>
-
                                     <Box className={modalStyles.modalBtnGroup}>
-                                        <Button onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'}
-                                                disabled={appStatus === "loading"}/>
-                                        <Button className={modalStyles.btnSave} onClick={handleAddCard} title={'Add'}
-                                                disabled={appStatus === "loading"}/>
+                                        <Button sx={{textTransform: "none"}} onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'}>Cancel</Button>
+                                        <Button sx={{textTransform: "none"}} className={modalStyles.btnSave} onClick={handleAddCard} title={'Add'}>Add</Button>
                                     </Box>
                                 </Box>
                             </Box>

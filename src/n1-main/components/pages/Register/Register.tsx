@@ -4,16 +4,16 @@ import {useFormik} from "formik";
 import {registerTC} from "../../../../state/registerReduser";
 import {RegisterParamsType} from "../../../../api/registerAPI";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
-import {InputLabel} from "@mui/material";
+import {Button, InputLabel} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import Input from "@mui/material/Input";
 import {Navigate, useNavigate} from "react-router-dom";
-import Button from "../../../../Common/Components/Button";
 import {PATH} from "../../AppRoutes";
 import {isRegisteredSelector} from "../../../../Common/Selectors/Selectors";
+
 
 
 type FormikErrorType = {
@@ -106,7 +106,7 @@ export const Register = React.memo(()=> {
                     />
                 </FormControl>
                 {formik.touched.email && formik.errors.email ?
-                    <div className={styles.errors}>{formik.errors.email}</div> : null}
+                    <div className={styles.emailError}>{formik.errors.email}</div> : null}
 
                 <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
@@ -151,9 +151,12 @@ export const Register = React.memo(()=> {
                         <div className={styles.errors}>{formik.errors.confirmPassword}</div> : null}
                 </FormControl>
                 <div className={styles.buttons}>
-                    <Button title={"Cancel"} callBack={buttonHandlerRedirect}  className={styles.cancelButton}/>
+                    <Button sx={{textTransform: "none"}} onClick={buttonHandlerRedirect} className={styles.cancelButton}>
+                        Cancel
+                    </Button>
                     <form onSubmit={formik.handleSubmit}>
-                        <Button title={"Register"} type="submit" className={styles.registerButton}/>
+                        <Button sx={{textTransform: "none"}} type="submit"
+                                className={styles.registerButton}>Register</Button>
                     </form>
 
                 </div>

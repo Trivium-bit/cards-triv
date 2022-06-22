@@ -8,7 +8,7 @@ import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {setNewPasswordAC, sendNewPasswordTC} from "../../../../state/auth-reducer";
 import {NewPasswordType} from "../../../../api/loginAPI";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
-import Button from "../../../../Common/Components/Button";
+import CustomButton from "../../../../Common/Components/Button";
 import {PATH} from "../../AppRoutes";
 
 type FormikErrorType = {
@@ -106,7 +106,7 @@ function CreateNewPassword() {
                             ? <div className={styles.circularProgress}>
                                 <CircularProgress/>
                             </div>
-                            : <Button title={"Create new password"} type="submit" className={styles.sendButton}/>
+                            : <CustomButton title={"Create new password"} type="submit" className={styles.sendButton}/>
 
                         }
                     </form>

@@ -41,6 +41,7 @@ import {EditAddModalContainer} from "../../../Modals/EditAddModalContainer";
 import {LearnModalContainer} from "../../../Modals/LearnModalContainer";
 import {maxCardPackNameLength} from "../PacksHeader";
 import TableSortLabel from "@mui/material/TableSortLabel";
+import Button from "@mui/material/Button";
 
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import DeleteSweepOutlinedIcon from '@mui/icons-material/DeleteSweepOutlined';
@@ -172,8 +173,8 @@ export const PackTable = React.memo(() => {
                                     </TableSortLabel>
                                 </StyledTableCell>
 
-                                <StyledTableCell align="left" >
-                                    <TableSortLabel className={s.headerItem}
+                                <StyledTableCell align="left"  className={s.hideForMobile}>
+                                    <TableSortLabel
                                                     active={sortPacks === "0updated" || sortPacks === "1updated"}
                                                     direction={sortPacks === "0updated" ? "asc" : "desc"}
                                                     IconComponent={ArrowDropUpIcon}>
@@ -255,17 +256,17 @@ export const PackTable = React.memo(() => {
                                                 <Box className={s.buttonGroup}>
                                                     {cardPack.user_id === myId && (
                                                         <>
-                                                            <button name="delete" onClick={() => handleOpenDelete(cardPack)}
+                                                            <Button  sx={{textTransform: "none"}} name="delete" onClick={() => handleOpenDelete(cardPack)}
                                                                     className={s.delete}>Delete
-                                                            </button>
-                                                            <button name="edit" onClick={() => handleOpenEdit(cardPack)}
+                                                            </Button>
+                                                            <Button  sx={{textTransform: "none"}} name="edit" onClick={() => handleOpenEdit(cardPack)}
                                                                     className={s.edit}>Edit
-                                                            </button>
+                                                            </Button>
                                                         </>
                                                     )}
-                                                    <button name="learn" onClick={() => handleOpenLearn(cardPack)}
+                                                    <Button sx={{textTransform: "none"}} name="learn" onClick={() => handleOpenLearn(cardPack)}
                                                             className={s.edit}>Learn
-                                                    </button>
+                                                    </Button>
                                                 </Box>
                                             </StyledTableCell>
                                         </StyledTableRow>

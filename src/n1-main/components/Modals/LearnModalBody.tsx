@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useState, forwardRef, CSSProperties} from 'react';
 import {Box, FormControlLabel, Radio, RadioGroup, Rating} from "@mui/material";
-import Button from "../../../Common/Components/Button";
+import CustomButton from "../../../Common/Components/Button";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
 import modalStyles from "./ModalStyles.module.scss";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
@@ -89,8 +89,8 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
                     )
                 }
                 <Box className={modalStyles.modalBtnGroup}>
-                    <Button onClick={handleCancel} className={modalStyles.btnCancel} title={'Cancel'}/>
-                    <Button
+                    <CustomButton onClick={handleCancel} className={modalStyles.btnCancel} title={'Cancel'}/>
+                    <CustomButton
                         className={modalStyles.btnSave}
                         disabled={step === ANSWER && selectedValue === 0}
                         onClick={handleSubmit}

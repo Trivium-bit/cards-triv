@@ -1,10 +1,10 @@
 import React, {ChangeEvent, useState} from 'react';
 import {Box, Modal, Input, styled, InputLabel, FormControl, IconButton} from "@mui/material";
-import Button from "../../../../Common/Components/Button";
 import s from './EditProfileModal.module.scss'
 import {PhotoCamera} from "@mui/icons-material";
 import {useAppDispatch} from "../../../../state/store";
 import {updateUserTC} from "../../../../state/app-reducer";
+import Button from "@mui/material/Button";
 
 
 type ModalPropsType = {
@@ -64,10 +64,10 @@ const EditProfileModal = ({serverAvatar, name, email, title, changeName}: ModalP
     }
     return (
         <div>
-            <Button
+            <Button sx={{textTransform: "none"}}
                 onClick={handleOpen}
                 className={s.editBtn}
-                title={'Edit profile'}/>
+                title={'Edit profile'}>Edit profile</Button>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -104,8 +104,8 @@ const EditProfileModal = ({serverAvatar, name, email, title, changeName}: ModalP
                         </Box>
                     </Box>
                     <Box className={s.modalBtnGroup}>
-                        <Button onClick={handleClose} className={s.btnCancel} title={'Cancel'}/>
-                        <Button className={s.btnSave} title={'Save'} onClick={saveUserData}/>
+                        <Button sx={{textTransform: "none"}} onClick={handleClose} className={s.btnCancel}>Cancel</Button>
+                        <Button sx={{textTransform: "none"}} className={s.btnSave} onClick={saveUserData}>Save</Button>
                     </Box>
                 </Box>
             </Modal>

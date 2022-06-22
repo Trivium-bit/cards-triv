@@ -7,7 +7,7 @@ import LearnModalBody from "./LearnModalBody";
 import {RequestStatusType} from "../../../state/app-reducer";
 import {appStatusSelector} from "../../../Common/Selectors/Selectors";
 import {Box} from "@mui/material";
-import Button from "../../../Common/Components/Button";
+import CustomButton from "../../../Common/Components/Button";
 import modalStyles from "../Modals/ModalStyles.module.scss";
 
 type ModalContainerPropsType = {
@@ -39,8 +39,8 @@ export const LearnModalContainer = React.memo(({pack, closeModalCallback, styles
                         :  <>
                                 <p className={modalStyles.modalText}>This card pack is empty. Please, chose another card pack</p>
                                 <Box className={modalStyles.modalOneCancelBtn}>
-                                    <Button onClick={handleCloseLearnModal} className={modalStyles.btnCancel}
-                                        title={'Cancel'}/>
+                                    <CustomButton onClick={handleCloseLearnModal} className={modalStyles.btnCancel}
+                                                  title={'Cancel'}/>
                                 </Box>
                             </>
                     }

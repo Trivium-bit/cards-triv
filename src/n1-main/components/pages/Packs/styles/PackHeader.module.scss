@@ -24,13 +24,17 @@
       background-color: #21268F;
       color: white;
       border-radius: 30px;
-      padding: 9px 40px;
       border:none;
       cursor: pointer;
       @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
         margin-top: 20px;
         width: 100%;
       }
+    }
+    .addBtn:hover{
+      background-color: #4448c2 !important;
+      transform: scale(1.05);
+      box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
   }
 }

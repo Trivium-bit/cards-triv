@@ -7,8 +7,8 @@ import {loginTC} from "../../../../state/auth-reducer";
 import {useFormik} from "formik";
 import {Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
-import Button from "../../../../Common/Components/Button";
 import {LoginParamsType} from "../../../../api/loginAPI";
+import Button from "@mui/material/Button";
 
 
 type FormikErrorType = {
@@ -119,13 +119,13 @@ export const Login = React.memo(() => {
                                   checked={formik.getFieldProps("rememberMe").value}
                                   size="small"
                                   color="secondary"/>
-                        <div className={styles.remembMe}>remember Me</div>
+                        <div className={styles.remembMe}>Remember Me</div>
                     </label>
                     <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
                 </FormControl>
                 <div className={styles.button}>
                     <form onSubmit={formik.handleSubmit} className={styles.submit}>
-                        <Button title={"Login"} type="submit" className={styles.loginButton}/>
+                        <Button sx={{textTransform: "none"}} type="submit" className={styles.loginButton}>Login</Button>
                     </form>
                     <div className={styles.links}>
                         <div className={styles.question}>Don’t have an account?</div>

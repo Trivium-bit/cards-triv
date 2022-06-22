@@ -2,11 +2,11 @@ import styles from "./PasswordRecovery.module.scss";
 import { useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import { useNavigate } from "react-router-dom";
-import Button from "../../../../Common/Components/Button";
 import { useFormik } from "formik";
 import { PATH } from "../../AppRoutes";
 import { forgotTC} from "../../../../state/registerReduser";
 import { useAppDispatch, useAppSelector } from "../../../../state/store";
+import Button from "@mui/material/Button";
 
 type FormikErrorType = {
     email: string
@@ -61,7 +61,7 @@ export const PassRecovery = () => {
     }, [formik]);
     return (
         <div className={styles.passRecoveryWrapper}>
-            <h2 className={styles.h2}>It-incubator</h2>
+            <h1 className={styles.h2}>It-incubator</h1>
             <h2 style={{ marginTop: 0, marginBottom: 17 }}>Forgot your password?</h2>
             <TextField sx={{ m: 1, width: '35ch' }} id="standard-basic" label="Email" variant="standard"
                 {...formik.getFieldProps("email")} />
@@ -71,7 +71,7 @@ export const PassRecovery = () => {
                 Enter your email address and we will send you further instructions
             </p>
             <form onSubmit={formik.handleSubmit}>
-                <Button type={"submit"} className={styles.button} title={"Send Instructions"} />
+                <Button sx={{textTransform: "none"}} type={"submit"} className={styles.button}>Send Instructions</Button>
             </form>
 
             <p className={styles.pSmall}>

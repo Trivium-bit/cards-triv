@@ -10,7 +10,7 @@ import {
 import {useAppDispatch, useAppSelector} from "../../../state/store";
 import {Box, Checkbox} from "@mui/material";
 import modalStyles from "./ModalStyles.module.scss";
-import Button from "../../../Common/Components/Button";
+import CustomButton from "../../../Common/Components/Button";
 import TextField from "@mui/material/TextField";
 import {maxCardPackNameLength} from "../pages/Packs/PacksHeader";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -90,9 +90,9 @@ export const EditAddModalContainer = React.memo(({pack, closeModalCallback, styl
             <FormControlLabel control={<Checkbox onChange={onchangePrivate} checked={isPrivate} size={"small"}/>}
                               label="Private"/>
             <Box className={modalStyles.modalBtnGroup}>
-                <Button onClick={handleCloseModal} className={modalStyles.btnCancel} title={'Cancel'}/>
-                <Button onClick={pack ? updatePackName : saveNewPack} className={modalStyles.btnSave}
-                        title={pack ? 'Update name' : 'Save new'}/>
+                <CustomButton onClick={handleCloseModal} className={modalStyles.btnCancel} title={'Cancel'}/>
+                <CustomButton onClick={pack ? updatePackName : saveNewPack} className={modalStyles.btnSave}
+                              title={pack ? 'Update name' : 'Save new'}/>
             </Box>
 
         </UniversalModal>

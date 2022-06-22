@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from "../../../state/store";
 import {useParams, useSearchParams} from "react-router-dom";
 import {Box} from "@mui/material";
 import modalStyles from "./ModalStyles.module.scss";
-import Button from "../../../Common/Components/Button";
+import CustomButton from "../../../Common/Components/Button";
 import {RequestStatusType} from "../../../state/app-reducer";
 import {appStatusSelector} from "../../../Common/Selectors/Selectors";
 import {PackCardType} from "../../../api/cardAPI";
@@ -52,10 +52,10 @@ export const DeleteCardModalContainer = React.memo(({card, deleteCallback, style
                  </span>
             </Box>
             <Box className={modalStyles.modalBtnGroup}>
-                <Button onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}
-                        disabled={appStatus === "loading"}/>
-                <Button onClick={handleDeleteCard} className={modalStyles.btnDelete} title={'Delete'}
-                        disabled={appStatus === "loading"}/>
+                <CustomButton onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}
+                              disabled={appStatus === "loading"}/>
+                <CustomButton onClick={handleDeleteCard} className={modalStyles.btnDelete} title={'Delete'}
+                              disabled={appStatus === "loading"}/>
 
             </Box>
         </UniversalModal>

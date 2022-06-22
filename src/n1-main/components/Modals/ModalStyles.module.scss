@@ -38,10 +38,17 @@
       border: none;
       cursor: pointer;
     }
+    .btnSave:hover{
+      background-color: #4448c2!important;
+      transform: scale(1.05);
+    }
+    .btnCancel:hover{
+      background-color: #c9caec !important;
+       transform: scale(1.05);
+     }
     .btnDelete {
       @extend .btnSave;
       background: #F1453D !important;
-
     }
   }
 
