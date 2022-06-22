@@ -1,9 +1,10 @@
 @import "../../../../Common/Styles/constants";
+@import "../../../../Common/Styles/variables";
 
 .header {
     height : 60px;
     line-height : 60px;
-    background-color: #EBE0E9;
+    background-color: $profileBgColor;
 
     a {
         text-decoration: none;
@@ -12,7 +13,7 @@
 
     span {
         font-weight: 600;
-        color: #2D2E46;
+        color: $textColor;
         cursor: pointer;
     }
     .logo {
@@ -35,8 +36,8 @@
 
     .headerLink {
         &.headerLinkActive {
-            background-color: #DCCCDB;
-            border-bottom: 3px solid #21268F;
+            background-color: $linkActive;
+            border-bottom: 3px solid $firstButtonColor;
             margin-top: -3px;
 
             .packList {
@@ -46,7 +47,7 @@
 
                 .icon {
                     opacity: 1;
-                    color: #2D2E46;
+                    color: $textColor;
                 }
             }
         }
@@ -57,7 +58,7 @@
             justify-content: center;
 
             &:active {
-                color: #2D2E46;
+                color: $textColor;
             }
 
             .title {

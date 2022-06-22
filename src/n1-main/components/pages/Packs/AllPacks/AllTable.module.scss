@@ -14,7 +14,7 @@
     }
 
     .highlightTableCell:hover {
-      background-color: #ECECF9;;
+      background-color: $profileBgColor;;
     }
 
     overflow-x: auto;
@@ -119,7 +119,7 @@
 }
 
 .hideForMobile:hover {
-  background-color: #ECECF9;
+  background-color: $profileBgColor;
 }
 
 .infoMobileIcon {
@@ -139,8 +139,23 @@
 }
 
 .popover > * {
-  padding: 15px;
   color: $firstButtonColor !important;
   box-shadow: none !important;
-  border: 1px solid $firstButtonColor;
+  width: 100%;
+}
+.popoverDiv {
+  background-color: $profileBgColor !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 10px;
+
+  .popoverTitle {
+    font-weight: bold;
+    font-size: 13px;
+    color: $textColor;
+  }
+  span {
+    font-size: 14px;
+  }
 }
