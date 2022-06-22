@@ -7,10 +7,16 @@
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
         height: max-content;
     }
+    @media (min-width: $tablet-and-mobile-min-width) and (max-width: $tablet-and-mobile-max-width) {
+        height: max-content;
+    }
     @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
         height: max-content;
     }
-    @media (min-width: $tablet-and-mobile-min-width) and (max-width: $tablet-and-mobile-max-width) {
+    @media (min-width: $ipad-pro-min-width) and (max-width: $ipad-pro-max-width) {
+        height: max-content;
+    }
+    @media (min-width: $ipad-pro12-min-width) and (max-width: $ipad-pro12-max-width) {
         height: max-content;
     }
 }
