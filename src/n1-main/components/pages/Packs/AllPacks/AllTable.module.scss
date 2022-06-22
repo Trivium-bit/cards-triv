@@ -54,6 +54,7 @@
 }
 
 .buttonGroup {
+
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: none;
   }
