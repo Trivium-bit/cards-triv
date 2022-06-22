@@ -196,29 +196,32 @@ export const PackTable = React.memo(() => {
                             {
                                 myCardPacks.map((cardPack =>
                                         <StyledTableRow key={cardPack._id} >
-
                                             <StyledTableCell className={s.highlightTableCell} align="left"
                                                              component="th" scope="row"
-                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}
-                                            >
+                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}>
                                                 <NavLink to={`${PATH.PACKS}/${cardPack._id}`}>
                                                     {cardPack.name.slice(0, maxCardPackNameLength)}
                                                 </NavLink>
                                             </StyledTableCell>
 
                                             <StyledTableCell className={s.highlightTableCell}
-                                                             align="left" onClick={(e) => navigateToCardsPage(e, cardPack)}
-                                            >{cardPack.cardsCount}
-                                            </StyledTableCell>
-                                            <StyledTableCell align="left" className={s.hideForMobile} onClick={(e) => navigateToCardsPage(e, cardPack)}>
-                                                {
-                                                    moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")
-                                                }
+                                                             align="left"
+                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}>
+                                                {cardPack.cardsCount}
                                             </StyledTableCell>
 
-                                            <StyledTableCell align="left" onClick={(e) => navigateToCardsPage(e, cardPack)}
-                                                             className={s.hideForMobile}>{cardPack.user_name.slice(0, 45)}
+                                            <StyledTableCell align="left"
+                                                             className={s.hideForMobile}
+                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}>
+                                                {moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")}
                                             </StyledTableCell>
+
+                                            <StyledTableCell align="left"
+                                                             onClick={(e) => navigateToCardsPage(e, cardPack)}
+                                                             className={s.hideForMobile}>
+                                                {cardPack.user_name.slice(0, 45)}
+                                            </StyledTableCell>
+
                                             <StyledTableCell align="left">
                                                 <Box className={s.mobileButtonGroup}>
                                                     <IconButton onClick={handlePopoverClick}>
@@ -248,7 +251,10 @@ export const PackTable = React.memo(() => {
                                                         className={s.popover}
                                                     >
                                                         <div className={s.popoverDiv}>
-                                                            <span>hello, this is popover</span>
+                                                            <p className={s.popoverTitle}>Created by: </p>
+                                                            <span>{cardPack.user_name.slice(0, 45)}</span>
+                                                            <p className={s.popoverTitle}>Last Updated:</p>
+                                                            <span>{moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")}</span>
                                                         </div>
                                                     </Popover>
                                                 </Box>
