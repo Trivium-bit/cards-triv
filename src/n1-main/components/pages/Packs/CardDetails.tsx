@@ -93,16 +93,12 @@ export const StyledRating = styled(Rating)({
 });
 //component
 const CardDetails = () => {
-  /*  const delaySetAnswerRef = useRef<any>();
-    const delaySetQuestionRef = useRef<any>();*/
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const location = useLocation();
     const {packId} = useParams();
     const user_id = useAppSelector<string>(state => state.appReducer.user._id)
     const cards = useSelector(getCardsSelector);
-  /*  const filterQuestion = useSelector(cardFilterQuestionSelector);
-    const filterAnswer = useSelector(cardFilterAnswerSelector);*/
     const cardPagination = useSelector(cardPaginationSelector);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
@@ -205,19 +201,9 @@ const CardDetails = () => {
     const openDeleteModal = (card: PackCardType) => setRowToDelete(card);
 
     const onChangeQuestionHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        /*const value = e.target.value;
-        clearTimeout(delaySetQuestionRef.current)
-        delaySetQuestionRef.current = setTimeout(() => {
-            dispatch(setFilterQuestionAC(value))
-        }, 1000)*/
         dispatch(setFilterQuestionAC(e.target.value))
     }
     const onChangeAnswerHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        /*const value = e.currentTarget.value;
-        clearTimeout(delaySetAnswerRef.current)
-        delaySetAnswerRef.current = setTimeout(() => {
-            dispatch(setFilterAnswerAC(value))
-        }, 1000)*/
         dispatch(setFilterAnswerAC(e.target.value))
     }
 

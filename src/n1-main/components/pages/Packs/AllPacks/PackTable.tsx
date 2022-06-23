@@ -129,7 +129,7 @@ export const PackTable = React.memo(() => {
         navigate(`${PATH.PACKS}/${cardPack._id}`)
 
     }
-    console.log(myCardPacks.map(card => card.grade))
+
     useEffect(() => {
         dispatch(setCardPackCurrentPageAC(1))
         dispatch(getCardsPacksTC())

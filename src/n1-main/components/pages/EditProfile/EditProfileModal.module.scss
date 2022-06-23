@@ -1,6 +1,10 @@
+@import "../../../../Common/Styles/mixins";
+@import "../../../../Common/Styles/variables";
+
 .editBtn {
+
   margin-top: 15px !important;
-  color: #21268F !important;
+  color: $actionButtonColor !important;
   background: transparent !important;
   border: 1px solid #635D80 !important;
   border-radius: 2px !important;
@@ -57,30 +61,23 @@
   padding: 20px 0;
 
   .btnSave {
-    background: #21268F;
-    color: white;
-    border-radius: 30px;
+    @include actionButtonText;
     padding: 9px 30px;
-    border: none;
-    cursor: pointer;
 
   }
+
   .btnSave:hover {
-    background-color: #4448c2 !important;
-    transform: scale(1.05);
-    box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    @include actionButtonHover;
   }
 
   .btnCancel {
-    @extend .btnSave;
-    background: #D7D8EF !important;
-    color: #21268F !important;;
+    @include cancelButtonText;
+    padding: 9px 30px;
+
   }
+
   .btnCancel:hover {
-    background-color: #c9caec !important;
-    transform: scale(1.05);
-    box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    @include cancelButtonHover;
+
   }
-
-
 }

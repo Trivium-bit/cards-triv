@@ -13,6 +13,7 @@ import Input from "@mui/material/Input";
 import {Navigate, useNavigate} from "react-router-dom";
 import {PATH} from "../../AppRoutes";
 import {isRegisteredSelector} from "../../../../Common/Selectors/Selectors";
+import {projectName} from "../Header/Header";
 
 
 
@@ -93,9 +94,9 @@ export const Register = React.memo(()=> {
     }
     return (
         <div className={styles.registerWrapper}>
-            <h1 className={styles.h1}>
-                It-incubator
-            </h1>
+            <h2 className={styles.h1}>
+                {projectName}
+            </h2>
             <h2 className={styles.h2}>
                 Sign up
             </h2>

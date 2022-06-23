@@ -30,18 +30,19 @@ export type CardPackUpdateRequestType = {
 } & CardPackRequestType
 
 export type InitialProfileStateType = {
-    isLoading: boolean;
-    cardsPacks: PacksResponseType[];
-    cardPacksTotalCount: number,
-    isMyTable: boolean,
-    pageCount: number,
-    page: number,
-    packName: string,
-    min: number,
-    max: number,
-    newCardPackName: string,
-    sortPacks: string,
+    isLoading: boolean
+    cardsPacks: PacksResponseType[]
+    cardPacksTotalCount: number
+    isMyTable: boolean
+    pageCount: number
+    page: number
+    packName: string
+    min: number
+    max: number
+    newCardPackName: string
+    sortPacks: string
     isPrivate: boolean
+
 
 }
 const initialState: InitialProfileStateType = {
@@ -56,7 +57,8 @@ const initialState: InitialProfileStateType = {
     page: 1,
     packName: "",
     sortPacks: "0updated",
-    isPrivate: false
+    isPrivate: false,
+
 }
 export type CardsPacksActionType = SetCardsActionType
     | AddNewCardsPackActionType
@@ -75,7 +77,7 @@ export const cardPacksReducer = (state: InitialProfileStateType = initialState, 
                 ...state,
                 cardsPacks: action.cardsPacks,
                 cardPacksTotalCount: action.cardPacksTotalCount,
-                page: action.page
+                page: action.page,
             }
         case ADD_NEW_CARD_PACK:
             return {...state, cardsPacks: [action.pack, ...state.cardsPacks]}

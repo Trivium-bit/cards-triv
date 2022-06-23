@@ -7,6 +7,7 @@ import { PATH } from "../../AppRoutes";
 import { forgotTC} from "../../../../state/registerReduser";
 import { useAppDispatch, useAppSelector } from "../../../../state/store";
 import Button from "@mui/material/Button";
+import {projectName} from "../Header/Header";
 
 type FormikErrorType = {
     email: string
@@ -61,7 +62,7 @@ export const PassRecovery = () => {
     }, [formik]);
     return (
         <div className={styles.passRecoveryWrapper}>
-            <h1 className={styles.h2}>It-incubator</h1>
+            <h2 className={styles.h2}>{projectName}</h2>
             <h2 style={{ marginTop: 0, marginBottom: 17 }}>Forgot your password?</h2>
             <TextField sx={{ m: 1, width: '35ch' }} id="standard-basic" label="Email" variant="standard"
                 {...formik.getFieldProps("email")} />

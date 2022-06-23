@@ -1,12 +1,12 @@
 import React, {ChangeEvent, useState, forwardRef, CSSProperties} from 'react';
 import {Box, FormControlLabel, Radio, RadioGroup, Rating} from "@mui/material";
-import CustomButton from "../../../Common/Components/Button";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
 import modalStyles from "./ModalStyles.module.scss";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
 import {saveLocalCardGradeAC, updateCardGradeTC} from "../../../state/cardsReducer";
 import {PackCardType} from "../../../api/cardAPI";
 import {getCardsSelector, getLocalCardGradeSelector} from "../../../Common/Selectors/Selectors";
+import Button from "@mui/material/Button";
 
 const getRandomCard = (items: PackCardType[]) => {
     const MAX_RATING = 6;
@@ -43,11 +43,14 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
     const [step, setStep] = useState<typeof QUESTION | typeof ANSWER>(QUESTION);
     const [currentCard, setCurrentCard] = useState<PackCardType>(getRandomCard(cards));
 
-    const handleChangeRatio = (e: ChangeEvent<HTMLInputElement>, value:string) => {
+    const handleChangeRatio = (e: ChangeEvent<HTMLInputElement>, value: string) => {
         dispatch(saveLocalCardGradeAC(Number(value)))
     }
 
-    const handleCancel = () => onCancel();
+    const handleCancel = () => {
+        onCancel();
+        dispatch(saveLocalCardGradeAC(0));
+    };
     const handleSubmit = () => {
         if (step === QUESTION) {
             return setStep(ANSWER);
@@ -60,44 +63,50 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
 
 
     return (
-            <Box sx={modalStyle} className={modalStyles.modalBlock} ref={ref}>
-                <h1 className={modalStyles.modalTitle}>Learn {cardPack?.name}</h1>
-                <p className={modalStyles.modalText}><b>Question:</b> {currentCard?.question}</p>
+        <Box sx={modalStyle} className={modalStyles.modalBlock} ref={ref}>
+            <h1 className={modalStyles.modalTitle}>Learn {cardPack?.name}</h1>
+            <p className={modalStyles.modalText}><b>Question:</b> {currentCard?.question}</p>
 
-                {step === ANSWER &&
-                    (
-                        <>
-                            <p className={modalStyles.modalText}><b>Numbers of attempts to answer:</b> {currentCard?.shots}</p>
-                            <p className={modalStyles.modalRating}><b>Card rating:</b> <Rating readOnly size="small" value={currentCard.grade}/></p>
-                            <p className={modalStyles.modalText}><b>Answer:</b>{currentCard?.answer}</p>
-                            <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
-                            <RadioGroup
-                                onChange={handleChangeRatio}
-                            >
-                                {
-                                    grades.map((grade, index) => (
-                                        <FormControlLabel
-                                            key={index}
-                                            value={index + 1}
-                                            control={<Radio/>}
-                                            label={grade}
-                                        />
-                                    ))
-                                }
-                            </RadioGroup>
-                        </>
-                    )
-                }
-                <Box className={modalStyles.modalBtnGroup}>
-                    <CustomButton onClick={handleCancel} className={modalStyles.btnCancel} title={'Cancel'}/>
-                    <CustomButton
-                        className={modalStyles.btnSave}
-                        disabled={step === ANSWER && selectedValue === 0}
-                        onClick={handleSubmit}
-                        title={step === ANSWER ? "Next" : "Show Answer"}
-                    />
-                </Box>
+            {step === ANSWER &&
+            (
+                <>
+                    <p className={modalStyles.modalText}><b>Numbers of attempts to answer:</b> {currentCard?.shots}</p>
+                    <p className={modalStyles.modalRating}><b>Card rating:</b>
+                        <Rating readOnly size="small"
+                                                                                       value={currentCard.grade}/></p>
+                    <p className={modalStyles.modalText}><b>Answer:</b>{currentCard?.answer}</p>
+                    <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
+                    <RadioGroup style={{width:" 200px"}}
+                        onChange={handleChangeRatio}
+                    >
+                        {
+                            grades.map((grade, index) => (
+                                <FormControlLabel
+                                    key={index}
+                                    value={index + 1}
+                                    control={<Radio/>}
+                                    label={grade}
+                                />
+                            ))
+                        }
+                    </RadioGroup>
+                </>
+            )
+            }
+            <Box className={modalStyles.modalBtnGroup}>
+                <Button sx={{textTransform: "none"}}
+                        onClick={handleCancel} className={modalStyles.btnCancel}>Cancel</Button>
+
+                    <Button sx={{textTransform: "none"}}
+                         className={`${modalStyles.btnSave} ${step === ANSWER && selectedValue === 0 && modalStyles.disabled}`}
+                         disabled={step === ANSWER && selectedValue === 0}
+                         onClick={handleSubmit}
+                >{step === ANSWER ? "Next" : "Show Answer"}
+                </Button>
+
+
             </Box>
+        </Box>
     );
 })
 

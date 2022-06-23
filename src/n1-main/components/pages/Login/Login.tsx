@@ -9,6 +9,7 @@ import {Checkbox, FormControl, IconButton, Input, InputAdornment, InputLabel} fr
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {LoginParamsType} from "../../../../api/loginAPI";
 import Button from "@mui/material/Button";
+import {projectName} from "../Header/Header";
 
 
 type FormikErrorType = {
@@ -81,9 +82,9 @@ export const Login = React.memo(() => {
     return (
         <div className={styles.loginWrapper}>
             <div className={styles.login}>
-                <h1 className={styles.h1}>
-                    It-incubator
-                </h1>
+                <h2 className={styles.h1}>
+                    {projectName}
+                </h2>
                 <h2 className={styles.h2}>
                     Sign in
                 </h2>

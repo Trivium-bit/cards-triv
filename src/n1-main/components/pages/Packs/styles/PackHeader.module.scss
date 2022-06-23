@@ -1,43 +1,48 @@
 @import "../../../../../Common/Styles/constants";
 @import "../../../../../Common/Styles/variables";
+@import "../../../../../Common/Styles/mixins";
 
 .packHeaderBlock {
+  /*border: 1px solid black;*/
   .title {
     font-size: 22px;
   }
+
   .paginator {
     display: block;
     position: absolute;
     bottom: 50px;
     right: 50px;
   }
+
   .elements {
+    .input {
+      background-color: #ECECF9;
+      margin-right: 1.5rem;
+    }
+
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: 20px 0;
-
+    margin-bottom: 20px;
+    /*border: 1px solid black;*/
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
       flex-direction: column;
     }
+
     .addBtn {
-      font-weight: 500;
-      font-size: 16px;
+      @include actionButtonText;
+      padding: 0;
       width: 20rem;
-      background-color: $firstButtonColor;
-      color: $profileBgColor;
-      border-radius: 30px;
-      border:none;
-      cursor: pointer;
       @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
         margin-top: 20px;
+        padding: 10px;
         width: 100%;
       }
     }
-    .addBtn:hover{
-      background-color: $hoverFirstButtonColor !important;
-      transform: scale(1.05);
-      box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+    .addBtn:hover {
+      @include actionButtonHover;
     }
   }
 }

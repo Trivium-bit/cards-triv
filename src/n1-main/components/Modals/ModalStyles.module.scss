@@ -1,4 +1,8 @@
+@import "./../../../Common/Styles/variables";
+@import "./../../../Common/Styles/mixins";
+
 .modalBlock {
+
   .modalTitle {
     font-weight: 600;
     font-size: 18px;
@@ -11,41 +15,43 @@
     font-size: 14px;
     line-height: 24px;
   }
-  .modalRating{
+
+  .modalRating {
     @extend .modalText;
     display: flex;
     align-items: center;
   }
+
   .modalBtnGroup {
     display: flex;
     justify-content: space-between;
     padding: 20px 0;
 
     .btnSave {
-      background: #21268F;
-      color: #ECECF9;;
-      border-radius: 30px;
+      @include actionButtonText;
       padding: 9px 30px;
-      border: none;
-      cursor: pointer;
+
+      &.disabled {
+        opacity: 0.5;
+        cursor: not-allowed !important;
+        color: red;
+      }
     }
 
+
     .btnCancel {
-      background: #D7D8EF;
-      color: #21268F;
-      border-radius: 30px;
+      @include cancelButtonText;
       padding: 9px 30px;
-      border: none;
-      cursor: pointer;
     }
-    .btnSave:hover{
-      background-color: #4448c2!important;
-      transform: scale(1.05);
+
+    .btnSave:hover {
+      @include actionButtonHover;
     }
-    .btnCancel:hover{
-      background-color: #c9caec !important;
-       transform: scale(1.05);
-     }
+
+    .btnCancel:hover {
+      @include cancelButtonHover;
+    }
+
     .btnDelete {
       @extend .btnSave;
       background: #F1453D !important;

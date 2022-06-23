@@ -2,6 +2,7 @@
 @import "../../../../Common/Styles/variables";
 
 .header {
+
     height : 60px;
     line-height : 60px;
     background-color: $profileBgColor;
@@ -24,20 +25,40 @@
             display: none;
         }
     }
+    .logOutBlock{
+        display: flex;
+        justify-content: end;
 
-    .logOut {
-        display: block;
-        font-size: 15px;
-        text-align: right;
-        @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-            font-size: 12px;
+        >button {
+            color:$textColor;
+            font-size: 16px;
+        }
+        >button:hover{
+            background-color: $linkActive;
+        }
+        .logOutIcon{
+            display: none;
+            @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+                display: flex;
+                opacity: 0.6;
+                align-items: center;
+            }
+        }
+
+        .logOut {
+            font-size: 15px;
+            @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+                /*font-size: 12px;*/
+                display: none;
+            }
         }
     }
+
 
     .headerLink {
         &.headerLinkActive {
             background-color: $linkActive;
-            border-bottom: 3px solid $firstButtonColor;
+            border-bottom: 3px solid $actionButtonColor;
             margin-top: -3px;
 
             .packList {

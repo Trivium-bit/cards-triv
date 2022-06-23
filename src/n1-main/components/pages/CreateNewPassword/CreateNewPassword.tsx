@@ -10,6 +10,7 @@ import {NewPasswordType} from "../../../../api/loginAPI";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import CustomButton from "../../../../Common/Components/Button";
 import {PATH} from "../../AppRoutes";
+import {projectName} from "../Header/Header";
 
 type FormikErrorType = {
     password: string
@@ -69,7 +70,7 @@ function CreateNewPassword() {
     return (
         <div className={styles.loginWrapper}>
             <h1 className={styles.h1}>
-                It-incubator
+                {projectName}
             </h1>
             <h2 className={styles.h2}>
                 Create new password

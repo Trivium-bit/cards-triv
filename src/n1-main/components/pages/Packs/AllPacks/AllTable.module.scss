@@ -21,12 +21,12 @@
     .tableBody {
 
       a {
-        color: $firstButtonColor;
+        color: $actionButtonColor;
         text-decoration: none;
       }
 
       a:hover {
-        color: $firstButtonColor;
+        color: $actionButtonColor;
         cursor: pointer !important;
       }
 
@@ -65,7 +65,7 @@
       border-radius: 2px;
       border: none;
       background: $editBgColor;
-      color: $firstButtonColor;
+      color: $actionButtonColor;
       cursor: pointer;
       font-weight: 600;
       display: flex;
@@ -89,7 +89,7 @@
   }
 
   .iconEdit {
-    color: $firstButtonColor;
+    color: $actionButtonColor;
     opacity: 0.6;
   }
 
@@ -124,7 +124,7 @@
   }
 
   .iconEdit {
-    color: $firstButtonColor;
+    color: $actionButtonColor;
     opacity: 0.6;
   }
 
@@ -170,7 +170,7 @@
 }
 
 .popover > * {
-  color: $firstButtonColor !important;
+  color: $actionButtonColor !important;
   box-shadow: none !important;
   width: 100%;
 }

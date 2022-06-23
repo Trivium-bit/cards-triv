@@ -48,7 +48,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                 : <h1 className={s.title}>Packs list</h1>
             }
             <Box className={s.elements}>
-                <TextField sx={{background: "#ECECF9", marginRight: "1.5rem"}} onChange={onChangeHandler}
+                <TextField className={s.input} onChange={onChangeHandler}
                        fullWidth
                        value={localPackName}
                        placeholder={"Search..."}
