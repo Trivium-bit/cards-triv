@@ -68,26 +68,21 @@ const StyledTableCell = styled(TableCell)((theme) => ({
         ["@media (max-height:800px)"]: {
             display: theme.className === s.hideForMobile ? "none" : "",
             height: 14,
-        }
-        // boxSizing: "border-box",
+        },
+        boxSizing: "border-box",
     },
 }));
 
 
-/*
-const InlineCel = styled("div")(() => ({
-    display: "flex"
-}))
-*/
-
 const StyledTableRow = styled(TableRow)(() => ({
+
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
     },
-    /*"&:hover": {
-        backgroundColor: "#c8b7f8",
+    "&:hover": {
+        backgroundColor: "#ECECF9",
         cursor: "pointer"
-    }*/
+    }
 }));
 export const modalStyle = {
     position: 'absolute' as 'absolute',
@@ -134,13 +129,13 @@ export const PackTable = React.memo(() => {
         navigate(`${PATH.PACKS}/${cardPack._id}`)
 
     }
-
+    console.log(myCardPacks.map(card => card.grade))
     useEffect(() => {
         dispatch(setCardPackCurrentPageAC(1))
         dispatch(getCardsPacksTC())
     }, [dispatch, isMyTable, debounceLocalPackName, min, max, sortPacks]);
 
-    const handlePopoverClick = (event:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handlePopoverClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.stopPropagation();
         setAnchorEl(event.currentTarget);
     };
@@ -157,7 +152,7 @@ export const PackTable = React.memo(() => {
                         <TableHead>
                             <TableRow>
 
-                                <StyledTableCell align="left" >
+                                <StyledTableCell align="left">
                                     <TableSortLabel active={sortPacks === "0name" || sortPacks === "1name"}
                                                     direction={sortPacks === "0name" ? "asc" : "desc"}
                                                     IconComponent={ArrowDropUpIcon}>
@@ -165,7 +160,7 @@ export const PackTable = React.memo(() => {
                                     </TableSortLabel>
                                 </StyledTableCell>
 
-                                <StyledTableCell align="left" >
+                                <StyledTableCell align="left">
                                     <TableSortLabel active={sortPacks === "0cardsCount" || sortPacks === "1cardsCount"}
                                                     direction={sortPacks === "0cardsCount" ? "asc" : "desc"}
                                                     IconComponent={ArrowDropUpIcon}>
@@ -173,11 +168,11 @@ export const PackTable = React.memo(() => {
                                     </TableSortLabel>
                                 </StyledTableCell>
 
-                                <StyledTableCell align="left"  className={s.hideForMobile}>
+                                <StyledTableCell align="left" className={s.hideForMobile}>
                                     <TableSortLabel
-                                                    active={sortPacks === "0updated" || sortPacks === "1updated"}
-                                                    direction={sortPacks === "0updated" ? "asc" : "desc"}
-                                                    IconComponent={ArrowDropUpIcon}>
+                                        active={sortPacks === "0updated" || sortPacks === "1updated"}
+                                        direction={sortPacks === "0updated" ? "asc" : "desc"}
+                                        IconComponent={ArrowDropUpIcon}>
                                         <UniversalHeader headerValue={"Last Updated"} sortedValue={"updated"}/>
                                     </TableSortLabel>
 
@@ -196,8 +191,8 @@ export const PackTable = React.memo(() => {
                         <TableBody className={s.tableBody}>
                             {
                                 myCardPacks.map((cardPack =>
-                                        <StyledTableRow key={cardPack._id} >
-                                            <StyledTableCell className={s.highlightTableCell} align="left"
+                                        <StyledTableRow key={cardPack._id}>
+                                            <StyledTableCell  align="left"
                                                              component="th" scope="row"
                                                              onClick={(e) => navigateToCardsPage(e, cardPack)}>
                                                 <NavLink to={`${PATH.PACKS}/${cardPack._id}`}>
@@ -205,14 +200,13 @@ export const PackTable = React.memo(() => {
                                                 </NavLink>
                                             </StyledTableCell>
 
-                                            <StyledTableCell className={s.highlightTableCell}
+                                            <StyledTableCell
                                                              align="left"
                                                              onClick={(e) => navigateToCardsPage(e, cardPack)}>
                                                 {cardPack.cardsCount}
                                             </StyledTableCell>
 
                                             <StyledTableCell align="left"
-                                                             className={s.hideForMobile}
                                                              onClick={(e) => navigateToCardsPage(e, cardPack)}>
                                                 {moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")}
                                             </StyledTableCell>
@@ -223,20 +217,20 @@ export const PackTable = React.memo(() => {
                                                 {cardPack.user_name.slice(0, 45)}
                                             </StyledTableCell>
 
-                                            <StyledTableCell align="left">
+                                            <StyledTableCell align="left" className={s.actions}>
                                                 <Box className={s.mobileButtonGroup}>
                                                     <IconButton onClick={handlePopoverClick}>
                                                         <InfoOutlinedIcon className={s.iconInfo}/>
                                                     </IconButton>
-                                                    <IconButton onClick={() => handleOpenLearn(cardPack)} >
+                                                    <IconButton onClick={() => handleOpenLearn(cardPack)}>
                                                         <SchoolOutlinedIcon className={s.iconLearn}/>
                                                     </IconButton>
                                                     {cardPack.user_id === myId && (
                                                         <>
-                                                            <IconButton onClick={() => handleOpenEdit(cardPack)} >
+                                                            <IconButton onClick={() => handleOpenEdit(cardPack)}>
                                                                 <EditOutlinedIcon className={s.iconEdit}/>
                                                             </IconButton>
-                                                            <IconButton onClick={() => handleOpenDelete(cardPack)} >
+                                                            <IconButton onClick={() => handleOpenDelete(cardPack)}>
                                                                 <DeleteSweepOutlinedIcon className={s.iconDelete}/>
                                                             </IconButton>
                                                         </>
@@ -260,19 +254,29 @@ export const PackTable = React.memo(() => {
                                                     </Popover>
                                                 </Box>
                                                 <Box className={s.buttonGroup}>
+                                                    <div className={s.learnBtnWrapper}>
+                                                        <Button sx={{textTransform: "none"}} name="learn"
+                                                               onClick={() => handleOpenLearn(cardPack)}
+                                                               className={cardPack.cardsCount !== 0 ? s.learn : s.learnDisabled} disabled={cardPack.cardsCount === 0}>Learn
+                                                        </Button>
+                                                    </div>
                                                     {cardPack.user_id === myId && (
                                                         <>
-                                                            <Button  sx={{textTransform: "none"}} name="delete" onClick={() => handleOpenDelete(cardPack)}
+                                                            <IconButton onClick={() => handleOpenEdit(cardPack)} size={"small"}>
+                                                                <EditOutlinedIcon className={s.iconEdit}/>
+                                                            </IconButton>
+                                                            <IconButton onClick={() => handleOpenDelete(cardPack)} size={"small"}>
+                                                                <DeleteSweepOutlinedIcon className={s.iconDelete}/>
+                                                            </IconButton>
+                                                            {/*<Button  sx={{textTransform: "none"}} name="delete" onClick={() => handleOpenDelete(cardPack)}
                                                                     className={s.delete}>Delete
                                                             </Button>
                                                             <Button  sx={{textTransform: "none"}} name="edit" onClick={() => handleOpenEdit(cardPack)}
                                                                     className={s.edit}>Edit
-                                                            </Button>
+                                                            </Button>*/}
                                                         </>
                                                     )}
-                                                    <Button sx={{textTransform: "none"}} name="learn" onClick={() => handleOpenLearn(cardPack)}
-                                                            className={s.edit}>Learn
-                                                    </Button>
+
                                                 </Box>
                                             </StyledTableCell>
                                         </StyledTableRow>

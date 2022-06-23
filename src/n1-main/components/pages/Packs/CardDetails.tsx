@@ -1,9 +1,9 @@
-import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from 'react';
+import React, {ChangeEvent, useEffect, useMemo, useState} from 'react';
 import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {
     Box,
     Button,
-    Container, FormControl,
+    Container, FormControl, IconButton,
     Input,
     InputAdornment, InputLabel, Modal, Pagination,
     Paper, Rating,
@@ -20,7 +20,7 @@ import styles from './AllPacks/AllTable.module.scss'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {useSelector} from "react-redux";
 import {
-    appStatusSelector, cardFilterAnswerSelector, cardFilterQuestionSelector, cardPaginationSelector,
+    appStatusSelector, cardPaginationSelector,
     getCardsSelector
 } from "../../../../Common/Selectors/Selectors";
 import {
@@ -36,6 +36,11 @@ import {RequestStatusType} from "../../../../state/app-reducer";
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
 import {DeleteCardModalContainer} from "../../Modals/DeleteCardModalContainer";
 import TextField from "@mui/material/TextField";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
+import CloseIcon from "@mui/icons-material/Close";
+import {useDebounce} from "use-debounce";
+import {debounceDelay} from "../../Slider/Slider";
 
 type NewCardPayloadType = {
     answer: string;
@@ -80,24 +85,33 @@ const modalStyle = {
     p: 4,
     borderRadius: 2,
 };
+export const StyledRating = styled(Rating)({
+    '& .MuiRating-iconFilled': {
+        color: '#21268F',
+    },
 
+});
 //component
 const CardDetails = () => {
-    const delaySetAnswerRef = useRef<any>();
-    const delaySetQuestionRef = useRef<any>();
+  /*  const delaySetAnswerRef = useRef<any>();
+    const delaySetQuestionRef = useRef<any>();*/
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const location = useLocation();
     const {packId} = useParams();
     const user_id = useAppSelector<string>(state => state.appReducer.user._id)
     const cards = useSelector(getCardsSelector);
-    const filterQuestion = useSelector(cardFilterQuestionSelector);
-    const filterAnswer = useSelector(cardFilterAnswerSelector);
+  /*  const filterQuestion = useSelector(cardFilterQuestionSelector);
+    const filterAnswer = useSelector(cardFilterAnswerSelector);*/
     const cardPagination = useSelector(cardPaginationSelector);
     const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const [open, setOpen] = useState(false);
     const [editOpen, setEditOpen] = useState<PackCardType | undefined>(undefined);
     const [rowToDelete, setRowToDelete] = useState<PackCardType | undefined>(undefined);
+    const question = useAppSelector(state => state.cardsReducer.question)
+    const answer = useAppSelector(state => state.cardsReducer.answer)
+    const [debounceQuestion] = useDebounce(question, debounceDelay);
+    const [debounceAnswer] = useDebounce(answer, debounceDelay);
     const [newCardPayload, setNewCardPayload] = useState<NewCardPayloadType>({
         answer: "",
         question: ""
@@ -132,15 +146,15 @@ const CardDetails = () => {
             page: currentPage
         }
 
-        if (filterAnswer !== "") {
-            payload.cardAnswer = filterAnswer
+        if (debounceAnswer !== "") {
+            payload.cardAnswer = debounceAnswer
         }
-        if (filterQuestion !== "") {
-            payload.cardQuestion = filterQuestion
+        if (debounceQuestion !== "") {
+            payload.cardQuestion = debounceQuestion
         }
 
         dispatch(getCardsTC(payload))
-    }, [dispatch, currentPage, filterAnswer, filterQuestion, packId])
+    }, [dispatch, currentPage, debounceAnswer, debounceQuestion, packId])
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
         navigate(`/packs/${packId}?page=${page}`)
@@ -191,18 +205,20 @@ const CardDetails = () => {
     const openDeleteModal = (card: PackCardType) => setRowToDelete(card);
 
     const onChangeQuestionHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
+        /*const value = e.target.value;
         clearTimeout(delaySetQuestionRef.current)
         delaySetQuestionRef.current = setTimeout(() => {
             dispatch(setFilterQuestionAC(value))
-        }, 1000)
+        }, 1000)*/
+        dispatch(setFilterQuestionAC(e.target.value))
     }
     const onChangeAnswerHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.currentTarget.value;
+        /*const value = e.currentTarget.value;
         clearTimeout(delaySetAnswerRef.current)
         delaySetAnswerRef.current = setTimeout(() => {
             dispatch(setFilterAnswerAC(value))
-        }, 1000)
+        }, 1000)*/
+        dispatch(setFilterAnswerAC(e.target.value))
     }
 
 
@@ -232,6 +248,7 @@ const CardDetails = () => {
                     <TextField
                         sx={{background: "#ECECF9", marginRight: "1.5rem"}}
                         onChange={onChangeQuestionHandler}
+                        value={question}
                         placeholder={"Search question..."}
                         fullWidth
                         size="small"
@@ -240,7 +257,11 @@ const CardDetails = () => {
                                 <InputAdornment position="start">
                                     <SearchIcon/>
                                 </InputAdornment>,
-
+                            endAdornment:
+                                <InputAdornment position="end" style={{cursor: "pointer"}}
+                                                onClick={ () => dispatch(setFilterQuestionAC(""))}>
+                                    <CloseIcon/>
+                                </InputAdornment>
 
                         }}
                     />
@@ -249,15 +270,22 @@ const CardDetails = () => {
                         sx={{background: "#ECECF9", marginRight: "1.5rem"}}
                         onChange={onChangeAnswerHandler}
                         placeholder={"Search answer..."}
+                        value={answer}
                         size="small"
                         InputProps={{
                             startAdornment:
                                 <InputAdornment position="start">
                                     <SearchIcon/>
                                 </InputAdornment>,
+                            endAdornment:
+                                <InputAdornment position="end" style={{cursor: "pointer"}}
+                                                onClick={ () =>  dispatch(setFilterAnswerAC(""))}>
+                                    <CloseIcon/>
+                                </InputAdornment>
                         }}
                     />
-                    <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleOpen}>Add new card</Button>
+                    <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleOpen}>Add
+                        new card</Button>
                 </Box>
                 <Box>
                     <Box className={s.wrapper}>
@@ -282,21 +310,35 @@ const CardDetails = () => {
                                                 <StyledTableCell
                                                     align="left">{moment(card.created).format("DD.MM.YYYY HH:mm:ss")}</StyledTableCell>
                                                 <StyledTableCell align="left">
-                                                    <Rating
+                                                    <StyledRating
                                                         readOnly
                                                         size="small"
                                                         value={card.grade}
-                                                        color={"#21268F"}
+                                                        color={"red"}
                                                     />
+
+
                                                 </StyledTableCell>
+
+
                                                 <StyledTableCell align="right">
                                                     <div className={styles.buttonGroup}>
-                                                        <button className={styles.delete} disabled={user_id !== card.user_id}
+                                                        {/*<Button size={"small"} className={styles.delete} disabled={user_id !== card.user_id}
                                                                 onClick={() => openDeleteModal(card)}>Delete
-                                                        </button>
-                                                        <button className={styles.edit} disabled={user_id !== card.user_id}
+                                                        </Button>
+                                                        <Button size={"small"} className={styles.edit} disabled={user_id !== card.user_id}
                                                                 onClick={() => handleEditOpen(card)}>Edit
-                                                        </button>
+                                                        </Button>*/}
+                                                        <IconButton onClick={() => handleEditOpen(card)}
+                                                                    disabled={user_id !== card.user_id}>
+                                                            <EditOutlinedIcon
+                                                                className={user_id === card.user_id ? styles.iconEdit : ""}/>
+                                                        </IconButton>
+                                                        <IconButton onClick={() => openDeleteModal(card)}
+                                                                    disabled={user_id !== card.user_id}>
+                                                            <DeleteSweepOutlinedIcon
+                                                                className={user_id === card.user_id ? styles.iconDelete : ""}/>
+                                                        </IconButton>
                                                     </div>
                                                 </StyledTableCell>
                                             </StyledTableRow>
@@ -336,7 +378,8 @@ const CardDetails = () => {
                                     <Box className={modalStyles.modalBtnGroup}>
                                         <CustomButton onClick={handleEditClose} className={modalStyles.btnCancel}
                                                       title={'Cancel'} disabled={appStatus === "loading"}/>
-                                        <CustomButton className={modalStyles.btnSave} onClick={updateCard} title={'Save'}
+                                        <CustomButton className={modalStyles.btnSave} onClick={updateCard}
+                                                      title={'Save'}
                                                       disabled={appStatus === "loading"}/>
                                     </Box>
                                 </Box>
@@ -361,8 +404,10 @@ const CardDetails = () => {
                                 </Box>
                                 <Box>
                                     <Box className={modalStyles.modalBtnGroup}>
-                                        <Button sx={{textTransform: "none"}} onClick={handleClose} className={modalStyles.btnCancel} title={'Cancel'}>Cancel</Button>
-                                        <Button sx={{textTransform: "none"}} className={modalStyles.btnSave} onClick={handleAddCard} title={'Add'}>Add</Button>
+                                        <Button sx={{textTransform: "none"}} onClick={handleClose}
+                                                className={modalStyles.btnCancel} title={'Cancel'}>Cancel</Button>
+                                        <Button sx={{textTransform: "none"}} className={modalStyles.btnSave}
+                                                onClick={handleAddCard} title={'Add'}>Add</Button>
                                     </Box>
                                 </Box>
                             </Box>

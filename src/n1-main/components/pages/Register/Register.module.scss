@@ -63,7 +63,7 @@
       opacity: 0.8;
       top: 22px;
       left: 0;
-      color: #21268F;
+      color: $firstButtonColor;
     }
 
     .registerButton {
@@ -81,7 +81,7 @@
       margin-right: 0;
       left: 156px;
       background-color: #21268F;
-      color: #ECECF9;
+      color: $profileBgColor;
     }
 
     .registerButton:hover {

@@ -9,12 +9,9 @@
   box-sizing: border-box;
 
   .table {
-    .highlightTableCell {
-      cursor: pointer;
-    }
 
     .highlightTableCell:hover {
-      background-color: $profileBgColor;;
+      background-color: $profileBgColor;
     }
 
     overflow-x: auto;
@@ -31,6 +28,10 @@
       a:hover {
         color: $firstButtonColor;
         cursor: pointer !important;
+      }
+
+      .actions {
+        cursor: auto;
       }
     }
   }
@@ -54,6 +55,48 @@
 }
 
 .buttonGroup {
+  .learnBtnWrapper {
+    position: relative;
+    width: 64px;
+    height: 30.5px;
+
+    .learn {
+      position: absolute;
+      border-radius: 2px;
+      border: none;
+      background: $editBgColor;
+      color: $firstButtonColor;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      flex-wrap: wrap;
+      max-height: 100%;
+    }
+    .learnDisabled{
+      @extend .learn;
+      background: #eeeeee;
+    }
+    .learn:hover {
+      border: 1px solid $hoverFirstButtonColor;
+      background: $hoverFirstButtonColor;
+      color: $white;
+      transform: scale(1.05);
+    }
+  }
+
+  button {
+    padding: 3px !important;
+  }
+
+  .iconEdit {
+    color: $firstButtonColor;
+    opacity: 0.6;
+  }
+
+  .iconDelete {
+    color: $deleteButtonBgColor;
+    opacity: 0.6;
+  }
 
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: none;
@@ -61,18 +104,6 @@
   display: flex;
   justify-content: space-evenly;
 
-  .edit {
-    padding: 4px 6px;
-    border-radius: 2px;
-    border: none;
-    background: $editBgColor;
-    color: $firstButtonColor;
-    cursor: pointer;
-    font-weight: 600;
-    display: flex;
-    flex-wrap: wrap;
-    max-height: 100%;
-  }
 
   .delete {
     border-radius: 2px;
@@ -112,13 +143,13 @@
 }
 
 .hideForMobile {
-  cursor: pointer;
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: none;
   }
 }
 
 .hideForMobile:hover {
+
   background-color: $profileBgColor;
 }
 
@@ -143,6 +174,7 @@
   box-shadow: none !important;
   width: 100%;
 }
+
 .popoverDiv {
   background-color: $profileBgColor !important;
   display: flex;
@@ -155,6 +187,7 @@
     font-size: 13px;
     color: $textColor;
   }
+
   span {
     font-size: 14px;
   }
