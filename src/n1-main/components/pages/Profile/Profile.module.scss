@@ -9,10 +9,7 @@
   box-sizing: border-box;
   width: 100%;
 
-  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-    height: max-content;
-  }
-  @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
+  @media (min-width: $mobile-min-width) and (max-width: $ipad-pro12-max-width) {
     height: max-content;
   }
 
@@ -22,10 +19,7 @@
     height: 80vh;
     margin: 0 24px;
     box-sizing: border-box;
-    @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-      height: max-content;
-    }
-    @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
+    @media (min-width: $mobile-min-width) and (max-width: $ipad-pro12-max-width) {
       height: max-content;
     }
   }

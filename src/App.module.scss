@@ -13,7 +13,13 @@
     @media (min-width: $ipad-min-width) and (max-width: $ipad-max-width) {
         height: max-content;
     }
+    @media (min-width: 900px) and (max-width: 1420px) {
+        height: 100vh !important;
+    }
     @media (min-width: $ipad-pro-min-width) and (max-width: $ipad-pro-max-width) {
+        height: max-content;
+    }
+    @media (min-width: $ipad-pro12-min-width) and (max-width: $ipad-pro-max-width) {
         height: max-content;
     }
     @media (min-width: $ipad-pro12-min-width) and (max-width: $ipad-pro12-max-width) {

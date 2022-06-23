@@ -246,7 +246,8 @@ const CardDetails = () => {
                 </Box>
                 <Box className={s.headers}>
                     <TextField
-                        sx={{background: "#ECECF9", marginRight: "1.5rem"}}
+                        className={s.questionInput}
+
                         onChange={onChangeQuestionHandler}
                         value={question}
                         placeholder={"Search question..."}
@@ -266,8 +267,8 @@ const CardDetails = () => {
                         }}
                     />
                     <TextField
+                        className={s.answerInput}
                         fullWidth
-                        sx={{background: "#ECECF9", marginRight: "1.5rem"}}
                         onChange={onChangeAnswerHandler}
                         placeholder={"Search answer..."}
                         value={answer}

@@ -80,56 +80,58 @@ export const Login = React.memo(() => {
     }
     return (
         <div className={styles.loginWrapper}>
-            <h1 className={styles.h1}>
-                It-incubator
-            </h1>
-            <h2 className={styles.h2}>
-                Sign in
-            </h2>
-            <div className={styles.textFields}>
-                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
-                    <Input {...formik.getFieldProps("email")}
-                    />
-                </FormControl>
-                {formik.touched.email && formik.errors.email ?
-                    <div className={styles.emailError}>{formik.errors.email}</div> : null}
+            <div className={styles.login}>
+                <h1 className={styles.h1}>
+                    It-incubator
+                </h1>
+                <h2 className={styles.h2}>
+                    Sign in
+                </h2>
+                <div className={styles.textFields}>
+                    <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
+                        <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
+                        <Input {...formik.getFieldProps("email")}
+                        />
+                    </FormControl>
+                    {formik.touched.email && formik.errors.email ?
+                        <div className={styles.emailError}>{formik.errors.email}</div> : null}
 
-                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-                    <Input {...formik.getFieldProps("password")}
-                           id="standard-adornment-password"
-                           type={isPassType ? 'password' : 'text'}
-                           endAdornment={
-                               <InputAdornment position="end">
-                                   <IconButton
-                                       aria-label="toggle password visibility"
-                                       onClick={handleClickShowPassword}
-                                       onMouseDown={handleMouseDownPassword}
-                                   >
-                                       {isPassType ? <VisibilityOff/> : <Visibility/>}
-                                   </IconButton>
-                               </InputAdornment>
-                           }
-                    />
-                    {formik.touched.password && formik.errors.password ?
-                        <div className={styles.passError}>{formik.errors.password}</div> : null}
-                    <label className={styles.checkbox}>
-                        <Checkbox {...formik.getFieldProps("rememberMe")}
-                                  checked={formik.getFieldProps("rememberMe").value}
-                                  size="small"
-                                  color="secondary"/>
-                        <div className={styles.remembMe}>Remember Me</div>
-                    </label>
-                    <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
-                </FormControl>
-                <div className={styles.button}>
-                    <form onSubmit={formik.handleSubmit} className={styles.submit}>
-                        <Button sx={{textTransform: "none"}} type="submit" className={styles.loginButton}>Login</Button>
-                    </form>
-                    <div className={styles.links}>
-                        <div className={styles.question}>Don’t have an account?</div>
-                        <NavLink to={PATH.REGISTER} className={styles.signUp}>Sign up</NavLink>
+                    <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
+                        <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                        <Input {...formik.getFieldProps("password")}
+                               id="standard-adornment-password"
+                               type={isPassType ? 'password' : 'text'}
+                               endAdornment={
+                                   <InputAdornment position="end">
+                                       <IconButton
+                                           aria-label="toggle password visibility"
+                                           onClick={handleClickShowPassword}
+                                           onMouseDown={handleMouseDownPassword}
+                                       >
+                                           {isPassType ? <VisibilityOff/> : <Visibility/>}
+                                       </IconButton>
+                                   </InputAdornment>
+                               }
+                        />
+                        {formik.touched.password && formik.errors.password ?
+                            <div className={styles.passError}>{formik.errors.password}</div> : null}
+                        <label className={styles.checkbox}>
+                            <Checkbox {...formik.getFieldProps("rememberMe")}
+                                      checked={formik.getFieldProps("rememberMe").value}
+                                      size="small"
+                                      color="secondary"/>
+                            <div className={styles.remembMe}>Remember Me</div>
+                        </label>
+                        <NavLink to={PATH.PASS_RECOVERY} className={styles.forgPass}>Forgot Password</NavLink>
+                    </FormControl>
+                    <div className={styles.button}>
+                        <form onSubmit={formik.handleSubmit} className={styles.submit}>
+                            <Button sx={{textTransform: "none"}} type="submit" className={styles.loginButton}>Login</Button>
+                        </form>
+                        <div className={styles.links}>
+                            <div className={styles.question}>Don’t have an account?</div>
+                            <NavLink to={PATH.REGISTER} className={styles.signUp}>Sign up</NavLink>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,8 +1,9 @@
 @import "../../../../../Common/Styles/constants";
+@import "../../../../../Common/Styles/variables";
 .packDetailBlock {
   overflow: auto;
   height: 70vh;
-  background: white;
+  background: $white;
   margin: 24px 0 0 0;
   border-radius:8px;
   padding: 25px;
@@ -28,26 +29,38 @@
     justify-content: space-between;
     margin: 20px 0;
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-     flex-direction: column;
+      flex-direction: column;
       margin: 0;
     }
+    .questionInput {
+      background: #ECECF9;
+      margin-right: 1.5rem;
+      @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+        margin-bottom: 15px;
+      }
+    }
+    .answerInput {
+      @extend .questionInput;
+    }
+
     .btn {
       border-radius: 30px;
       height: 36px;
       font-style: normal;
       font-weight: 500;
       font-size: 16px;
-      color: #ECECF9;
-      background-color: #21268F;
+      color: $profileBgColor;
+      background-color: $firstButtonColor;
       width: 25rem;
       @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
         margin: 10px 0;
+        width: 19rem;
       }
     }
     .btn:hover{
-        background-color: #4448c2!important;
+        background-color: $bgPurple !important;
         transform: scale(1.05);
-        box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        box-shadow: $btnBoxShadow;
       }
   }
   .packTableWrapper {

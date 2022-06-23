@@ -2,164 +2,69 @@
 @import "../../../../Common/Styles/variables";
 
 .loginWrapper {
-  @include windows();
+  height: 100vh;
 
-  .newPassTextFields {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    width: 280px;
+  .login {
+    @include windows();
 
-  }
-  .textFields {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    width: 280px;
-    position: relative;
-
-    .emailError {
-      position: absolute;
-      top: 3.8rem;
-      color: red;
-      font-size: 14px;
-      margin-left: auto;
-      margin-right: auto;
-      left: 0;
-      right: 0;
-      text-align: center;
-    }
-    .passError{
-      @extend .emailError;
-      top: 3.4rem;
-    }
-  }
-  .checkbox {
-    display: flex;
-    align-items: center;
-    margin-left: -10px;
-    margin-top: 30px;
-    cursor: pointer;
-  }
-
-  .remembMe {
-    @font-face {
-      font-family: 'SF UI Display';
-      src: url(../../../../Common/Styles/fonts/sfuidisplay_bold.ttf);
-      src: url(../../../../Common/Styles/fonts/sfuidisplay_heavy.ttf);
-    }
-
-    color: #21268F;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 1.71429;
-    opacity: 0.8;
-  }
-
-  .forgPass {
-    display: flex;
-    justify-content: right;
-    padding-top: 10px;
-
-    @font-face {
-      font-family: 'SF UI Display';
-      src: url(../../../../Common/Styles/fonts/sfuidisplay_bold.ttf);
-      src: url(../../../../Common/Styles/fonts/sfuidisplay_heavy.ttf);
-    }
-
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 17px;
-    text-align: center;
-    color: #21268F;
-    text-decoration: none;
-  }
-
-  .forgPass:hover {
-    color: #9a68c9;
-
-  }
-
-
-  .submit {
-    display: flex;
-    justify-content: center;
-  }
-
-  .button {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    width: 280px;
-    height: 80px;
-
-    .circularProgress {
-      margin-top: 30px;
-    }
-
-    .loginButton {
-
-      border-radius: 30px;
-      border: solid 0;
-      height: 36px;
-      width: 266px;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 19px;
-      opacity: 0.8;
-      text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-      letter-spacing: 0.01em;
-      cursor: pointer;
-      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
-      background-color: #21268F;
-      color: #ECECF9;
-      box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-
-    .loginButton:hover {
-      background-color: #4448c2 !important;
-      transform: scale(1.05);
-      box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    }
-
-    .links {
+    .newPassTextFields {
       display: flex;
-      flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      flex-direction: column;
+      width: 280px;
 
     }
+    .textFields {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      width: 280px;
+      position: relative;
 
-    .question {
+      .emailError {
+        position: absolute;
+        top: 3.8rem;
+        color: red;
+        font-size: 14px;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        text-align: center;
+      }
+      .passError{
+        @extend .emailError;
+        top: 3.4rem;
+      }
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      margin-left: -10px;
       margin-top: 30px;
-      width: 170px;
-      height: 24px;
-      left: 565px;
-      top: 571px;
-
-      @font-face {
-        font-family: 'SF UI Display';
-        src: url(../../../../Common/Styles/fonts/sfuidisplay_bold.ttf);
-        src: url(../../../../Common/Styles/fonts/sfuidisplay_heavy.ttf);
-      }
-
-      font-style: normal;
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 24px;
-      text-align: center;
-      color: #2D2E46;
-      opacity: 0.5;
+      cursor: pointer;
     }
 
-    .signUp {
-      margin-top: 11px;
-      width: 100%;
+    .remembMe {
+      @font-face {
+        font-family: 'SF UI Display';
+        src: url(../../../../Common/Styles/fonts/sfuidisplay_bold.ttf);
+        src: url(../../../../Common/Styles/fonts/sfuidisplay_heavy.ttf);
+      }
+
+      color: #21268F;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.71429;
+      opacity: 0.8;
+    }
+
+    .forgPass {
+      display: flex;
+      justify-content: right;
+      padding-top: 10px;
 
       @font-face {
         font-family: 'SF UI Display';
@@ -168,17 +73,116 @@
       }
 
       font-style: normal;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 24px;
-      text-decoration: none;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 17px;
       text-align: center;
       color: #21268F;
+      text-decoration: none;
     }
 
-    .signUp:hover {
-      color: #4850c4
+    .forgPass:hover {
+      color: #9a68c9;
+
     }
 
+
+    .submit {
+      display: flex;
+      justify-content: center;
+    }
+
+    .button {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      width: 280px;
+      height: 80px;
+
+      .circularProgress {
+        margin-top: 30px;
+      }
+
+      .loginButton {
+
+        border-radius: 30px;
+        border: solid 0;
+        height: 36px;
+        width: 266px;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 19px;
+        opacity: 0.8;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        background-color: #21268F;
+        color: #ECECF9;
+        box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+
+      .loginButton:hover {
+        background-color: #4448c2 !important;
+        transform: scale(1.05);
+        box-shadow: 0 4px 18px rgba(33, 38, 143, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      }
+
+      .links {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+      }
+
+      .question {
+        margin-top: 30px;
+        width: 170px;
+        height: 24px;
+        left: 565px;
+        top: 571px;
+
+        @font-face {
+          font-family: 'SF UI Display';
+          src: url(../../../../Common/Styles/fonts/sfuidisplay_bold.ttf);
+          src: url(../../../../Common/Styles/fonts/sfuidisplay_heavy.ttf);
+        }
+
+        font-style: normal;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 24px;
+        text-align: center;
+        color: #2D2E46;
+        opacity: 0.5;
+      }
+
+      .signUp {
+        margin-top: 11px;
+        width: 100%;
+
+        @font-face {
+          font-family: 'SF UI Display';
+          src: url(../../../../Common/Styles/fonts/sfuidisplay_bold.ttf);
+          src: url(../../../../Common/Styles/fonts/sfuidisplay_heavy.ttf);
+        }
+
+        font-style: normal;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        text-decoration: none;
+        text-align: center;
+        color: #21268F;
+      }
+
+      .signUp:hover {
+        color: #4850c4
+      }
+
+    }
   }
 }
