@@ -35,7 +35,7 @@
         margin: 0;
       }
       .questionInput {
-        background: #ECECF9;
+        background: $profileBgColor;
         margin-right: 1.5rem;
         @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
           margin-bottom: 15px;
