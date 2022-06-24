@@ -86,3 +86,58 @@
     opacity: 0.5
   }
 }
+.hideForMobile {
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    display: none;
+  }
+  @media (min-width: $tablet-and-mobile-min-width) and (max-width: $tablet-and-mobile-max-width) {
+    display: none;
+  }
+}
+.popover > * {
+  color: $actionButtonColor !important;
+  box-shadow: none !important;
+  width: 100%;
+}
+
+.popoverDiv {
+  background-color: $profileBgColor !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 10px;
+
+  .popoverTitle {
+    font-weight: bold;
+    font-size: 13px;
+    color: $textColor;
+  }
+
+  span {
+    font-size: 14px;
+  }
+}
+.mobileButtonGroup {
+  display: none;
+  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    display: flex;
+  }
+
+  .iconEdit {
+    color: $actionButtonColor;
+    opacity: 0.6;
+  }
+
+  .iconLearn {
+    @extend .iconEdit;
+  }
+
+  .iconInfo {
+    @extend .iconEdit;
+  }
+
+  .iconDelete {
+    color: $deleteButtonBgColor;
+    opacity: 0.6;
+  }
+}

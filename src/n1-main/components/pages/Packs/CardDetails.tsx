@@ -5,7 +5,7 @@ import {
     Button,
     Container, IconButton,
     InputAdornment, Pagination,
-    Paper, Rating,
+    Paper, Popover, Rating,
     styled, Table, TableBody,
     TableCell,
     tableCellClasses, TableContainer, TableHead,
@@ -27,7 +27,6 @@ import {
     setFilterAnswerAC,
     setFilterQuestionAC
 } from "../../../../state/cardsReducer";
-
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
 import {DeleteCardModalContainer} from "../../Modals/DeleteCardModalContainer";
 import TextField from "@mui/material/TextField";
@@ -39,19 +38,26 @@ import {debounceDelay} from "../../Slider/Slider";
 import {modalStyle} from "./AllPacks/PackTable";
 import {EditAddCardModal} from "../../Modals/EditAddCardModal";
 import {PATH} from "../../AppRoutes";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 
 
 //mui table styles
-const StyledTableCell = styled(TableCell)(() => ({
+const StyledTableCell = styled(TableCell)((theme) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
-        fontWeight: 600,
+        ["@media (max-height:800px)"]: {
+            display: theme.className === s.hideForMobile ? "none" : "",
+        }
     },
 
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
-        wordBreak: "break-word",
+        ["@media (max-height:800px)"]: {
+            display: theme.className === s.hideForMobile ? "none" : "",
+            height: 14,
+        },
     },
 }));
 
@@ -85,6 +91,8 @@ const CardDetails = () => {
     const user_id = useAppSelector<string>(state => state.appReducer.user._id);
     const [debounceQuestion] = useDebounce(question, debounceDelay);
     const [debounceAnswer] = useDebounce(answer, debounceDelay);
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const openPopover = Boolean(anchorEl);
 
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
@@ -123,18 +131,29 @@ const CardDetails = () => {
     }
     const returnToPackPage = () => navigate(`${PATH.PACKS}`);
 
+    const handlePopoverClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.stopPropagation();
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+
+    console.log(cards)
+
     return (
         <div className={s.cardDetailsMain}>
             <Container fixed>
                 <Box className={s.packDetailBlock}>
-                    <Box className={s.nav} onClick={returnToPackPage}>
+                    <Box className={s.nav}
+                         onClick={returnToPackPage}>
                         <ArrowBackIcon/>
                         <span className={s.title}>Pack name</span>
                     </Box>
                     <Box className={s.headers}>
                         <TextField
                             className={s.questionInput}
-
                             onChange={onChangeQuestionHandler}
                             value={question}
                             placeholder={"Search question..."}
@@ -172,8 +191,12 @@ const CardDetails = () => {
                                     </InputAdornment>
                             }}
                         />
-                        <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleAddModalOpen}>Add
-                            new card</Button>
+                        <Button sx={{textTransform: "none"}}
+                                className={s.btn}
+                                title={'Add new card'}
+                                onClick={handleAddModalOpen}>
+                            Add new card
+                        </Button>
                     </Box>
                     <Box>
                         <Box className={s.wrapper}>
@@ -184,39 +207,80 @@ const CardDetails = () => {
                                             <TableRow>
                                                 <StyledTableCell>Question</StyledTableCell>
                                                 <StyledTableCell align="left">Answer</StyledTableCell>
-                                                <StyledTableCell align="left">Last Updates</StyledTableCell>
-                                                <StyledTableCell align="left">Grade</StyledTableCell>
-                                                <StyledTableCell align="center">Actions</StyledTableCell>
+                                                <StyledTableCell align="left" className={s.hideForMobile}>Last Updates</StyledTableCell>
+                                                <StyledTableCell align="left" className={s.hideForMobile}>Grade</StyledTableCell>
+                                                <StyledTableCell align="left">Actions</StyledTableCell>
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {cards.map((card) => (
                                                 <StyledTableRow key={card._id}>
-                                                    <StyledTableCell component="th"
-                                                                     scope="row">{card.question}</StyledTableCell>
-                                                    <StyledTableCell align="left">{card.answer}</StyledTableCell>
                                                     <StyledTableCell
-                                                        align="left">{moment(card.created).format("DD.MM.YYYY HH:mm:ss")}</StyledTableCell>
-                                                    <StyledTableCell align="left">
+                                                        component="th"
+                                                        scope="row">
+                                                        {card.question}
+                                                    </StyledTableCell>
+                                                    <StyledTableCell
+                                                        align="left">
+                                                        {card.answer}
+                                                    </StyledTableCell>
+                                                    <StyledTableCell
+                                                        align="left"
+                                                        className={s.hideForMobile}>
+                                                        {moment(card.created).format("DD.MM.YYYY HH:mm:ss")}
+                                                    </StyledTableCell>
+                                                    <StyledTableCell
+                                                        align="left"
+                                                        className={s.hideForMobile}>
                                                         <StyledRating
                                                             readOnly
                                                             size="small"
                                                             value={card.grade}
                                                             color={"red"}
                                                         />
-
-
                                                     </StyledTableCell>
-
-
                                                     <StyledTableCell align="right">
+                                                        <Box className={s.mobileButtonGroup}>
+                                                            <IconButton onClick={handlePopoverClick}>
+                                                                <InfoOutlinedIcon className={s.iconInfo}/>
+                                                            </IconButton>
+                                                            <IconButton onClick={() => handleEditModalOpen(card)}>
+                                                                <SchoolOutlinedIcon className={s.iconLearn}/>
+                                                            </IconButton>
+                                                            {user_id === card.user_id  && (
+                                                                <>
+                                                                    <IconButton onClick={() => handleEditModalOpen(card)}>
+                                                                        <EditOutlinedIcon className={s.iconEdit}/>
+                                                                    </IconButton>
+                                                                    <IconButton onClick={() => openDeleteModal(card)}>
+                                                                        <DeleteSweepOutlinedIcon className={s.iconDelete}/>
+                                                                    </IconButton>
+                                                                </>
+                                                            )}
+                                                            <Popover
+                                                                open={openPopover}
+                                                                anchorEl={anchorEl}
+                                                                onClose={handlePopoverClose}
+                                                                anchorOrigin={{
+                                                                    vertical: 'bottom',
+                                                                    horizontal: 'left',
+                                                                }}
+                                                                className={s.popover}
+                                                            >
+                                                                <div className={s.popoverDiv}>
+                                                                    <p className={s.popoverTitle}>Raiting: </p>
+                                                                    <StyledRating
+                                                                        readOnly
+                                                                        size="small"
+                                                                        value={card.grade}
+                                                                        color={"red"}
+                                                                    />
+                                                                    <p className={s.popoverTitle}>Last Updated:</p>
+                                                                    <span>{moment(card.created).format("DD.MM.YYYY HH:mm:ss")}</span>
+                                                                </div>
+                                                            </Popover>
+                                                        </Box>
                                                         <div className={styles.buttonGroup}>
-                                                            {/*<Button size={"small"} className={styles.delete} disabled={user_id !== card.user_id}
-                                                                onClick={() => openDeleteModal(card)}>Delete
-                                                        </Button>
-                                                        <Button size={"small"} className={styles.edit} disabled={user_id !== card.user_id}
-                                                                onClick={() => handleEditOpen(card)}>Edit
-                                                        </Button>*/}
                                                             <IconButton onClick={() => handleEditModalOpen(card)}
                                                                         disabled={user_id !== card.user_id}>
                                                                 <EditOutlinedIcon

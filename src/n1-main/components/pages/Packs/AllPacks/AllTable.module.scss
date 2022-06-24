@@ -146,6 +146,9 @@
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: none;
   }
+  @media (min-width: $tablet-and-mobile-min-width) and (max-width: $tablet-and-mobile-max-width) {
+    display: none;
+  }
 }
 
 .hideForMobile:hover {
