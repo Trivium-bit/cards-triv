@@ -31,15 +31,15 @@
       align-items: center;
       justify-content: space-between;
       margin: 20px 0;
-      @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+      @media (min-width: $mobile-min-width) and (max-width: $ipad-max-width) {
         flex-direction: column;
-        margin: 0;
       }
       .questionInput {
         background: $profileBgColor;
         margin-right: 1.5rem;
-        @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+        @media (min-width: $mobile-min-width) and (max-width: $ipad-max-width) {
           margin-bottom: 15px;
+          margin-left: 20px;
         }
       }
       .answerInput {
@@ -87,11 +87,8 @@
   }
 }
 .hideForMobile {
-  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-    display: none;
-  }
-  @media (min-width: $tablet-and-mobile-min-width) and (max-width: $tablet-and-mobile-max-width) {
-    display: none;
+  @media (min-width: 300px) and (max-width: 800px)  {
+    display: none !important;
   }
 }
 .popover > * {

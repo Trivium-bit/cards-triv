@@ -56,8 +56,12 @@
       border-bottom-left-radius: 8px;
       border-top-left-radius: 8px;
       padding: 25px 15px;
-      @media (min-width: $mobile-min-width) and (max-width: 900px) {
+      @media (min-width: $mobile-min-width) and (max-width: 600px) {
         height: 40vh;
+        border-radius: 8px;
+      }
+      @media (min-width: 600px) and (max-width: 900px) {
+        height: 30vh;
         border-radius: 8px;
       }
 
