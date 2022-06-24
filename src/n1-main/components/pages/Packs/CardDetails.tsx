@@ -39,7 +39,6 @@ import {modalStyle} from "./AllPacks/PackTable";
 import {EditAddCardModal} from "../../Modals/EditAddCardModal";
 import {PATH} from "../../AppRoutes";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
 
 
 //mui table styles
@@ -243,9 +242,6 @@ const CardDetails = () => {
                                                         <Box className={s.mobileButtonGroup}>
                                                             <IconButton onClick={handlePopoverClick}>
                                                                 <InfoOutlinedIcon className={s.iconInfo}/>
-                                                            </IconButton>
-                                                            <IconButton onClick={() => handleEditModalOpen(card)}>
-                                                                <SchoolOutlinedIcon className={s.iconLearn}/>
                                                             </IconButton>
                                                             {user_id === card.user_id  && (
                                                                 <>
