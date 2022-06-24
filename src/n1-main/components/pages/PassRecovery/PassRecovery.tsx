@@ -61,24 +61,26 @@ export const PassRecovery = () => {
         };
     }, [formik]);
     return (
-        <div className={styles.passRecoveryWrapper}>
-            <h2 className={styles.h2}>{projectName}</h2>
-            <h2 style={{ marginTop: 0, marginBottom: 17 }}>Forgot your password?</h2>
-            <TextField sx={{ m: 1, width: '35ch' }} id="standard-basic" label="Email" variant="standard"
-                {...formik.getFieldProps("email")} />
-            {formik.touched.email && formik.errors.email ?
-                <div className={styles.error}>{formik.errors.email}</div> : null}
-            <p className={styles.p}>
-                Enter your email address and we will send you further instructions
-            </p>
-            <form onSubmit={formik.handleSubmit}>
-                <Button sx={{textTransform: "none"}} type={"submit"} className={styles.button}>Send Instructions</Button>
-            </form>
+        <div className={styles.passRecovery}>
+            <div className={styles.passRecoveryWrapper}>
+                <h2 className={styles.h2}>{projectName}</h2>
+                <h2 style={{ marginTop: 0, marginBottom: 17 }}>Forgot your password?</h2>
+                <TextField sx={{ m: 1, width: '35ch' }} id="standard-basic" label="Email" variant="standard"
+                           {...formik.getFieldProps("email")} />
+                {formik.touched.email && formik.errors.email ?
+                    <div className={styles.error}>{formik.errors.email}</div> : null}
+                <p className={styles.p}>
+                    Enter your email address and we will send you further instructions
+                </p>
+                <form onSubmit={formik.handleSubmit}>
+                    <Button sx={{textTransform: "none"}} type={"submit"} className={styles.button}>Send Instructions</Button>
+                </form>
 
-            <p className={styles.pSmall}>
-                Did you remember your password?
-            </p>
-            <p onClick={onClickHandler} className={styles.pLogin}> Try logging in</p>
+                <p className={styles.pSmall}>
+                    Did you remember your password?
+                </p>
+                <p onClick={onClickHandler} className={styles.pLogin}> Try logging in</p>
+            </div>
         </div>
     );
 }

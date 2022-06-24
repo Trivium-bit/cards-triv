@@ -1,74 +1,78 @@
 @import "../../../../Common/Styles/variables";
 @import "../../../../Common/Styles/mixins";
-.registerWrapper {
-  @include windows();
+.register {
+  height: 100vh;
+  .registerWrapper {
+    @include windows();
 
-  .errors {
-    color: red;
-    font-size: 14px;
-    position: absolute;
-    top: 3.2rem;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
-    text-align: center;
-  }
-  .emailError{
-    @extend .errors;
-    top: 3.8rem;
-  }
-  .textFields {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    width: 280px;
-    position: relative;
-  }
-
-  .buttons {
-    margin-top: 2rem;
-    display: flex;
-    justify-content: center;
-    position: relative;
-    width: 280px;
-    height: 80px;
-
-    .circularProgress {
+    .errors {
+      color: red;
+      font-size: 14px;
       position: absolute;
-      height: 36px;
-      top: 22px;
-      left: 190px;
-    }
-
-    .cancelButton {
-      @include cancelButtonText;
-      position: absolute;
-      height: 36px;
-      width: 124px;
-      margin-right: 2rem;
-      top: 22px;
+      top: 3.2rem;
+      margin-left: auto;
+      margin-right: auto;
       left: 0;
+      right: 0;
+      text-align: center;
+    }
+    .emailError{
+      @extend .errors;
+      top: 3.8rem;
+    }
+    .textFields {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-direction: column;
+      width: 280px;
+      position: relative;
     }
 
-    .registerButton {
-      top: 22px;
-      height: 36px;
-      width: 124px;
-      position: absolute;
-      margin-right: 0;
-      left: 156px;
-      @include actionButtonText;
-    }
+    .buttons {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      width: 280px;
+      height: 80px;
 
-    .registerButton:hover {
-      @include actionButtonHover;
-    }
+      .circularProgress {
+        position: absolute;
+        height: 36px;
+        top: 22px;
+        left: 190px;
+      }
 
-    .cancelButton:hover {
-      @include cancelButtonHover;
-    }
+      .cancelButton {
+        @include cancelButtonText;
+        position: absolute;
+        height: 36px;
+        width: 124px;
+        margin-right: 2rem;
+        top: 22px;
+        left: 0;
+      }
 
+      .registerButton {
+        top: 22px;
+        height: 36px;
+        width: 124px;
+        position: absolute;
+        margin-right: 0;
+        left: 156px;
+        @include actionButtonText;
+      }
+
+      .registerButton:hover {
+        @include actionButtonHover;
+      }
+
+      .cancelButton:hover {
+        @include cancelButtonHover;
+      }
+
+    }
   }
 }
+

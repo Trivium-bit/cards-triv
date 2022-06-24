@@ -1,7 +1,14 @@
 import styles from "./CreateNewPassword.module.scss";
 import {useFormik} from "formik";
 import {NullableType, RequestStatusType, setAppErrorAC} from "../../../../state/app-reducer";
-import {CircularProgress, FormControl, IconButton, Input, InputAdornment, InputLabel} from "@mui/material";
+import {
+    CircularProgress,
+    FormControl,
+    IconButton,
+    Input,
+    InputAdornment,
+    InputLabel
+} from "@mui/material";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import React, {useEffect, useState} from "react";
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
@@ -68,53 +75,55 @@ function CreateNewPassword() {
     }, [info, navigate]);
 
     return (
-        <div className={styles.loginWrapper}>
-            <h1 className={styles.h1}>
-                {projectName}
-            </h1>
-            <h2 className={styles.h2}>
-                Create new password
-            </h2>
-            <div className={styles.newPassTextFields}>
-                <FormControl sx={{m: 1, width: '32ch'}} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-                    <Input {...formik.getFieldProps("password")}
-                           id="standard-adornment-password"
-                           type={isPassType ? 'password' : 'text'}
-                           endAdornment={
-                               <InputAdornment position="end">
-                                   <IconButton
-                                       aria-label="toggle password visibility"
-                                       onClick={handleClickShowPassword}
-                                       onMouseDown={handleMouseDownPassword}
-                                   >
-                                       {isPassType ? <VisibilityOff/> : <Visibility/>}
-                                   </IconButton>
-                               </InputAdornment>
-                           }
-                    />
-                    {formik.touched.password && formik.errors.password ?
-                        <div className={styles.errors}>{formik.errors.password}</div> : null}
-                </FormControl>
-                <div className={styles.errors}>{error}</div>
-                <p className={styles.textInstruction}>Create new password and we will send you further instruction to
-                    email
-                </p>
-                <div className={styles.button}>
-                    <form onSubmit={formik.handleSubmit} className={styles.submit}>
+        <div className={styles.newPass}>
+            <div className={styles.loginWrapper}>
+                <h1 className={styles.h1}>
+                    {projectName}
+                </h1>
+                <h2 className={styles.h2}>
+                    Create new password
+                </h2>
+                <div className={styles.newPassTextFields}>
+                    <FormControl sx={{m: 1, width: '32ch'}} variant="standard">
+                        <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                        <Input {...formik.getFieldProps("password")}
+                               id="standard-adornment-password"
+                               type={isPassType ? 'password' : 'text'}
+                               endAdornment={
+                                   <InputAdornment position="end">
+                                       <IconButton
+                                           aria-label="toggle password visibility"
+                                           onClick={handleClickShowPassword}
+                                           onMouseDown={handleMouseDownPassword}
+                                       >
+                                           {isPassType ? <VisibilityOff/> : <Visibility/>}
+                                       </IconButton>
+                                   </InputAdornment>
+                               }
+                        />
+                        {formik.touched.password && formik.errors.password ?
+                            <div className={styles.errors}>{formik.errors.password}</div> : null}
+                    </FormControl>
+                    <div className={styles.errors}>{error}</div>
+                    <p className={styles.textInstruction}>Create new password and we will send you further instruction to
+                        email
+                    </p>
+                    <div className={styles.button}>
+                        <form onSubmit={formik.handleSubmit} className={styles.submit}>
 
-                        {appStatus === "loading"
-                            ? <div className={styles.circularProgress}>
-                                <CircularProgress/>
-                            </div>
-                            : <CustomButton title={"Create new password"} type="submit" className={styles.sendButton}/>
+                            {appStatus === "loading"
+                                ? <div className={styles.circularProgress}>
+                                    <CircularProgress/>
+                                </div>
+                                : <CustomButton title={"Create new password"} type="submit" className={styles.sendButton}/>
 
-                        }
-                    </form>
-                </div>
-                <div className={styles.goBack}>
-                    <span className={styles.textInstruction}>or go back to </span>
-                    <NavLink to={PATH.LOGIN}>login page</NavLink>
+                            }
+                        </form>
+                    </div>
+                    <div className={styles.goBack}>
+                        <span className={styles.textInstruction}>or go back to </span>
+                        <NavLink to={PATH.LOGIN}>login page</NavLink>
+                    </div>
                 </div>
             </div>
         </div>
