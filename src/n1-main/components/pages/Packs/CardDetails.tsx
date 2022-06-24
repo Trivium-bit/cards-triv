@@ -124,137 +124,140 @@ const CardDetails = () => {
     const returnToPackPage = () => navigate(`${PATH.PACKS}`);
 
     return (
-        <Container fixed>
-            <Box className={s.packDetailBlock}>
-                <Box className={s.nav} onClick={returnToPackPage}>
-                    <ArrowBackIcon/>
-                    <span className={s.title}>Pack name</span>
-                </Box>
-                <Box className={s.headers}>
-                    <TextField
-                        className={s.questionInput}
+        <div className={s.cardDetailsMain}>
+            <Container fixed>
+                <Box className={s.packDetailBlock}>
+                    <Box className={s.nav} onClick={returnToPackPage}>
+                        <ArrowBackIcon/>
+                        <span className={s.title}>Pack name</span>
+                    </Box>
+                    <Box className={s.headers}>
+                        <TextField
+                            className={s.questionInput}
 
-                        onChange={onChangeQuestionHandler}
-                        value={question}
-                        placeholder={"Search question..."}
-                        fullWidth
-                        size="small"
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    <SearchIcon/>
-                                </InputAdornment>,
-                            endAdornment:
-                                <InputAdornment position="end" style={{cursor: "pointer"}}
-                                                onClick={() => dispatch(setFilterQuestionAC(""))}>
-                                    <CloseIcon/>
-                                </InputAdornment>
+                            onChange={onChangeQuestionHandler}
+                            value={question}
+                            placeholder={"Search question..."}
+                            fullWidth
+                            size="small"
+                            InputProps={{
+                                startAdornment:
+                                    <InputAdornment position="start">
+                                        <SearchIcon/>
+                                    </InputAdornment>,
+                                endAdornment:
+                                    <InputAdornment position="end" style={{cursor: "pointer"}}
+                                                    onClick={() => dispatch(setFilterQuestionAC(""))}>
+                                        <CloseIcon/>
+                                    </InputAdornment>
 
-                        }}
-                    />
-                    <TextField
-                        className={s.answerInput}
-                        fullWidth
-                        onChange={onChangeAnswerHandler}
-                        placeholder={"Search answer..."}
-                        value={answer}
-                        size="small"
-                        InputProps={{
-                            startAdornment:
-                                <InputAdornment position="start">
-                                    <SearchIcon/>
-                                </InputAdornment>,
-                            endAdornment:
-                                <InputAdornment position="end" style={{cursor: "pointer"}}
-                                                onClick={() => dispatch(setFilterAnswerAC(""))}>
-                                    <CloseIcon/>
-                                </InputAdornment>
-                        }}
-                    />
-                    <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleAddModalOpen}>Add
-                        new card</Button>
-                </Box>
-                <Box>
-                    <Box className={s.wrapper}>
-                        {cards.length !== 0 && (
-                            <TableContainer component={Paper}>
-                                <Table sx={{minWidth: 700}} aria-label="customized table">
-                                    <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell>Question</StyledTableCell>
-                                            <StyledTableCell align="left">Answer</StyledTableCell>
-                                            <StyledTableCell align="left">Last Updates</StyledTableCell>
-                                            <StyledTableCell align="left">Grade</StyledTableCell>
-                                            <StyledTableCell align="center">Actions</StyledTableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {cards.map((card) => (
-                                            <StyledTableRow key={card._id}>
-                                                <StyledTableCell component="th"
-                                                                 scope="row">{card.question}</StyledTableCell>
-                                                <StyledTableCell align="left">{card.answer}</StyledTableCell>
-                                                <StyledTableCell
-                                                    align="left">{moment(card.created).format("DD.MM.YYYY HH:mm:ss")}</StyledTableCell>
-                                                <StyledTableCell align="left">
-                                                    <StyledRating
-                                                        readOnly
-                                                        size="small"
-                                                        value={card.grade}
-                                                        color={"red"}
-                                                    />
-
-
-                                                </StyledTableCell>
+                            }}
+                        />
+                        <TextField
+                            className={s.answerInput}
+                            fullWidth
+                            onChange={onChangeAnswerHandler}
+                            placeholder={"Search answer..."}
+                            value={answer}
+                            size="small"
+                            InputProps={{
+                                startAdornment:
+                                    <InputAdornment position="start">
+                                        <SearchIcon/>
+                                    </InputAdornment>,
+                                endAdornment:
+                                    <InputAdornment position="end" style={{cursor: "pointer"}}
+                                                    onClick={() => dispatch(setFilterAnswerAC(""))}>
+                                        <CloseIcon/>
+                                    </InputAdornment>
+                            }}
+                        />
+                        <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleAddModalOpen}>Add
+                            new card</Button>
+                    </Box>
+                    <Box>
+                        <Box className={s.wrapper}>
+                            {cards.length !== 0 && (
+                                <TableContainer component={Paper}>
+                                    <Table sx={{minWidth: 700}} aria-label="customized table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <StyledTableCell>Question</StyledTableCell>
+                                                <StyledTableCell align="left">Answer</StyledTableCell>
+                                                <StyledTableCell align="left">Last Updates</StyledTableCell>
+                                                <StyledTableCell align="left">Grade</StyledTableCell>
+                                                <StyledTableCell align="center">Actions</StyledTableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {cards.map((card) => (
+                                                <StyledTableRow key={card._id}>
+                                                    <StyledTableCell component="th"
+                                                                     scope="row">{card.question}</StyledTableCell>
+                                                    <StyledTableCell align="left">{card.answer}</StyledTableCell>
+                                                    <StyledTableCell
+                                                        align="left">{moment(card.created).format("DD.MM.YYYY HH:mm:ss")}</StyledTableCell>
+                                                    <StyledTableCell align="left">
+                                                        <StyledRating
+                                                            readOnly
+                                                            size="small"
+                                                            value={card.grade}
+                                                            color={"red"}
+                                                        />
 
 
-                                                <StyledTableCell align="right">
-                                                    <div className={styles.buttonGroup}>
-                                                        {/*<Button size={"small"} className={styles.delete} disabled={user_id !== card.user_id}
+                                                    </StyledTableCell>
+
+
+                                                    <StyledTableCell align="right">
+                                                        <div className={styles.buttonGroup}>
+                                                            {/*<Button size={"small"} className={styles.delete} disabled={user_id !== card.user_id}
                                                                 onClick={() => openDeleteModal(card)}>Delete
                                                         </Button>
                                                         <Button size={"small"} className={styles.edit} disabled={user_id !== card.user_id}
                                                                 onClick={() => handleEditOpen(card)}>Edit
                                                         </Button>*/}
-                                                        <IconButton onClick={() => handleEditModalOpen(card)}
-                                                                    disabled={user_id !== card.user_id}>
-                                                            <EditOutlinedIcon
-                                                                className={user_id === card.user_id ? styles.iconEdit : ""}/>
-                                                        </IconButton>
-                                                        <IconButton onClick={() => openDeleteModal(card)}
-                                                                    disabled={user_id !== card.user_id}>
-                                                            <DeleteSweepOutlinedIcon
-                                                                className={user_id === card.user_id ? styles.iconDelete : ""}/>
-                                                        </IconButton>
-                                                    </div>
-                                                </StyledTableCell>
-                                            </StyledTableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        )}
-                        {
-                            cards.length === 0 && (
-                                <div className={s.emptyPack}>
+                                                            <IconButton onClick={() => handleEditModalOpen(card)}
+                                                                        disabled={user_id !== card.user_id}>
+                                                                <EditOutlinedIcon
+                                                                    className={user_id === card.user_id ? styles.iconEdit : ""}/>
+                                                            </IconButton>
+                                                            <IconButton onClick={() => openDeleteModal(card)}
+                                                                        disabled={user_id !== card.user_id}>
+                                                                <DeleteSweepOutlinedIcon
+                                                                    className={user_id === card.user_id ? styles.iconDelete : ""}/>
+                                                            </IconButton>
+                                                        </div>
+                                                    </StyledTableCell>
+                                                </StyledTableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            )}
+                            {
+                                cards.length === 0 && (
+                                    <div className={s.emptyPack}>
                                 <span className={s.emptyText}>
                                     This pack is empty. Click add new card to fill this pack
                                 </span>
-                                </div>
-                            )
-                        }
-                        <Pagination onChange={handleChangePagination} count={cardPagination.count} page={cardPagination.current}
-                                    shape="rounded"/>
+                                    </div>
+                                )
+                            }
+                            <Pagination onChange={handleChangePagination} count={cardPagination.count} page={cardPagination.current}
+                                        shape="rounded"/>
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
-            <EditAddCardModal currentPage={currentPage} packId={packId} closeEditModalCallback={setEditOpen}
-                              card={editOpen}
-                              closeAddModalCallback={setOpen}
-                              showAddModal={open}/>
-            <DeleteCardModalContainer card={rowToDelete} deleteCallback={handleCloseDelete} styles={modalStyle}/>
+                <EditAddCardModal currentPage={currentPage} packId={packId} closeEditModalCallback={setEditOpen}
+                                  card={editOpen}
+                                  closeAddModalCallback={setOpen}
+                                  showAddModal={open}/>
+                <DeleteCardModalContainer card={rowToDelete} deleteCallback={handleCloseDelete} styles={modalStyle}/>
 
-        </Container>
+            </Container>
+        </div>
+
 
     );
 };
