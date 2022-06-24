@@ -93,73 +93,75 @@ export const Register = React.memo(()=> {
         return <Navigate to={"/login"}/>
     }
     return (
-        <div className={styles.registerWrapper}>
-            <h2 className={styles.h1}>
-                {projectName}
-            </h2>
-            <h2 className={styles.h2}>
-                Sign up
-            </h2>
-            <div className={styles.textFields}>
-                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
-                    <Input {...formik.getFieldProps("email")}/>
-                </FormControl>
+        <div className={styles.register}>
+            <div className={styles.registerWrapper}>
+                <h2 className={styles.h1}>
+                    {projectName}
+                </h2>
+                <h2 className={styles.h2}>
+                    Sign up
+                </h2>
+                <div className={styles.textFields}>
+                    <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
+                        <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
+                        <Input {...formik.getFieldProps("email")}/>
+                    </FormControl>
 
-                {formik.touched.email && formik.errors.email ?
-                    <div className={styles.emailError}>{formik.errors.email}</div> : null}
+                    {formik.touched.email && formik.errors.email ?
+                        <div className={styles.emailError}>{formik.errors.email}</div> : null}
 
-                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-                    <Input {...formik.getFieldProps("password")}
-                           id="standard-adornment-password"
-                           type={isPassType ? 'password' : 'text'}
-                           endAdornment={
-                               <InputAdornment position="end">
-                                   <IconButton
-                                       aria-label="toggle password visibility"
-                                       onClick={handleClickShowPassword}
-                                       onMouseDown={handleMouseDownPassword}
-                                   >
-                                       {isPassType ? <VisibilityOff/> : <Visibility/>}
-                                   </IconButton>
-                               </InputAdornment>
-                           }
-                    />
-                    {formik.touched.password && formik.errors.password ?
-                        <div className={styles.errors}>{formik.errors.password}</div> : null}
+                    <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
+                        <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
+                        <Input {...formik.getFieldProps("password")}
+                               id="standard-adornment-password"
+                               type={isPassType ? 'password' : 'text'}
+                               endAdornment={
+                                   <InputAdornment position="end">
+                                       <IconButton
+                                           aria-label="toggle password visibility"
+                                           onClick={handleClickShowPassword}
+                                           onMouseDown={handleMouseDownPassword}
+                                       >
+                                           {isPassType ? <VisibilityOff/> : <Visibility/>}
+                                       </IconButton>
+                                   </InputAdornment>
+                               }
+                        />
+                        {formik.touched.password && formik.errors.password ?
+                            <div className={styles.errors}>{formik.errors.password}</div> : null}
 
-                </FormControl>
-                <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
-                    <InputLabel htmlFor="standard-adornment-confirmPassword">Confirm Password</InputLabel>
-                    <Input {...formik.getFieldProps("confirmPassword")}
-                           id="standard-adornment-confirmPassword"
-                           type={isConfirmPassType ? 'password' : 'text'}
+                    </FormControl>
+                    <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
+                        <InputLabel htmlFor="standard-adornment-confirmPassword">Confirm Password</InputLabel>
+                        <Input {...formik.getFieldProps("confirmPassword")}
+                               id="standard-adornment-confirmPassword"
+                               type={isConfirmPassType ? 'password' : 'text'}
 
-                           endAdornment={
-                               <InputAdornment position="end">
-                                   <IconButton
-                                       aria-label="toggle password visibility"
-                                       onClick={handleClickShowConfPassword}
-                                       onMouseDown={handleMouseDownPassword}
-                                   >
-                                       {isConfirmPassType ? <VisibilityOff/> : <Visibility/>}
-                                   </IconButton>
-                               </InputAdornment>
-                           }
-                    />
-                    {formik.touched.confirmPassword && formik.errors.confirmPassword ?
-                        <div className={styles.errors}>{formik.errors.confirmPassword}</div> : null}
-                </FormControl>
-                <div className={styles.buttons}>
-                    <Button sx={{textTransform: "none"}} onClick={buttonHandlerRedirect} className={styles.cancelButton}>
-                        Cancel
-                    </Button>
-                    <form onSubmit={formik.handleSubmit}>
-                        <Button sx={{textTransform: "none"}} type="submit"
-                                className={styles.registerButton}>Register</Button>
-                    </form>
+                               endAdornment={
+                                   <InputAdornment position="end">
+                                       <IconButton
+                                           aria-label="toggle password visibility"
+                                           onClick={handleClickShowConfPassword}
+                                           onMouseDown={handleMouseDownPassword}
+                                       >
+                                           {isConfirmPassType ? <VisibilityOff/> : <Visibility/>}
+                                       </IconButton>
+                                   </InputAdornment>
+                               }
+                        />
+                        {formik.touched.confirmPassword && formik.errors.confirmPassword ?
+                            <div className={styles.errors}>{formik.errors.confirmPassword}</div> : null}
+                    </FormControl>
+                    <div className={styles.buttons}>
+                        <Button sx={{textTransform: "none"}} onClick={buttonHandlerRedirect} className={styles.cancelButton}>
+                            Cancel
+                        </Button>
+                        <form onSubmit={formik.handleSubmit}>
+                            <Button sx={{textTransform: "none"}} type="submit"
+                                    className={styles.registerButton}>Register</Button>
+                        </form>
 
+                    </div>
                 </div>
             </div>
         </div>

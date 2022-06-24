@@ -22,12 +22,15 @@ export const CheckEmail: FC = () => {
     }
 
     return (
-        <div className={styles.checkEmailWrapper}>
-            <h2 className={commonStyles.h2}>{projectName}</h2>
-            <img src={checkEmailImage} alt={"checkEmailImage"}/>
-            <h2 className={commonStyles.h2}>Check Email</h2>
-            <p>We’ve sent an Email with instructions to {emailFromLocalStorage} </p>
+        <div className={styles.checkEmail}>
+            <div className={styles.checkEmailWrapper}>
+                <h2 className={commonStyles.h2}>{projectName}</h2>
+                <img src={checkEmailImage} alt={"checkEmailImage"}/>
+                <h2 className={commonStyles.h2}>Check Email</h2>
+                <p>We’ve sent an Email with instructions to {emailFromLocalStorage} </p>
+            </div>
         </div>
+
     );
 };
 

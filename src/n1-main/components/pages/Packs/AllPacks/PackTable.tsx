@@ -206,7 +206,7 @@ export const PackTable = React.memo(() => {
                                                 {cardPack.cardsCount}
                                             </StyledTableCell>
 
-                                            <StyledTableCell align="left"
+                                            <StyledTableCell align="left" className={s.hideForMobile}
                                                              onClick={(e) => navigateToCardsPage(e, cardPack)}>
                                                 {moment(cardPack.updated).format("DD.MM.YYYY HH:mm:ss")}
                                             </StyledTableCell>

@@ -1,74 +1,78 @@
 @import "../../../../../Common/Styles/constants";
 @import "../../../../../Common/Styles/variables";
-.packDetailBlock {
-  overflow: auto;
-  height: 70vh;
-  background: $white;
-  margin: 24px 0 0 0;
-  border-radius:8px;
-  padding: 25px;
-  position: relative;
-  @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-    height: calc(100vh - 135px);
-  }
-
-  .nav {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    .title {
-      font-weight: 600;
-      font-size: 22px;
-      line-height: 33px;
-      margin-left: 10px;
-    }
-  }
-  .headers {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 20px 0;
+.cardDetailsMain {
+  height: 100vh;
+  .packDetailBlock {
+    overflow: auto;
+    height: 70vh;
+    background: $white;
+    margin: 24px 0 0 0;
+    border-radius:8px;
+    padding: 25px;
+    position: relative;
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-      flex-direction: column;
-      margin: 0;
-    }
-    .questionInput {
-      background: #ECECF9;
-      margin-right: 1.5rem;
-      @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-        margin-bottom: 15px;
-      }
-    }
-    .answerInput {
-      @extend .questionInput;
+      height: calc(100vh - 135px);
     }
 
-    .btn {
-      border-radius: 30px;
-      height: 36px;
-      font-style: normal;
-      font-weight: 500;
-      font-size: 16px;
-      color: $profileBgColor;
-      background-color: $actionButtonColor;
-      width: 25rem;
-      @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-        margin: 10px 0;
-        width: 19rem;
+    .nav {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      .title {
+        font-weight: 600;
+        font-size: 22px;
+        line-height: 33px;
+        margin-left: 10px;
       }
     }
-    .btn:hover{
+    .headers {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 0;
+      @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+        flex-direction: column;
+        margin: 0;
+      }
+      .questionInput {
+        background: #ECECF9;
+        margin-right: 1.5rem;
+        @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+          margin-bottom: 15px;
+        }
+      }
+      .answerInput {
+        @extend .questionInput;
+      }
+
+      .btn {
+        border-radius: 30px;
+        height: 36px;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 16px;
+        color: $profileBgColor;
+        background-color: $actionButtonColor;
+        width: 25rem;
+        @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+          margin: 10px 0;
+          width: 19rem;
+        }
+      }
+      .btn:hover{
         background-color: $bgPurple !important;
         transform: scale(1.05);
         box-shadow: $btnBoxShadow;
       }
-  }
-  .packTableWrapper {
-    overflow-x: auto;
-    max-height: 55vh;
-    margin-bottom: 15px;
+    }
+    .packTableWrapper {
+      overflow-x: auto;
+      max-height: 55vh;
+      margin-bottom: 15px;
+    }
   }
 }
+
 .emptyPack {
   position: absolute;
   top: 50%;
