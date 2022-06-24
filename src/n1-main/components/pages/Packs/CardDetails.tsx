@@ -38,6 +38,7 @@ import {useDebounce} from "use-debounce";
 import {debounceDelay} from "../../Slider/Slider";
 import {modalStyle} from "./AllPacks/PackTable";
 import {EditAddCardModal} from "../../Modals/EditAddCardModal";
+import {PATH} from "../../AppRoutes";
 
 
 //mui table styles
@@ -85,7 +86,6 @@ const CardDetails = () => {
     const [debounceQuestion] = useDebounce(question, debounceDelay);
     const [debounceAnswer] = useDebounce(answer, debounceDelay);
 
-
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
@@ -121,12 +121,12 @@ const CardDetails = () => {
     const onChangeAnswerHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setFilterAnswerAC(e.target.value))
     }
-
+    const returnToPackPage = () => navigate(`${PATH.PACKS}`);
 
     return (
         <Container fixed>
             <Box className={s.packDetailBlock}>
-                <Box className={s.nav} onClick={() => navigate(-1)}>
+                <Box className={s.nav} onClick={returnToPackPage}>
                     <ArrowBackIcon/>
                     <span className={s.title}>Pack name</span>
                 </Box>
