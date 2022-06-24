@@ -46,6 +46,7 @@ const StyledTableCell = styled(TableCell)((theme) => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
+
         ["@media (max-height:800px)"]: {
             display: theme.className === s.hideForMobile ? "none" : "",
         }
@@ -53,6 +54,7 @@ const StyledTableCell = styled(TableCell)((theme) => ({
 
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
+        padding: 12.5,
         ["@media (max-height:800px)"]: {
             display: theme.className === s.hideForMobile ? "none" : "",
             height: 14,
@@ -63,8 +65,8 @@ const StyledTableCell = styled(TableCell)((theme) => ({
 const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
-
     },
+
 }));
 
 export const StyledRating = styled(Rating)({
@@ -139,7 +141,6 @@ const CardDetails = () => {
         setAnchorEl(null);
     };
 
-    console.log(cards)
 
     return (
         <div className={s.cardDetailsMain}>
