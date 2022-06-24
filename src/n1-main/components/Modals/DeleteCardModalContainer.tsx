@@ -1,16 +1,13 @@
 import React, {CSSProperties} from 'react';
 import {UniversalModal} from "./UniversalModal";
-import {useAppDispatch, useAppSelector} from "../../../state/store";
+import {useAppDispatch} from "../../../state/store";
 import {useParams, useSearchParams} from "react-router-dom";
 import {Box} from "@mui/material";
-import modalStyles from "./ModalStyles.module.scss";
-import CustomButton from "../../../Common/Components/Button";
-import {RequestStatusType} from "../../../state/app-reducer";
-import {appStatusSelector} from "../../../Common/Selectors/Selectors";
 import {PackCardType} from "../../../api/cardAPI";
 import {deleteCardTC, getCardsTC} from "../../../state/cardsReducer";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
-
+import Button from "@mui/material/Button";
+import modalStyles from "./ModalStyles.module.scss";
 
 type ModalContainerPropsType = {
     card?: PackCardType | undefined
@@ -24,7 +21,6 @@ export const DeleteCardModalContainer = React.memo(({card, deleteCallback, style
     const currentPage = searchParams.get("page") || "1";
     const dispatch = useAppDispatch();
     const handleCloseDelete = () => deleteCallback(undefined)
-    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
     const {packId} = useParams();
 
     const handleDeleteCard = () => {
@@ -52,11 +48,8 @@ export const DeleteCardModalContainer = React.memo(({card, deleteCallback, style
                  </span>
             </Box>
             <Box className={modalStyles.modalBtnGroup}>
-                <CustomButton onClick={handleCloseDelete} className={modalStyles.btnCancel} title={'Cancel'}
-                              disabled={appStatus === "loading"}/>
-                <CustomButton onClick={handleDeleteCard} className={modalStyles.btnDelete} title={'Delete'}
-                              disabled={appStatus === "loading"}/>
-
+                <Button sx={{textTransform: "none"}} onClick={handleCloseDelete} className={modalStyles.btnCancel}>Cancel</Button>
+                <Button sx={{textTransform: "none"}} onClick={handleDeleteCard} className={modalStyles.btnDelete}>Delete</Button>
             </Box>
         </UniversalModal>
     );

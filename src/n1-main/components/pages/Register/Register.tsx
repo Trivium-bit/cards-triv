@@ -103,9 +103,9 @@ export const Register = React.memo(()=> {
             <div className={styles.textFields}>
                 <FormControl sx={{m: 1, width: '35ch'}} variant="standard">
                     <InputLabel htmlFor="standard-adornment-email">Email</InputLabel>
-                    <Input {...formik.getFieldProps("email")}
-                    />
+                    <Input {...formik.getFieldProps("email")}/>
                 </FormControl>
+
                 {formik.touched.email && formik.errors.email ?
                     <div className={styles.emailError}>{formik.errors.email}</div> : null}
 

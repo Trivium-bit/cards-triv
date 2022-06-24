@@ -3,9 +3,8 @@ import {useNavigate, useParams, useLocation} from 'react-router-dom';
 import {
     Box,
     Button,
-    Container, FormControl, IconButton,
-    Input,
-    InputAdornment, InputLabel, Modal, Pagination,
+    Container, IconButton,
+    InputAdornment, Pagination,
     Paper, Rating,
     styled, Table, TableBody,
     TableCell,
@@ -20,19 +19,15 @@ import styles from './AllPacks/AllTable.module.scss'
 import {useAppDispatch, useAppSelector} from "../../../../state/store";
 import {useSelector} from "react-redux";
 import {
-    appStatusSelector, cardPaginationSelector,
+    cardPaginationSelector,
     getCardsSelector
 } from "../../../../Common/Selectors/Selectors";
 import {
-    addNewCardTC,
-    editCardTC,
     getCardsTC,
     setFilterAnswerAC,
     setFilterQuestionAC
 } from "../../../../state/cardsReducer";
-import CustomButton from "../../../../Common/Components/Button";
-import modalStyles from "../../Modals/ModalStyles.module.scss";
-import {RequestStatusType} from "../../../../state/app-reducer";
+
 import {GetCardsParams, PackCardType} from "../../../../api/cardAPI";
 import {DeleteCardModalContainer} from "../../Modals/DeleteCardModalContainer";
 import TextField from "@mui/material/TextField";
@@ -41,19 +36,8 @@ import DeleteSweepOutlinedIcon from "@mui/icons-material/DeleteSweepOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import {useDebounce} from "use-debounce";
 import {debounceDelay} from "../../Slider/Slider";
-
-type NewCardPayloadType = {
-    answer: string;
-    question: string;
-}
-type EditCardPayloadType = {
-    answer: string;
-    question: string;
-}
-type ErrorStateType = {
-    answer?: string;
-    question?: string;
-}
+import {modalStyle} from "./AllPacks/PackTable";
+import {EditAddCardModal} from "../../Modals/EditAddCardModal";
 
 
 //mui table styles
@@ -62,29 +46,21 @@ const StyledTableCell = styled(TableCell)(() => ({
         backgroundColor: "#ECECF9",
         color: "#000",
         fontWeight: 600,
-        fontSize: 13,
     },
+
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
+        wordBreak: "break-word",
     },
 }));
 
 const StyledTableRow = styled(TableRow)(() => ({
     '&:nth-of-type(odd)': {
         backgroundColor: "#F8F7FD",
+
     },
 }));
-const modalStyle = {
-    position: 'absolute' as 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 350,
-    bgcolor: '#F9F9FE',
-    boxShadow: 24 as unknown as 'BoxShadow | undefined',
-    p: 4,
-    borderRadius: 2,
-};
+
 export const StyledRating = styled(Rating)({
     '& .MuiRating-iconFilled': {
         color: '#21268F',
@@ -97,43 +73,26 @@ const CardDetails = () => {
     const dispatch = useAppDispatch();
     const location = useLocation();
     const {packId} = useParams();
-    const user_id = useAppSelector<string>(state => state.appReducer.user._id)
-    const cards = useSelector(getCardsSelector);
-    const cardPagination = useSelector(cardPaginationSelector);
-    const appStatus = useAppSelector<RequestStatusType>(appStatusSelector);
+
     const [open, setOpen] = useState(false);
     const [editOpen, setEditOpen] = useState<PackCardType | undefined>(undefined);
     const [rowToDelete, setRowToDelete] = useState<PackCardType | undefined>(undefined);
-    const question = useAppSelector(state => state.cardsReducer.question)
-    const answer = useAppSelector(state => state.cardsReducer.answer)
+    const cards = useSelector(getCardsSelector);
+    const cardPagination = useSelector(cardPaginationSelector);
+    const question = useAppSelector(state => state.cardsReducer.question);
+    const answer = useAppSelector(state => state.cardsReducer.answer);
+    const user_id = useAppSelector<string>(state => state.appReducer.user._id);
     const [debounceQuestion] = useDebounce(question, debounceDelay);
     const [debounceAnswer] = useDebounce(answer, debounceDelay);
-    const [newCardPayload, setNewCardPayload] = useState<NewCardPayloadType>({
-        answer: "",
-        question: ""
-    });
-    const [editCardPayload, setEditCardPayload] = useState<EditCardPayloadType>({
-        answer: "",
-        question: ""
-    });
-    const [addErrors, setAddErrors] = useState<ErrorStateType>({});
-    const handleCloseDelete = () => setRowToDelete(undefined)
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
-        setOpen(false);
-        setAddErrors({});
-        setNewCardPayload({
-            answer: "",
-            question: ""
-        })
-    };
-    const handleEditOpen = (row: any) => setEditOpen(row);
-    const handleEditClose = () => setEditOpen(undefined);
+
 
     const currentPage = useMemo(() => {
         return new URLSearchParams(location.search)?.get("page") || "1";
     }, [location.search]);
 
+    const handleAddModalOpen = () => setOpen(true);
+    const handleEditModalOpen = (card: PackCardType) => setEditOpen(card);
+    const handleCloseDelete = () => setRowToDelete(undefined);
 
     useEffect(() => {
 
@@ -150,56 +109,12 @@ const CardDetails = () => {
         }
 
         dispatch(getCardsTC(payload))
-    }, [dispatch, currentPage, debounceAnswer, debounceQuestion, packId])
+    }, [dispatch, currentPage, debounceAnswer, debounceQuestion, packId]);
 
     const handleChangePagination = (event: React.ChangeEvent<unknown>, page: number) => {
-        navigate(`/packs/${packId}?page=${page}`)
+        navigate(`/packs/${packId}?page=${page}`);
     }
-    const handleAddCard = () => {
-        if (newCardPayload.question !== "" && newCardPayload.answer !== "") {
-            dispatch(addNewCardTC(packId || '', {
-                question: newCardPayload.question,
-                answer: newCardPayload.answer
-            }, () => {
-                handleClose();
-                dispatch(getCardsTC({
-                    cardsPack_id: packId,
-                    page: currentPage
-                }))
-            }))
-        } else {
-            const errors: ErrorStateType = {};
-            if (newCardPayload.answer === "") {
-                errors.answer = "Please type your answer"
-            }
-
-            if (newCardPayload.question === "") {
-                errors.question = "Please type your question"
-            }
-
-            setAddErrors(errors);
-        }
-    }
-    const handleChangeQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewCardPayload(payload => ({...payload, question: e.target.value}))
-        setAddErrors(errors => ({...errors, question: undefined}))
-    }
-    const handleChangeAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setNewCardPayload(payload => ({...payload, answer: e.target.value}))
-        setAddErrors(errors => ({...errors, answer: undefined}))
-    }
-    const handleChangeEditQuestion = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEditCardPayload(payload => ({...payload, question: e.target.value}))
-        setAddErrors(errors => ({...errors, question: undefined}))
-    }
-    const handleChangeEditAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEditCardPayload(payload => ({...payload, answer: e.target.value}))
-        setAddErrors(errors => ({...errors, answer: undefined}))
-    }
-
-
     const openDeleteModal = (card: PackCardType) => setRowToDelete(card);
-
     const onChangeQuestionHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setFilterQuestionAC(e.target.value))
     }
@@ -207,21 +122,6 @@ const CardDetails = () => {
         dispatch(setFilterAnswerAC(e.target.value))
     }
 
-
-    const updateCard = () => {
-        if (editOpen && editOpen._id) {
-            dispatch(editCardTC(editOpen._id,
-                editCardPayload.question,
-                editCardPayload.answer,
-                () => {
-                    handleEditClose();
-                    dispatch(getCardsTC({
-                        cardsPack_id: packId,
-                        page: currentPage
-                    }))
-                }))
-        }
-    }
 
     return (
         <Container fixed>
@@ -246,7 +146,7 @@ const CardDetails = () => {
                                 </InputAdornment>,
                             endAdornment:
                                 <InputAdornment position="end" style={{cursor: "pointer"}}
-                                                onClick={ () => dispatch(setFilterQuestionAC(""))}>
+                                                onClick={() => dispatch(setFilterQuestionAC(""))}>
                                     <CloseIcon/>
                                 </InputAdornment>
 
@@ -266,12 +166,12 @@ const CardDetails = () => {
                                 </InputAdornment>,
                             endAdornment:
                                 <InputAdornment position="end" style={{cursor: "pointer"}}
-                                                onClick={ () =>  dispatch(setFilterAnswerAC(""))}>
+                                                onClick={() => dispatch(setFilterAnswerAC(""))}>
                                     <CloseIcon/>
                                 </InputAdornment>
                         }}
                     />
-                    <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleOpen}>Add
+                    <Button sx={{textTransform: "none"}} className={s.btn} title={'Add new card'} onClick={handleAddModalOpen}>Add
                         new card</Button>
                 </Box>
                 <Box>
@@ -316,7 +216,7 @@ const CardDetails = () => {
                                                         <Button size={"small"} className={styles.edit} disabled={user_id !== card.user_id}
                                                                 onClick={() => handleEditOpen(card)}>Edit
                                                         </Button>*/}
-                                                        <IconButton onClick={() => handleEditOpen(card)}
+                                                        <IconButton onClick={() => handleEditModalOpen(card)}
                                                                     disabled={user_id !== card.user_id}>
                                                             <EditOutlinedIcon
                                                                 className={user_id === card.user_id ? styles.iconEdit : ""}/>
@@ -343,71 +243,19 @@ const CardDetails = () => {
                                 </div>
                             )
                         }
-                        <Modal
-                            open={!!editOpen}
-                            onClose={handleEditClose}
-                        >
-                            <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                                <h1 className={modalStyles.modalTitle}>Edit Card</h1>
-                                <Box>
-                                    <FormControl variant="standard">
-                                        <InputLabel htmlFor="component-simple">Edit question</InputLabel>
-                                        <Input defaultValue={editOpen?.question} className={modalStyles.inputsForm}
-                                               onChange={handleChangeEditQuestion}/>
-                                    </FormControl>
-                                </Box>
-                                <Box>
-                                    <FormControl variant="standard">
-                                        <InputLabel htmlFor="component-simple">Edit answer</InputLabel>
-                                        <Input defaultValue={editOpen?.answer} className={modalStyles.inputsForm}
-                                               onChange={handleChangeEditAnswer}/>
-                                    </FormControl>
-                                    <Box className={modalStyles.modalBtnGroup}>
-                                        <CustomButton onClick={handleEditClose} className={modalStyles.btnCancel}
-                                                      title={'Cancel'} disabled={appStatus === "loading"}/>
-                                        <CustomButton className={modalStyles.btnSave} onClick={updateCard}
-                                                      title={'Save'}
-                                                      disabled={appStatus === "loading"}/>
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </Modal>
-                        <Modal
-                            open={open}
-                            onClose={handleClose}
-                        >
-                            <Box sx={modalStyle} className={modalStyles.modalBlock}>
-                                <h1 className={modalStyles.modalTitle}>Add a new card</h1>
-                                <Box>
-                                    <TextField multiline className={modalStyles.inputsForm}
-                                               placeholder={"Type your question"}
-                                               label="Question"
-                                               onChange={handleChangeQuestion} error={!!addErrors.question}
-                                               helperText={addErrors.question}/>
-                                    <TextField multiline className={modalStyles.inputsForm}
-                                               placeholder={"Type your answer"}
-                                               onChange={handleChangeAnswer} error={!!addErrors.answer}
-                                               helperText={addErrors.answer} label="Answer"/>
-                                </Box>
-                                <Box>
-                                    <Box className={modalStyles.modalBtnGroup}>
-                                        <Button sx={{textTransform: "none"}} onClick={handleClose}
-                                                className={modalStyles.btnCancel} title={'Cancel'}>Cancel</Button>
-                                        <Button sx={{textTransform: "none"}} className={modalStyles.btnSave}
-                                                onClick={handleAddCard} title={'Add'}>Add</Button>
-                                    </Box>
-                                </Box>
-                            </Box>
-                        </Modal>
+                        <Pagination onChange={handleChangePagination} count={cardPagination.count} page={cardPagination.current}
+                                    shape="rounded"/>
                     </Box>
                 </Box>
-
-                <DeleteCardModalContainer card={rowToDelete} deleteCallback={handleCloseDelete} styles={modalStyle}/>
-                <Pagination onChange={handleChangePagination} count={cardPagination.count} page={cardPagination.current}
-                            shape="rounded"/>
-
             </Box>
+            <EditAddCardModal currentPage={currentPage} packId={packId} closeEditModalCallback={setEditOpen}
+                              card={editOpen}
+                              closeAddModalCallback={setOpen}
+                              showAddModal={open}/>
+            <DeleteCardModalContainer card={rowToDelete} deleteCallback={handleCloseDelete} styles={modalStyle}/>
+
         </Container>
+
     );
 };
 

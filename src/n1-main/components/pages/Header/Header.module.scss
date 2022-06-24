@@ -16,7 +16,9 @@
         font-weight: 600;
         color: $textColor;
         cursor: pointer;
+
     }
+
     .logo {
         @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
             display: none;
@@ -27,7 +29,7 @@
     }
     .logOutBlock{
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
 
         >button {
             color:$textColor;
@@ -35,6 +37,7 @@
         }
         >button:hover{
             background-color: $linkActive;
+
         }
         .logOutIcon{
             display: none;
@@ -47,8 +50,8 @@
 
         .logOut {
             font-size: 15px;
+            font-weight: bolder;
             @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
-                /*font-size: 12px;*/
                 display: none;
             }
         }

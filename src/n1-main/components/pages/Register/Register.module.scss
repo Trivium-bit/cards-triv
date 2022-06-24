@@ -3,11 +3,6 @@
 .registerWrapper {
   @include windows();
 
-  .h1 {
-    /*border: 1px solid black;*/
-    /*margin-top: -109px;*/
-  }
-
   .errors {
     color: red;
     font-size: 14px;
@@ -21,7 +16,7 @@
   }
   .emailError{
     @extend .errors;
-    top: 19.3rem;
+    top: 3.8rem;
   }
   .textFields {
     display: flex;
@@ -29,7 +24,7 @@
     align-items: center;
     flex-direction: column;
     width: 280px;
-    /* border: 1px solid black;*/
+    position: relative;
   }
 
   .buttons {
@@ -37,7 +32,6 @@
     display: flex;
     justify-content: center;
     position: relative;
-    /*border: 1px solid black;*/
     width: 280px;
     height: 80px;
 

@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState, forwardRef, CSSProperties} from 'react';
-import {Box, FormControlLabel, Radio, RadioGroup, Rating} from "@mui/material";
+import {Box, FormControlLabel, Radio, RadioGroup} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
 import modalStyles from "./ModalStyles.module.scss";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
@@ -7,6 +7,7 @@ import {saveLocalCardGradeAC, updateCardGradeTC} from "../../../state/cardsReduc
 import {PackCardType} from "../../../api/cardAPI";
 import {getCardsSelector, getLocalCardGradeSelector} from "../../../Common/Selectors/Selectors";
 import Button from "@mui/material/Button";
+import {StyledRating} from "../pages/Packs/CardDetails";
 
 const getRandomCard = (items: PackCardType[]) => {
     const MAX_RATING = 6;
@@ -72,8 +73,7 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
                 <>
                     <p className={modalStyles.modalText}><b>Numbers of attempts to answer:</b> {currentCard?.shots}</p>
                     <p className={modalStyles.modalRating}><b>Card rating:</b>
-                        <Rating readOnly size="small"
-                                                                                       value={currentCard.grade}/></p>
+                     <StyledRating readOnly size="small" value={currentCard.grade}/></p>
                     <p className={modalStyles.modalText}><b>Answer:</b>{currentCard?.answer}</p>
                     <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
                     <RadioGroup style={{width:" 200px"}}

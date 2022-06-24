@@ -2,6 +2,7 @@
 @import "./../../../Common/Styles/mixins";
 
 .modalBlock {
+  word-wrap: break-word;
 
   .modalTitle {
     font-weight: 600;
@@ -23,6 +24,7 @@
   }
 
   .modalBtnGroup {
+
     display: flex;
     justify-content: space-between;
     padding: 20px 0;
@@ -34,7 +36,7 @@
       &.disabled {
         opacity: 0.5;
         cursor: not-allowed !important;
-        color: red;
+        /*color: red;*/
       }
     }
 
@@ -55,6 +57,11 @@
     .btnDelete {
       @extend .btnSave;
       background: #F1453D !important;
+    }
+
+    .btnDelete:hover {
+      @extend .btnSave;
+      background: #fa5c54 !important;
     }
   }
 

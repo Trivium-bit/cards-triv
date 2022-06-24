@@ -105,7 +105,7 @@ const EditProfileModal = ({serverAvatar, name, email, title, changeName}: ModalP
                     </Box>
                     <Box className={s.modalBtnGroup}>
                         <Button sx={{textTransform: "none"}} onClick={handleClose} className={s.btnCancel}>Cancel</Button>
-                        <Button sx={{textTransform: "none"}} className={s.btnSave} onClick={saveUserData}>Save</Button>
+                        <Button sx={{textTransform: "none"}} onClick={saveUserData} className={s.btnSave} >Save</Button>
                     </Box>
                 </Box>
             </Modal>
