@@ -41,6 +41,7 @@ export const registerTC = (data: RegisterParamsType) => {
             })
             .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch)
+                dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
             })
     }
 }
@@ -62,6 +63,7 @@ export const forgotTC = (email: RecoveryEmailType) => {
             })
             .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch)
+                dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
             })
     }
 }

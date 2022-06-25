@@ -1,18 +1,14 @@
-import React, {useState} from 'react';
+import React from 'react';
 import s from "./UserProfile.module.scss";
 import {useAppSelector} from "../../../../state/store";
 import EditProfileModal from "../EditProfile/EditProfileModal";
 import {appUserSelector} from "../../../../Common/Selectors/Selectors";
 import anonymousUserPhoto from "./../../../../images/anonymousUserPhoto.jpg";
-import {UserType} from "../../../../state/app-reducer";
 import {Loader} from "../../../../Common/Components/Loader";
+import {ResponseLoginType} from "../../../../api/loginAPI";
 
 const UserProfile = ( ) => {
-    const user = useAppSelector<UserType>(appUserSelector);
-    const [localName, setLocalName] = useState<string |undefined>(user?.name);
-    const changeName = (userName: string |undefined) =>{
-        setLocalName(userName);
-    }
+    const user = useAppSelector<ResponseLoginType>(appUserSelector);
 
     return (
         <>
@@ -25,11 +21,7 @@ const UserProfile = ( ) => {
                         <div className={s.name}>{user.name}</div>
                         <div className={s.desc}>Front-end Dev</div>
                         <EditProfileModal
-                            changeName={changeName}
                             title={'Personal Information'}
-                            email={user.email}
-                            serverAvatar={user.avatar || anonymousUserPhoto}
-                            name={localName}
                         />
                     </div>
                 </div>

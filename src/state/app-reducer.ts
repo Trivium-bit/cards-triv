@@ -9,7 +9,7 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 //status = loading - крутилку показываем
 
-export type UserType = ResponseLoginType | undefined;
+
 const initialState = {
     error: null as NullableType<string>,
     status: 'idle' as RequestStatusType,
@@ -37,7 +37,7 @@ export const setAppErrorAC = (error: NullableType<string>) => ({type: "APP/SET-E
 export const setAppStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status}) as const;
 export const setAppUserAC = (user: ResponseLoginType) => ({ type: "APP/SET-USER", user}) as const;
 export const updateUserNameAC = (userName: string ) => ({type: "APP/UPDATE-USER-NAME", userName}) as const;
-export const updateUserAvatarAC = (avatar:string | undefined) => ({type: "APP/UPDATE-USER-AVATAR", avatar}) as const;
+export const updateUserAvatarAC = (userAvatar:string | undefined) => ({type: "APP/UPDATE-USER-AVATAR", avatar: userAvatar}) as const;
 
 //types
 export type NullableType<T> = null | T
@@ -52,7 +52,7 @@ export type AppActionsType = SetAppErrorType | SetAppStatus | SetAppUser | Updat
 
 //thunks
 
-export const updateUserTC = (name: string|undefined, avatar: string |undefined) => (dispatch: AppThunkDispatch) => {
+export const updateUserTC = (name: string, avatar: string) => (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC("loading"));
 
     profileAPI.updateProfile(name, avatar)

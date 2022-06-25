@@ -79,6 +79,7 @@ export const sendNewPasswordTC = ({password, resetPasswordToken}: NewPasswordTyp
                 dispatch(setNewPasswordAC(res.data.info));
             }).catch((error: AxiosError<{ error: string }>) => {
                     handleNetworkError(error, dispatch);
+                dispatch(setAppErrorAC(error.response?.data.error || "some Error"));
                 }
             )
     }
@@ -92,6 +93,7 @@ export const logOutTC = () => (dispatch: AppThunkDispatch) => {
         })
         .catch((error: AxiosError<{ error: string }>) => {
                 handleNetworkError(error, dispatch);
+
             }
         )
 }

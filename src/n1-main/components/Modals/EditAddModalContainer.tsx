@@ -55,7 +55,7 @@ export const EditAddModalContainer = React.memo(({pack, closeModalCallback, styl
     }
     const handleChangeNewPack = (event: ChangeEvent<HTMLTextAreaElement>) => {
         setInputValue(event.target.value);
-        setInputError(false)
+        setInputError(false);
     };
     const saveNewPack = () => {
         if (newPackName !== '' && newPackName.length <= maxCardPackNameLength) {
@@ -64,7 +64,7 @@ export const EditAddModalContainer = React.memo(({pack, closeModalCallback, styl
             setInputValue("")
             handleCloseModal();
         } else {
-            setInputError(true)
+            setInputError(true);
         }
     };
 

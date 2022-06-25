@@ -1,8 +1,10 @@
 import {AppStoreType} from "../../state/store";
-import {NullableType, RequestStatusType, UserType} from "../../state/app-reducer";
+import {NullableType, RequestStatusType} from "../../state/app-reducer";
 import {PacksResponseType} from "../../api/cardPacksAPI";
 import {PackCardType} from "../../api/cardAPI";
 import {PaginationCardType} from "../../state/cardsReducer";
+import {ResponseLoginType} from "../../api/loginAPI";
+
 
 export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
     return state.appReducer.status
@@ -10,7 +12,7 @@ export const appStatusSelector = (state: AppStoreType):RequestStatusType =>{
 export const appStatusErrorSelector = (state: AppStoreType):NullableType<string> =>{
     return state.appReducer.error
 }
-export const appUserSelector = (state: AppStoreType):UserType =>{
+export const appUserSelector = (state: AppStoreType):ResponseLoginType =>{
     return state.appReducer.user
 }
 export const isRegisteredSelector = (state: AppStoreType):boolean =>{
