@@ -3,7 +3,10 @@
 
 .modalBlock {
   word-wrap: break-word;
-
+  .attachFile{
+    color: $actionButtonColor;
+    cursor: pointer;
+  }
   .modalTitle {
     font-weight: 600;
     font-size: 18px;

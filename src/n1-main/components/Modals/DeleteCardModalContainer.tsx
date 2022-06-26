@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 import modalStyles from "./ModalStyles.module.scss";
 
 type ModalContainerPropsType = {
-    card?: PackCardType | undefined
+    card: PackCardType | null
     pack?: PacksResponseType | undefined
     deleteCallback: (item: undefined) => void
     styles: CSSProperties

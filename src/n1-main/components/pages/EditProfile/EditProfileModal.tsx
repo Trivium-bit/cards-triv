@@ -80,7 +80,7 @@ const EditProfileModal = ({title}: ModalPropsType) => {
         const stringFileSize = returnFileSize(base64fileSize)
 
         const saveUserData = () => {
-debugger
+
             if(localName !== "" && localName.length <= maxProfileNameLength && !inputRexExpError){
                 dispatch(updateUserTC(localName, localAvatar ));
                 setOpen(false);
@@ -114,7 +114,7 @@ debugger
         }
 
         const changeLocalName = (e: ChangeEvent<HTMLInputElement>) => {
-            debugger
+
             if(e.currentTarget.value.match(regExp) ){
                 setLocalName(e.currentTarget.value.trim())
                 setInputError(false);
@@ -162,7 +162,7 @@ debugger
                                 </Box>
                             </Box>
                             <Box>
-                                <TextField inputProps={{ pattern: "[A-Za-z]{1,15}" }}
+                                <TextField inputProps={{ pattern: "[A-Za-z]" }}
                                            className={s.inputForms}
                                            defaultValue={user.name}
                                            onChange={changeLocalName}

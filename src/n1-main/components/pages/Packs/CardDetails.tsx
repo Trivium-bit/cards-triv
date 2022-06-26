@@ -36,7 +36,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import {useDebounce} from "use-debounce";
 import {debounceDelay} from "../../Slider/Slider";
 import {modalStyle} from "./AllPacks/PackTable";
-import {EditAddCardModal} from "../../Modals/EditAddCardModal";
+import {EditAddCardModalContainer} from "../../Modals/EditAddCardModalContainer";
 import {PATH} from "../../AppRoutes";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
@@ -83,8 +83,8 @@ const CardDetails = () => {
     const {packId} = useParams();
 
     const [open, setOpen] = useState(false);
-    const [editOpen, setEditOpen] = useState<PackCardType | undefined>(undefined);
-    const [rowToDelete, setRowToDelete] = useState<PackCardType | undefined>(undefined);
+    const [currentCard, setCurrentCard] = useState<PackCardType | null>(null);
+    const [rowToDelete, setRowToDelete] = useState<PackCardType | null>(null);
     const cards = useSelector(getCardsSelector);
     const cardPagination = useSelector(cardPaginationSelector);
     const question = useAppSelector(state => state.cardsReducer.question);
@@ -100,8 +100,8 @@ const CardDetails = () => {
     }, [location.search]);
 
     const handleAddModalOpen = () => setOpen(true);
-    const handleEditModalOpen = (card: PackCardType) => setEditOpen(card);
-    const handleCloseDelete = () => setRowToDelete(undefined);
+    const handleEditModalOpen = (card: PackCardType) => setCurrentCard(card);
+    const handleCloseDelete = () => setRowToDelete(null);
 
     useEffect(() => {
 
@@ -140,7 +140,6 @@ const CardDetails = () => {
     const handlePopoverClose = () => {
         setAnchorEl(null);
     };
-
 
     return (
         <div className={s.cardDetailsMain}>
@@ -310,10 +309,10 @@ const CardDetails = () => {
                         </Box>
                     </Box>
                 </Box>
-                <EditAddCardModal currentPage={currentPage} packId={packId} closeEditModalCallback={setEditOpen}
-                                  card={editOpen}
-                                  closeAddModalCallback={setOpen}
-                                  showAddModal={open}/>
+                <EditAddCardModalContainer currentPage={currentPage} packId={packId} closeEditModalCallback={setCurrentCard}
+                                           card={currentCard}
+                                           closeAddModalCallback={setOpen}
+                                           showAddModal={open}/>
                 <DeleteCardModalContainer card={rowToDelete} deleteCallback={handleCloseDelete} styles={modalStyle}/>
 
             </Container>

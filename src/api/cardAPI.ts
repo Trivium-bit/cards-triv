@@ -6,31 +6,23 @@ export type GetCardsParams = {
     pageCount?: number;
     cardAnswer?: string;
     cardQuestion?: string;
+    questionImg?: string
+    answerImg?: string
 }
 
-export const pageCount = 8;
+
 export const cardApi = {
     getAllCards(params: GetCardsParams) {
-
-        if (!params.pageCount) {
-            params.pageCount = pageCount;
-        }
-
         return instance.get<ResponseCardType>('/cards/card', {params});
     },
-    addNewCard(id: string,card: PackCardPayloadType) {
-        return instance.post<ResponseAddCardType>(`/cards/card`, {
-            card: {
-                ...card,
-                cardsPack_id: id
-            }
-        });
+    addNewCard(cardsPack_id: string,card: PackCardPayloadType) {
+        return instance.post<ResponseAddCardType>(`/cards/card`, {card: {...card, cardsPack_id}});
     },
     deleteMyCard(id:string) {
         return instance.delete<ResponseDeleteCardType>(`/cards/card?id=${id}`);
     },
-    editMyCard(_id:string,question:string, answer:string) {
-        return instance.put<ResponseUpdateCardType>('/cards/card', {card: {_id, question, answer}});
+    editMyCard(_id:string, card: PackCardPayloadType) {
+        return instance.put<ResponseUpdateCardType>('/cards/card', {card: {_id, ...card}});
     },
     editCardGrade(grade: number, card_id: string){
         return instance.put<ResponseUpdateCardParamsType>('/cards/grade', {grade, card_id})
@@ -38,25 +30,31 @@ export const cardApi = {
 }
 
 export type PackCardPayloadType = {
-    answer: string;
-    question: string;
+    answer?: string ;
+    question?: string ;
+    questionImg: any
+    answerImg: any
 }
 
 export type PackCardType = {
-    answer: string;
-    cardsPack_id: string;
-    comments: string;
-    created: string;
-    grade: number;
-    more_id: string;
-    question: string;
-    rating: number;
-    shots: number;
-    type: string;
-    updated: string;
-    user_id: string;
-    __v: number;
     _id: string;
+    cardsPack_id: string;
+    user_id: string;
+    answer: string;
+    question: string;
+    grade: number;
+    shots: number;
+    comments: string;
+    type: string;
+    rating: number;
+    more_id: string;
+    created: string;
+    updated: string;
+    __v: number;
+    answerImg: string,
+    answerVideo: string,
+    questionImg: string,
+    questionVideo: string
 }
 
 export type ResponseCardType ={
@@ -88,6 +86,8 @@ export type updatedCardType = {
     shots: number
     created: string
     updated: string
+    questionImg: string
+    answerImg: string
 }
 export type ResponseUpdateCardParamsType = {
     updatedGrade:updatedCardType

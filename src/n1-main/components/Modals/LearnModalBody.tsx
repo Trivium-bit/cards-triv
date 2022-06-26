@@ -3,7 +3,7 @@ import {Box, FormControlLabel, Radio, RadioGroup} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../state/store";
 import modalStyles from "./ModalStyles.module.scss";
 import {PacksResponseType} from "../../../api/cardPacksAPI";
-import {saveLocalCardGradeAC, updateCardGradeTC} from "../../../state/cardsReducer";
+import {saveLocalCardGradeAC, updateCardTC} from "../../../state/cardsReducer";
 import {PackCardType} from "../../../api/cardAPI";
 import {getCardsSelector, getLocalCardGradeSelector} from "../../../Common/Selectors/Selectors";
 import Button from "@mui/material/Button";
@@ -58,7 +58,7 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
         }
 
         setStep(QUESTION);
-        dispatch(updateCardGradeTC(currentCard._id))
+        dispatch(updateCardTC(currentCard._id))
         setCurrentCard(getRandomCard(cards));
     }
 
@@ -67,17 +67,23 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
         <Box sx={modalStyle} className={modalStyles.modalBlock} ref={ref}>
             <h1 className={modalStyles.modalTitle}>Learn {cardPack?.name}</h1>
             <p className={modalStyles.modalText}><b>Question:</b> {currentCard?.question}</p>
-
+            {step === QUESTION &&
+            <div style={currentCard.questionImg ? {display: "block"} : {display: "none"}}>
+                <img src={currentCard.questionImg} width={"200px"} alt="questionImg"/>
+            </div>}
             {step === ANSWER &&
             (
                 <>
+                    <div style={currentCard.answerImg ? {display: "block"} : {display: "none"}}>
+                        <img src={currentCard.answerImg} width={"200px"} alt="questionImg"/>
+                    </div>
                     <p className={modalStyles.modalText}><b>Numbers of attempts to answer:</b> {currentCard?.shots}</p>
                     <p className={modalStyles.modalRating}><b>Card rating:</b>
-                     <StyledRating readOnly size="small" value={currentCard.grade}/></p>
+                        <StyledRating readOnly size="small" value={currentCard.grade}/></p>
                     <p className={modalStyles.modalText}><b>Answer:</b>{currentCard?.answer}</p>
                     <p className={modalStyles.modalText}><b>Rate yourself:</b></p>
-                    <RadioGroup style={{width:" 200px"}}
-                        onChange={handleChangeRatio}
+                    <RadioGroup style={{width: " 200px"}}
+                                onChange={handleChangeRatio}
                     >
                         {
                             grades.map((grade, index) => (
@@ -97,10 +103,10 @@ const LearnModalBody = forwardRef(({cardPack, onCancel, modalStyle}: PackModalBo
                 <Button sx={{textTransform: "none"}}
                         onClick={handleCancel} className={modalStyles.btnCancel}>Cancel</Button>
 
-                    <Button sx={{textTransform: "none"}}
-                         className={`${modalStyles.btnSave} ${step === ANSWER && selectedValue === 0 && modalStyles.disabled}`}
-                         disabled={step === ANSWER && selectedValue === 0}
-                         onClick={handleSubmit}
+                <Button sx={{textTransform: "none"}}
+                        className={`${modalStyles.btnSave} ${step === ANSWER && selectedValue === 0 && modalStyles.disabled}`}
+                        disabled={step === ANSWER && selectedValue === 0}
+                        onClick={handleSubmit}
                 >{step === ANSWER ? "Next" : "Show Answer"}
                 </Button>
 
