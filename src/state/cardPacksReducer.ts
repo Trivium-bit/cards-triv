@@ -17,12 +17,12 @@ const SET_CURRENT_PAGE = "CARDS/SET_CURRENT_PAGE";
 
 export type CardPackRequestType = {
     name: string
-    path?: string
+    path?: string | null
     grade?: number //средняя оценка карточек
     shots?: number //колличество попыток ответить
     rating?: number //лайки
     deckCover?: string //обложка колоды
-    private?: boolean
+    private: boolean
     type?: string
 }
 export type CardPackUpdateRequestType = {
