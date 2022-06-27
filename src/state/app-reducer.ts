@@ -34,7 +34,10 @@ export const appReducer = (state: InitialStateType = initialState, action: AppAc
 }
 //actions
 export const setAppErrorAC = (error: NullableType<string>) => ({type: "APP/SET-ERROR", error}) as const;
-export const setAppStatusAC = (status: RequestStatusType) => ({ type: "APP/SET-STATUS", status}) as const;
+export const setAppStatusAC = (status: RequestStatusType) => {
+    // console.log("setAppStatusAC")
+    return { type: "APP/SET-STATUS", status} as const;
+}
 export const setAppUserAC = (user: ResponseLoginType) => ({ type: "APP/SET-USER", user}) as const;
 export const updateUserNameAC = (userName: string ) => ({type: "APP/UPDATE-USER-NAME", userName}) as const;
 export const updateUserAvatarAC = (userAvatar:string | undefined) => ({type: "APP/UPDATE-USER-AVATAR", avatar: userAvatar}) as const;

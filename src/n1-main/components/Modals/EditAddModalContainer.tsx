@@ -22,7 +22,7 @@ type ModalContainerPropsType = {
     styles: CSSProperties
 }
 export const EditAddModalContainer = ({pack, closeModalCallback, styles, showAddNewPackModal}: ModalContainerPropsType) => {
-    console.log(pack)
+
 
     const [newPackName, setNewPackName] = useState('');
     const [inputError, setInputError] = useState(false);
@@ -76,10 +76,6 @@ export const EditAddModalContainer = ({pack, closeModalCallback, styles, showAdd
         }
     };
 
-    console.log("pack?.private", pack?.private)
-    console.log("isPrivate", isPrivate)
-    console.log("updatedPackName", updatedPackName)
-    console.log("pack?.name", pack?.name)
     return (
 
         <UniversalModal modalStyle={styles}

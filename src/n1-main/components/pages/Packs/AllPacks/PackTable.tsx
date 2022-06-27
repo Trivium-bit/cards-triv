@@ -222,13 +222,14 @@ export const PackTable = React.memo(() => {
                                                     <IconButton onClick={handlePopoverClick}>
                                                         <InfoOutlinedIcon className={s.iconInfo}/>
                                                     </IconButton>
-                                                    <IconButton onClick={() => handleOpenLearn(cardPack)}>
-                                                        <SchoolOutlinedIcon className={s.iconLearn}/>
+                                                    <IconButton className={cardPack.cardsCount === 0 ? s.iconLearn : s.iconDisabled}
+                                                                onClick={() => handleOpenLearn(cardPack)} disabled={cardPack.cardsCount === 0}>
+                                                        <SchoolOutlinedIcon className={s.iconLearn} />
                                                     </IconButton>
                                                     {cardPack.user_id === myId && (
                                                         <>
                                                             <IconButton onClick={() => handleOpenEdit(cardPack)}>
-                                                                <EditOutlinedIcon className={s.iconEdit}/>
+                                                                <EditOutlinedIcon className={s.iconEdit} />
                                                             </IconButton>
                                                             <IconButton onClick={() => handleOpenDelete(cardPack)}>
                                                                 <DeleteSweepOutlinedIcon className={s.iconDelete}/>

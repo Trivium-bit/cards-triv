@@ -94,6 +94,9 @@
     color: $deleteButtonBgColor;
     opacity: 0.6;
   }
+  .iconDisabled {
+    background: #eeeeee;
+  }
 
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
     display: none;
