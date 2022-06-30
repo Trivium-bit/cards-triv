@@ -31,12 +31,12 @@ function Header() {
         <div className={s.header}>
             <Container>
                 <Grid container>
-                    <Grid item xs={0} sm={2} md={4}>
+                    <Grid item xs={0} sm={3} md={4} lg={4}>
                         <NavLink to={PATH.HOME}>
                             <span className={s.logo}>{projectName}</span>
                         </NavLink>
                     </Grid>
-                    <Grid item xs={5} sm={4} md={2}>
+                    <Grid item xs={5} sm={3} md={2} lg={2}>
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PACKS && s.headerLinkActive}`}>
                             <NavLink to={PATH.PACKS}>
                                 <div className={s.packList}>
@@ -46,7 +46,7 @@ function Header() {
                             </NavLink>
                         </Box>
                     </Grid>
-                    <Grid item xs={5} sm={4} md={2} >
+                    <Grid item xs={5} sm={3} md={2} lg={2}>
                         <Box className={`${s.headerLink} ${location.pathname === PATH.PROFILE && s.headerLinkActive}`}>
                             <NavLink to={PATH.PROFILE}>
                                 <div className={s.packList} onClick={handleChangeIsMyTable}>
@@ -56,7 +56,7 @@ function Header() {
                             </NavLink>
                         </Box>
                     </Grid>
-                    <Grid item xs={2} sm={2} md={4} className={s.logOutBlock} >
+                    <Grid item xs={2} sm={3} md={4} lg={4} className={s.logOutBlock} >
                             <Button sx={{textTransform: "none"}} className={s.logOut}
                                    onClick={handleLogOut}
                                    aria-disabled={appStatus === "loading"}>

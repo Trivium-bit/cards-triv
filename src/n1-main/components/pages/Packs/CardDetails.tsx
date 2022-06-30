@@ -264,7 +264,7 @@ const CardDetails = () => {
                                                                 className={s.popover}
                                                             >
                                                                 <div className={s.popoverDiv}>
-                                                                    <p className={s.popoverTitle}>Raiting: </p>
+                                                                    <p className={s.popoverTitle}>Rating: </p>
                                                                     <StyledRating
                                                                         readOnly
                                                                         size="small"
