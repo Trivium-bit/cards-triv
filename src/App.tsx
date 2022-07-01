@@ -23,11 +23,11 @@ function App() {
     }
 
     return (
-        <div className={s.App}>
+        <main className={s.App}>
             {appStatus === 'loading' && <Loader/>}
             <AppRoutes/>
             <ErrorSnackBar/>
-        </div>
+        </main>
     );
 }
 

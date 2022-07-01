@@ -28,7 +28,7 @@ function Header() {
         dispatch(setIsMyTableAC(true));
     }
     return (
-        <div className={s.header}>
+        <header className={s.header}>
             <Container>
                 <Grid container>
                     <Grid item xs={0} sm={3} md={4} lg={4}>
@@ -68,7 +68,7 @@ function Header() {
                     </Grid>
                 </Grid>
             </Container>
-        </div>
+        </header>
     );
 }
 

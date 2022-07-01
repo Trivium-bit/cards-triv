@@ -55,10 +55,6 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
     switch (action.type) {
         case SET_PACK_CARDS:
             return {...state, cards: action.cards, pagination: action.pagination}
-       /* case FILTER_ANSWER:
-            return {...state, answer: action.answer}
-        case FILTER_QUESTION:
-            return {...state, question: action.question}*/
         case SET_LOCAL_CARD_GRADE:
             return {...state, localCardGrade: action.localCardGrade}
         case UPDATE_CARD:

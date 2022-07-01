@@ -13,16 +13,20 @@ const initialState = {
     success: false
 
 }
+const SET_IS_REGISTER = "REGISTER/SET-IS-REGISTER"
+const GET_EMAIL = "REGISTER/GET-EMAIL"
+const VERIFICATION_EMAIL = "REGISTER/VERIFICATION-EMAIL"
+
 
 type InitialStateType = typeof initialState
 
 export const registerReducer = (state: InitialStateType = initialState, action: RegisterActionsType): InitialStateType => {
     switch (action.type) {
-        case 'REGISTER/SET-IS-REGISTER':
+        case SET_IS_REGISTER:
             return { ...state, isRegistered: action.isRegistered }
-        case "GET-EMAIL/GET-EMAIL":
+        case GET_EMAIL:
             return { ...state, email: action.email }
-        case "VERIFICATION-EMAIL/VERIFICATION-EMAIL":
+        case VERIFICATION_EMAIL:
             return { ...state, success: action.success }
         default:
             return state;
@@ -72,6 +76,6 @@ type isRegisteredActionType = ReturnType<typeof registerAC> | AppActionsType | R
 export type RegisterActionsType = isRegisteredActionType;
 
 // actions
-export const registerAC = (isRegistered: boolean) => ({ type: 'REGISTER/SET-IS-REGISTER', isRegistered } as const)
-export const getEmailAC = (email: string) => ({ type: 'GET-EMAIL/GET-EMAIL', email } as const)
-export const verifEmailAC = (success: boolean) => ({ type: 'VERIFICATION-EMAIL/VERIFICATION-EMAIL', success } as const)
+export const registerAC = (isRegistered: boolean) => ({ type: SET_IS_REGISTER, isRegistered } as const)
+export const getEmailAC = (email: string) => ({ type: GET_EMAIL, email } as const)
+export const verifEmailAC = (success: boolean) => ({ type: VERIFICATION_EMAIL, success } as const)

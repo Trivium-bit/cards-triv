@@ -9,6 +9,11 @@ export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 //status = loading - крутилку показываем
 
+const SET_ERROR = "APP/SET-ERROR"
+const SET_STATUS = "APP/SET-STATUS"
+const SET_USER = "APP/SET-USER"
+const UPDATE_USER_NAME = "APP/UPDATE-USER-NAME";
+const UPDATE_USER_AVATAR = "APP/UPDATE-USER-AVATAR";
 
 const initialState = {
     error: null as NullableType<string>,
@@ -18,29 +23,26 @@ const initialState = {
 
 export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
-        case "APP/SET-ERROR":
+        case SET_ERROR:
             return {...state, error: action.error}
-        case 'APP/SET-STATUS':
+        case SET_STATUS:
             return {...state, status: action.status}
-        case 'APP/SET-USER':
+        case SET_USER:
             return {...state, user: action.user}
-        case "APP/UPDATE-USER-NAME":
+        case UPDATE_USER_NAME:
             return {...state, user: {...state.user, name:action.userName}}
-        case "APP/UPDATE-USER-AVATAR":
+        case UPDATE_USER_AVATAR:
             return {...state, user: {...state.user, avatar:action.avatar}}
         default:
             return state
     }
 }
 //actions
-export const setAppErrorAC = (error: NullableType<string>) => ({type: "APP/SET-ERROR", error}) as const;
-export const setAppStatusAC = (status: RequestStatusType) => {
-    // console.log("setAppStatusAC")
-    return { type: "APP/SET-STATUS", status} as const;
-}
-export const setAppUserAC = (user: ResponseLoginType) => ({ type: "APP/SET-USER", user}) as const;
-export const updateUserNameAC = (userName: string ) => ({type: "APP/UPDATE-USER-NAME", userName}) as const;
-export const updateUserAvatarAC = (userAvatar:string | undefined) => ({type: "APP/UPDATE-USER-AVATAR", avatar: userAvatar}) as const;
+export const setAppErrorAC = (error: NullableType<string>) => ({type: SET_ERROR, error}) as const;
+export const setAppStatusAC = (status: RequestStatusType) => ({ type: SET_STATUS, status} as const);
+export const setAppUserAC = (user: ResponseLoginType) => ({ type: SET_USER, user}) as const;
+export const updateUserNameAC = (userName: string ) => ({type: UPDATE_USER_NAME, userName}) as const;
+export const updateUserAvatarAC = (userAvatar:string | undefined) => ({type: UPDATE_USER_AVATAR, avatar: userAvatar}) as const;
 
 //types
 export type NullableType<T> = null | T

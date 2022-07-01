@@ -4,10 +4,10 @@ import {AppThunkDispatch} from "./store"
 import {authAPI, LoginParamsType, NewPasswordType} from "../api/loginAPI"
 import {handleNetworkError} from "../utils/error.utils"
 
-const SET_IS_LOGGED_IN = "login/SET-IS-LOGGED-IN"
-const SEND_NEW_PASSWORD = "login/SEND-NEW-PASSWORD"
-const SET_NEW_PASSWORD = "login/SET-NEW-PASSWORD"
-const SET_IS_INITIALIZED_IN = "login/SET_IS_INITIALIZED_IN";
+const SET_IS_LOGGED_IN = "AUTH/SET-IS-LOGGED-IN"
+const SEND_NEW_PASSWORD = "AUTH/SEND-NEW-PASSWORD"
+const SET_NEW_PASSWORD = "AUTH/SET-NEW-PASSWORD"
+const SET_IS_INITIALIZED_IN = "AUTH/SET_IS_INITIALIZED_IN";
 
 const initialState = {
     isLoggedIn: false,
