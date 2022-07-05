@@ -200,8 +200,8 @@ const CardDetails = () => {
                     <Box>
                         <Box className={s.wrapper}>
                             {cards.length !== 0 && (
-                                <TableContainer component={Paper}>
-                                    <Table sx={{minWidth: 700}} aria-label="customized table">
+                                <TableContainer component={Paper} variant={"outlined"}>
+                                    <Table aria-label="customized table">
                                         <TableHead>
                                             <TableRow>
                                                 <StyledTableCell>Question</StyledTableCell>

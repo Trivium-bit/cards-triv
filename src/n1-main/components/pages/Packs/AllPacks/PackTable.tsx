@@ -64,12 +64,12 @@ const StyledTableCell = styled(TableCell)((theme) => ({
         fontSize: 13,
         height: 29,
         maxHeight: 30,
-        zIndex: 1,
         ["@media (max-height:800px)"]: {
             display: theme.className === s.hideForMobile ? "none" : "",
             height: 14,
         },
         boxSizing: "border-box",
+
     },
 }));
 
@@ -147,8 +147,8 @@ export const PackTable = React.memo(() => {
     return (
         <Box className={s.wrapper}>
             {myCardPacks.length !== 0 ?
-                <TableContainer className={s.table} component={Paper}>
-                    <Table sx={{maxWidth: 800}} aria-label="customized table">
+                <TableContainer className={s.table} component={Paper} variant={"outlined"} >
+                    <Table  aria-label="customized table">
                         <TableHead>
                             <TableRow>
 
@@ -269,12 +269,6 @@ export const PackTable = React.memo(() => {
                                                             <IconButton onClick={() => handleOpenDelete(cardPack)} size={"small"}>
                                                                 <DeleteSweepOutlinedIcon className={s.iconDelete}/>
                                                             </IconButton>
-                                                            {/*<Button  sx={{textTransform: "none"}} name="delete" onClick={() => handleOpenDelete(cardPack)}
-                                                                    className={s.delete}>Delete
-                                                            </Button>
-                                                            <Button  sx={{textTransform: "none"}} name="edit" onClick={() => handleOpenEdit(cardPack)}
-                                                                    className={s.edit}>Edit
-                                                            </Button>*/}
                                                         </>
                                                     )}
 
