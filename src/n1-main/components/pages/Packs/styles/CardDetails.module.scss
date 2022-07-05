@@ -1,15 +1,17 @@
 @import "../../../../../Common/Styles/constants";
 @import "../../../../../Common/Styles/variables";
 .cardDetailsMain {
-  height: 100vh;
+  height: 75vh;
+
   .packDetailBlock {
     overflow: auto;
-    height: 70vh;
+    height: 100%;
     background: $white;
     margin: 24px 0 0 0;
     border-radius:8px;
     padding: 25px;
     position: relative;
+
     @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
       height: calc(100vh - 135px);
     }
@@ -66,9 +68,7 @@
         box-shadow: $btnBoxShadow;
       }
     }
-    .packTableWrapper {
-      overflow-x: auto;
-      max-height: 55vh;
+    .cardTableWrapper {
       margin-bottom: 15px;
     }
   }
