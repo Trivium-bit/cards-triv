@@ -58,7 +58,7 @@ const StyledTableCell = styled(TableCell)((theme) => ({
         padding: 12.5,
         wordBreak:"break-word",
         maxWidth: '350px',
-        height: 34,
+        height: 35.5,
 
         ["@media (max-height:800px)"]: {
             display: theme.className === s.hideForMobile ? "none" : "",
