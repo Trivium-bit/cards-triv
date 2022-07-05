@@ -57,6 +57,10 @@ export const cardsReducer = (state: InitialCardsStateType = initialState, action
             return {...state, cards: action.cards, pagination: action.pagination}
         case SET_LOCAL_CARD_GRADE:
             return {...state, localCardGrade: action.localCardGrade}
+        case FILTER_ANSWER:
+            return {...state, answer: action.answer}
+        case FILTER_QUESTION:
+            return {...state, question: action.question}
         case UPDATE_CARD:
             return {
                 ...state, cards: state.cards.map(card =>

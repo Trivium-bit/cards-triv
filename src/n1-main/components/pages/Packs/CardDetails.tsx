@@ -131,6 +131,7 @@ const CardDetails = () => {
     const openDeleteModal = (card: PackCardType) => setRowToDelete(card);
     const onChangeQuestionHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setFilterQuestionAC(e.target.value))
+        console.log("sdfsd")
     }
     const onChangeAnswerHandler = (e: ChangeEvent<HTMLInputElement>) => {
         dispatch(setFilterAnswerAC(e.target.value))
