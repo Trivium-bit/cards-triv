@@ -79,11 +79,15 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
+  @media (orientation: landscape) {
+    margin-top: 100px;
+  }
   .emptyText {
     font-weight: 400;
     font-size: 16px;
     line-height: 19px;
-    opacity: 0.5
+    opacity: 0.5;
+
   }
 }
 .hideForMobile {

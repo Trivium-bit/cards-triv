@@ -17,7 +17,7 @@
         height: 100vh !important;
     }
     @media (min-width: 900px) and (max-width: 1420px) and (orientation: landscape){
-        height: max-content !important;
+        height: 100vh !important;
     }
     @media (min-width: $ipad-pro-min-width) and (max-width: $ipad-pro-max-width) {
         height: max-content;
