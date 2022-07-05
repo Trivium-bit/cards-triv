@@ -36,7 +36,7 @@
         height: 40vh;
         border-radius: 8px;
       }
-      @media (min-height: $mobile-min-width) and (orientation: landscape) {
+      @media (orientation: landscape) {
         height: 70vh;
         border-radius: 8px;
       }
