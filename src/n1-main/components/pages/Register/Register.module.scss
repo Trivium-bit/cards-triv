@@ -2,6 +2,13 @@
 @import "../../../../Common/Styles/mixins";
 .register {
   height: 100vh;
+  @media (max-height: 624px) and  (orientation: landscape){
+    height: max-content;
+  }
+
+  @media (min-height: 624px) and (orientation: landscape){
+    height: 100vh;
+  }
   .registerWrapper {
     @include windows();
 

@@ -1,8 +1,16 @@
 @import "../../../../Common/Styles/mixins";
 @import "../../../../Common/Styles/variables";
+@import "../../../../Common/Styles/constants";
 
 .loginWrapper {
   height: 100vh;
+  @media (max-height: 624px) and  (orientation: landscape){
+    height: max-content;
+  }
+
+  @media (min-height: 624px) and (orientation: landscape){
+    height: 100vh;
+  }
 
   .login {
     @include windows();
