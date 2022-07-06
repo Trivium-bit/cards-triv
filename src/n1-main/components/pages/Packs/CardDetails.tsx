@@ -42,15 +42,10 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 
 //mui table styles
-const StyledTableCell = styled(TableCell)((theme) => ({
+const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
-
-
-        ["@media (max-height:800px)"]: {
-            display: theme.className === s.hideForMobile ? "none" : "",
-        }
     },
 
     [`&.${tableCellClasses.body}`]: {
@@ -59,11 +54,6 @@ const StyledTableCell = styled(TableCell)((theme) => ({
         wordBreak:"break-word",
         maxWidth: '350px',
         height: 35.5,
-
-        ["@media (max-height:800px)"]: {
-            display: theme.className === s.hideForMobile ? "none" : "",
-            height: 14,
-        },
     },
 }));
 

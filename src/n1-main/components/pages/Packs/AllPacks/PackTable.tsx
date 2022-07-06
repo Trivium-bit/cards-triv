@@ -50,24 +50,18 @@ import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 
 
 //styles mui
-const StyledTableCell = styled(TableCell)((theme) => ({
+const StyledTableCell = styled(TableCell)(() => ({
     [`&.${tableCellClasses.head}`]: {
         backgroundColor: "#ECECF9",
         color: "#000",
         fontWeight: 600,
         fontSize: 13,
-        ["@media (max-height:800px)"]: {
-            display: theme.className === s.hideForMobile ? "none" : "",
-        }
+
     },
     [`&.${tableCellClasses.body}`]: {
         fontSize: 13,
         height: 29,
         maxHeight: 30,
-        ["@media (max-height:800px)"]: {
-            display: theme.className === s.hideForMobile ? "none" : "",
-            height: 14,
-        },
         boxSizing: "border-box",
 
     },
