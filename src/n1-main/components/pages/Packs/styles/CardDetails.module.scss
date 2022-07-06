@@ -1,18 +1,18 @@
 @import "../../../../../Common/Styles/constants";
 @import "../../../../../Common/Styles/variables";
 .cardDetailsMain {
-  height: 76vh;
+ margin-bottom: 50px;
+  height: 100vh;
 
   .packDetailBlock {
     overflow: auto;
-    height: 100%;
     background: $white;
     margin: 24px 0 0 0;
     border-radius:8px;
     padding: 24px 24px 15px;
     position: relative;
 
-    @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {
+    @media (min-width: $mobile-min-width) and (max-width: $ipad-max-width) {
       height: calc(100vh - 135px);
     }
 
