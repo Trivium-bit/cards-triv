@@ -2,7 +2,7 @@
 @import "../../../../../Common/Styles/variables";
 
 .wrapper {
-  overflow: auto;
+  overflow-y: auto;
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;

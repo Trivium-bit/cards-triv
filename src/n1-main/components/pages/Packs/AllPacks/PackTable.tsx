@@ -280,9 +280,9 @@ export const PackTable = React.memo(() => {
                 :
                 (
                     <div className={s.emptyPack}>
-                                <span className={s.emptyText}>
-                                    You don't have cards pack. Click "Add a new card pack" to create new card pack
-                                </span>
+                                <p className={s.emptyText}>
+                                    You don't have cards pack. Click "Add new card pack" to create a new card pack or go to all card packs
+                                </p>
                     </div>
                 )
             }

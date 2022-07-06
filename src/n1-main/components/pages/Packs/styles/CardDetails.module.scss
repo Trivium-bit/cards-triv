@@ -1,14 +1,16 @@
 @import "../../../../../Common/Styles/constants";
 @import "../../../../../Common/Styles/variables";
+
 .cardDetailsMain {
- margin-bottom: 50px;
+  margin-bottom: 50px;
   height: 100vh;
 
   .packDetailBlock {
+    height: 76vh;
     overflow: auto;
     background: $white;
     margin: 24px 0 0 0;
-    border-radius:8px;
+    border-radius: 8px;
     padding: 24px 24px 15px;
     position: relative;
 
@@ -21,6 +23,7 @@
       cursor: pointer;
       display: flex;
       align-items: center;
+
       .title {
         font-weight: 600;
         font-size: 22px;
@@ -28,6 +31,7 @@
         margin-left: 10px;
       }
     }
+
     .headers {
       display: flex;
       align-items: center;
@@ -36,6 +40,7 @@
       @media (min-width: $mobile-min-width) and (max-width: $ipad-max-width) {
         flex-direction: column;
       }
+
       .questionInput {
         background: $profileBgColor;
         margin-right: 1.5rem;
@@ -44,6 +49,7 @@
           margin-left: 20px;
         }
       }
+
       .answerInput {
         @extend .questionInput;
       }
@@ -62,12 +68,14 @@
           width: 19rem;
         }
       }
-      .btn:hover{
+
+      .btn:hover {
         background-color: $bgPurple !important;
         transform: scale(1.05);
         box-shadow: $btnBoxShadow;
       }
     }
+
     .cardTableWrapper {
       margin-bottom: 15px;
     }
@@ -78,10 +86,11 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   @media (orientation: landscape) {
     margin-top: 100px;
   }
+
   .emptyText {
     font-weight: 400;
     font-size: 16px;
@@ -90,11 +99,13 @@
 
   }
 }
+
 .hideForMobile {
-  @media (min-width: 300px) and (max-width: 800px)  {
+  @media (min-width: 300px) and (max-width: 800px) {
     display: none !important;
   }
 }
+
 .popover > * {
   color: $actionButtonColor !important;
   box-shadow: none !important;
@@ -118,6 +129,7 @@
     font-size: 14px;
   }
 }
+
 .mobileButtonGroup {
   display: none;
   @media (min-width: $mobile-min-width) and (max-width: $mobile-max-width) {

@@ -66,8 +66,7 @@ const PacksHeader: React.FC<PacksHeaderPropsType> = ({packsOwnerName}) => {
                 />
                 <Button sx={{textTransform: "none"}}
                     onClick={handleOpen}
-                    className={s.addBtn}
-                    title={'Add a new card pack'}>Add a new card pack</Button>
+                    className={s.addBtn}>Add new card pack</Button>
                 <EditAddModalContainer showAddNewPackModal={open} closeModalCallback={handleClose} styles={modalStyle}/>
             </Box>
 
